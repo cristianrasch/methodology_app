@@ -1,0 +1,32 @@
+= content_for :title, @user.username.upcase
+
+= form_for @user, :url => account_path, :html => {:method => :put} do |f|
+  = f.error_messages :header_message => nil, :message => nil
+  
+  %p
+    = f.label :name
+    %br/
+    = f.text_field :name
+    
+  %p
+    = f.label :org_unit
+    %br/
+    = f.text_field :org_unit
+    
+  %p
+    = f.label :email
+    %br/
+    = f.text_field :email
+    
+  %p
+    = f.label :password
+    %br/
+    = f.password_field :password
+    
+  %p
+    = f.label :password_confirmation
+    %br/
+    = f.password_field :password_confirmation
+    
+  %p
+    = f.submit 'Actualizar'

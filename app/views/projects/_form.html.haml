@@ -1,0 +1,75 @@
+= content_for :head do
+  = javascript_include_tag 'jquery-ui-1.8.10.custom.min', 'jquery.ui.datepicker-es'
+  = stylesheet_link_tag 'jquery-ui-1.8.10.custom'
+  :javascript
+    $(document).ready(function() {
+      $('#project_estimated_start_date').datepicker();
+      $('#project_estimated_end_date').datepicker();
+      if($('input[id="project_started_on"]').length > 0) {
+        $('#project_started_on').datepicker();
+        $('#project_ended_on').datepicker();
+      }
+    });
+
+= form.error_messages :header_message => nil, :message => nil
+
+%p
+  = form.label :org_unit
+  %br/
+  = form.text_field :org_unit
+
+%p
+  = form.label :area
+  %br/
+  = form.text_field :area
+  
+%p
+  = form.label :first_name
+  %br/
+  = form.text_field :first_name
+
+%p
+  = form.label :last_name
+  %br/
+  = form.text_field :last_name
+
+%p
+  = form.label :description
+  %br/
+  = form.text_area :description, :cols => 30, :rows => 5
+
+%p
+  = form.label :estimated_start_date
+  %br/
+  = form.text_field :estimated_start_date, :size => 27, 
+                    :value => project_date(@project.estimated_start_date)
+  
+%p
+  = form.label :estimated_end_date
+  %br/
+  = form.text_field :estimated_end_date, :size => 27, 
+                    :value => project_date(@project.estimated_end_date)
+
+- unless @project.new_record?
+  %p
+    = form.label :started_on
+    %br/
+    = form.text_field :started_on, :size => 27, 
+                      :value => project_date(@project.started_on)
+
+  %p
+    = form.label :ended_on
+    %br/
+    = form.text_field :ended_on, :size => 27, 
+                      :value => project_date(@project.ended_on)
+
+%p
+  = form.label :estimated_duration
+  %br/
+  = form.text_field :estimated_duration, :size => 4
+
+- unless @project.new_record?
+  %p
+    = form.label :actual_duration
+    %br/
+    = form.text_field :actual_duration, :size => 4

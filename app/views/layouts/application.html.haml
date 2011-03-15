@@ -1,0 +1,30 @@
+!!! 5
+%html
+  %head
+    %title MethodologyApp
+  = stylesheet_link_tag 'style'
+  = javascript_include_tag :defaults
+  = yield(:head)
+  = csrf_meta_tag
+
+  %body
+    #wrapper
+      #header
+        = render 'shared/menu'
+      #page
+        #page-bgtop
+          #content
+            .post
+              %h2.title
+                %a{:href => "#"}= yield(:title)
+              - unless flash.empty?
+                %p.meta= flash[:notice] || flash[:alert]
+              .entry
+                = yield
+          / end #content
+          = yield(:sidebar)
+          %div{:style => "clear: both;"} &nbsp;
+      / end #page
+      #footer
+        %p Copyright (c) #{Date.today.year} CPCECABA. Todos los derechos reservados. Deseño por <a href="http://www.freecsstemplates.org/">Free CSS Templates</a>.
+      / end #footer

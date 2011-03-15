@@ -1,0 +1,7 @@
+common:
+  produ:
+    ip: produ IP
+    user: produ user
+    passwd: produ passwd
+  admin_users:
+    root: root passwd

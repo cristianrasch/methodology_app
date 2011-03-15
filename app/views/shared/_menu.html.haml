@@ -1,0 +1,13 @@
+#menu
+  %ul
+    - if user_signed_in?
+      %li.current_page_item.first
+        = link_to Project.model_name.human.humanize.pluralize, projects_path
+      %li
+        = link_to 'Mi cuenta', edit_account_path
+      %li
+        = link_to 'Salir', destroy_user_session_path
+    - else
+      %li.current_page_item.first
+        = link_to 'Ingresar', new_user_session_path
+/ end #menu

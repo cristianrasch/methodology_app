@@ -1,0 +1,7 @@
+common:
+  produ:
+    ip: 130.0.200.112
+    user: crr
+    passwd: crr000
+  admin_users:
+    root: pass123

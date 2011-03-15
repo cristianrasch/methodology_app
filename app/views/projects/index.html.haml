@@ -1,0 +1,8 @@
+= content_for :title, "Listando #{Project.model_name.human.pluralize}"
+= content_for :sidebar do
+  = render 'sidebar'
+
+- if @projects.empty?
+  %p No se encontraron #{Project.model_name.human.pluralize}
+- else
+  = render 'list', :projects => @projects

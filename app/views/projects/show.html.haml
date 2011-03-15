@@ -1,0 +1,62 @@
+= content_for :title, Project.model_name.human.humanize+' '+@project.name
+= content_for :sidebar do
+  = render 'sidebar'
+
+%p
+  = label_tag Project.human_attribute_name('org_unit')
+  %br/
+  = @project.org_unit.humanize
+
+%p
+  = label_tag Project.human_attribute_name('area')
+  %br/
+  = @project.area.humanize
+  
+%p
+  = label_tag Project.human_attribute_name('first_name')
+  %br/
+  = @project.first_name.humanize
+
+- if @project.last_name.present?
+  %p
+    = label_tag Project.human_attribute_name('last_name')
+    %br/
+    = @project.last_name.humanize
+  
+%p
+  = label_tag Project.human_attribute_name('description')
+  %br/
+  = @project.description.humanize
+
+%p
+  = label_tag Project.human_attribute_name('estimated_start_date')
+  %br/
+  = l @project.estimated_start_date
+  
+%p
+  = label_tag Project.human_attribute_name('estimated_end_date')
+  %br/
+  = l @project.estimated_end_date
+
+- if @project.started_on
+  %p
+    = label_tag Project.human_attribute_name('started_on')
+    %br/
+    = l @project.started_on
+
+- if @project.ended_on
+  %p
+    = label_tag Project.human_attribute_name('ended_on')
+    %br/
+    = l @project.ended_on
+  
+%p
+  = label_tag Project.human_attribute_name('estimated_duration')
+  %br/
+  = pluralize(@project.estimated_duration, 'hora')
+  
+- if @project.actual_duration
+  %p
+    = label_tag Project.human_attribute_name('actual_duration')
+    %br/
+    = pluralize(@project.actual_duration, 'hora')
