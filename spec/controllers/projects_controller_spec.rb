@@ -35,8 +35,9 @@ describe ProjectsController do
     end
     
     it "should create a new project when valid params supplied" do
+      attrs = Factory.attributes_for(:project).merge(:dev_id => @current_user.id)
       lambda {
-        post :create, :project => Factory.attributes_for(:project)
+        post :create, :project => attrs
       }.should change(Project, :count).by(1)
       
       response.should be_redirect

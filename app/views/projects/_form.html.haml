@@ -39,6 +39,11 @@
   = form.text_area :description, :cols => 30, :rows => 5
 
 %p
+  = form.label :dev_id
+  %br/
+  = form.collection_select :dev_id, User.devs, :id, :name, :include_blank => true
+
+%p
   = form.label :estimated_start_date
   %br/
   = form.text_field :estimated_start_date, :size => 27, 

@@ -5,3 +5,4 @@ common:
     passwd: produ passwd
   admin_users:
     root: root passwd
+  devs: comma,separated,list,of,developers

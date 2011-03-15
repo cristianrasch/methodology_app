@@ -1,11 +1,14 @@
 class Project < ActiveRecord::Base
 
   include DateUtils
+  
+  belongs_to :dev, :class_name => 'User', :foreign_key => :dev_id
 
   validates :org_unit, :presence => true
   validates :area, :presence => true
   validates :first_name, :presence => true
   validates :description, :presence => true
+  validates :dev_id, :numericality => { :greater_than => 0, :message => I18n.t('errors.messages.blank') }
   validates :estimated_start_date, :presence => true
   validates :estimated_end_date, :presence => true
   validates :estimated_duration, :numericality => { :greater_than => 0 }

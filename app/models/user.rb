@@ -6,6 +6,8 @@ class User < ActiveRecord::Base
   # :registerable, :recoverable and :timeoutable
   devise :database_authenticatable, :rememberable, :validatable
   
+  has_many :projects, :foreign_key => :dev_id
+  
   validates :username, :length => {:is => 3}, :uniqueness => true
   validates :name, :presence => true
 
@@ -30,6 +32,10 @@ class User < ActiveRecord::Base
         user.username = user_id
         user.save
       }
+    end
+    
+    def devs
+      User.where(:username => Conf.devs.split(',')).order(:username)
     end
     
     private

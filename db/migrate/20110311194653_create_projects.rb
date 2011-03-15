@@ -16,7 +16,7 @@ class CreateProjects < ActiveRecord::Migration
       t.timestamps
     end
     
-    add_index :projects, [:estimated_start_date, :estimated_end_date]
+    add_index :projects, [:started_on, :ended_on]
   end
 
   def self.down

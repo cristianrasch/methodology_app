@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110311195116) do
+ActiveRecord::Schema.define(:version => 20110315190053) do
 
   create_table "projects", :force => true do |t|
     t.string   "org_unit"
@@ -26,9 +26,11 @@ ActiveRecord::Schema.define(:version => 20110311195116) do
     t.integer  "actual_duration"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "dev_id"
   end
 
-  add_index "projects", ["estimated_start_date", "estimated_end_date"], :name => "index_projects_on_estimated_start_date_and_estimated_end_date"
+  add_index "projects", ["dev_id"], :name => "index_projects_on_dev_id"
+  add_index "projects", ["started_on", "ended_on"], :name => "index_projects_on_started_on_and_ended_on"
 
   create_table "users", :force => true do |t|
     t.string   "username"

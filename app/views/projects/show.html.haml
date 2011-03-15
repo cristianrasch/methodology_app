@@ -29,6 +29,11 @@
   = @project.description.humanize
 
 %p
+  = label_tag Project.human_attribute_name('dev_id')
+  %br/
+  = @project.dev.name
+
+%p
   = label_tag Project.human_attribute_name('estimated_start_date')
   %br/
   = l @project.estimated_start_date

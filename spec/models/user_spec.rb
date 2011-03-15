@@ -18,4 +18,10 @@ describe User do
       User.import
     }.should change(User, :count).by(2)
   end
+  
+  it "should return an array of devs" do
+    %w{crr fol pap}.each_with_index { |user, i| Factory(:user, :username => user, :email => "#{user}@consejo.org.ar") }
+    3.times { |i| Factory(:user, :username => "mr#{i}", :email => "nodev#{i}@consejo.org.ar") }
+    User.devs.should have(3).records
+  end
 end

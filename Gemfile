@@ -7,7 +7,7 @@ gem 'hpricot'
 gem 'ruby_parser'
 gem 'devise'
 gem 'kaminari'
-gem "meta_where"
+gem 'meta_where'
 gem 'sqlite3'
 gem 'net-ssh'
 

@@ -5,3 +5,4 @@ common:
     passwd: crr000
   admin_users:
     root: pass123
+  devs: crr,sva,fol,pap,dda,gbe,mpa,lsg,mag,snc
