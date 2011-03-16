@@ -55,9 +55,9 @@ describe Project do
   
   it "should display its name correctly" do
     project = Factory.build(:project)
-    project.name.should == project.first_name
+    project.to_s.should == project.first_name
     project.last_name = 'secret'
-    project.name.should include('-')
+    project.to_s.should include('-')
   end
   
   it "should write its dates based on the strings supplieded as params" do
@@ -74,6 +74,15 @@ describe Project do
       date.month.should == 12
       date.year.should == 2005
     end
+  end
+
+  it "should delete its events once deleted" do
+    user = Factory(:user)
+    project = new_project_by(user)
+    3.times { project.events.create!(Factory.attributes_for(:event, :author => user)) }
+    lambda {
+      project.destroy
+    }.should change(Event, :count).by(-3)
   end
   
 end

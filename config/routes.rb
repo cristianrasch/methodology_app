@@ -8,7 +8,9 @@ MethodologyApp::Application.routes.draw do
   
   match 'admin/users/import' => 'admin/users#import', :via => :post
 
-  resources :projects
+  resources :projects do
+    resources :events
+  end
 
   root :to => "projects#index"
   

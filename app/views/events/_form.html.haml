@@ -1,0 +1,31 @@
+= content_for :head do
+  :javascript
+    $(document).ready(function () {
+      $('#event_stage').focus();
+    });
+
+= form.error_messages :header_message => nil, :message => nil
+
+%p
+  = form.label :stage
+  %br/
+  = form.select :stage, stage_select_options, :include_blank => true
+  
+%p
+  = form.label :status
+  %br/
+  = form.select :status, status_select_options, :include_blank => true
+
+- 1.upto(3) do |i|
+  %p
+    = form.label "attachment#{i}"
+    - if @event.send("attachment#{i}?")
+      &nbsp;[#{File.basename(@event.send("attachment#{i}").path)}]
+    %br/
+    = form.file_field "attachment#{i}"
+    = form.hidden_field "attachment#{i}_cache"
+  
+%p
+  = form.label :duration
+  %br/
+  = form.text_field :duration, :size => 4

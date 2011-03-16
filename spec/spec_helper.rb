@@ -29,8 +29,8 @@ RSpec.configure do |config|
 end
 
 def stub_users_fetching
-  prod_users = ["crr:x:2772:1002:Cristian Rasch, Sistemas:/consejo/acct/vas:/sbin/sh",
-                "fol:x:2772:1002:Federico Oliveri, Sistemas:/consejo/acct/vas:/sbin/sh"]
+  prod_users = ["xx1:x:2772:1002:Mr XX1, Sistemas:/consejo/acct/vas:/sbin/sh",
+                "xx2:x:2772:1002:Mr XX2, Sistemas:/consejo/acct/vas:/sbin/sh"]
   User.stub!(:fetch_prod_users).and_return(prod_users)
 end
 
@@ -39,4 +39,8 @@ def admin_login(user = nil, passwd = nil)
   user ||= credentials.first
   passwd ||= credentials.last
   request.env['HTTP_AUTHORIZATION'] = ActionController::HttpAuthentication::Basic.encode_credentials(user, passwd)
+end
+
+def new_project_by(user)
+  Factory(:project, :dev => user, :owner => user)
 end

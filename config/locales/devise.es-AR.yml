@@ -1,0 +1,7 @@
+es-AR:
+  devise:
+    failure:
+      unauthenticated: 'Usted necesita ingresar a la aplicación antes de continuar.'
+    sessions:
+      signed_in: 'Sesión iniciada.'
+      signed_out: 'Sesión terminada.'

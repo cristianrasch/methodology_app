@@ -1,0 +1,8 @@
+= content_for :title, "#{Event.model_name.human.humanize.pluralize} del #{Project.model_name.human} #{@project}"
+= content_for :sidebar do
+  = render 'sidebar'
+
+- if @events.empty?
+  %p No se encontraron #{Event.model_name.human.pluralize}
+- else
+  = render 'list', :list => @events

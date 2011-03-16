@@ -10,7 +10,22 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110315190053) do
+ActiveRecord::Schema.define(:version => 20110316161842) do
+
+  create_table "events", :force => true do |t|
+    t.integer  "stage"
+    t.integer  "status"
+    t.string   "attachment1"
+    t.string   "attachment2"
+    t.string   "attachment3"
+    t.integer  "duration"
+    t.integer  "project_id"
+    t.integer  "author_id"
+    t.datetime "created_at"
+  end
+
+  add_index "events", ["author_id"], :name => "index_events_on_author_id"
+  add_index "events", ["project_id"], :name => "index_events_on_project_id"
 
   create_table "projects", :force => true do |t|
     t.string   "org_unit"
@@ -27,9 +42,11 @@ ActiveRecord::Schema.define(:version => 20110315190053) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "dev_id"
+    t.integer  "owner_id"
   end
 
   add_index "projects", ["dev_id"], :name => "index_projects_on_dev_id"
+  add_index "projects", ["owner_id"], :name => "index_projects_on_owner_id"
   add_index "projects", ["started_on", "ended_on"], :name => "index_projects_on_started_on_and_ended_on"
 
   create_table "users", :force => true do |t|

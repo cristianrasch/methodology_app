@@ -14,5 +14,12 @@ Factory.define :project do |p|
   p.estimated_start_date 1.week.ago.to_date
   p.estimated_end_date 3.months.from_now.to_date
   p.estimated_duration 80
+  p.association :owner, :factory => :user
   p.association :dev, :factory => :user
+end
+
+Factory.define :event do |e|
+  e.stage Conf.stages.first.first
+  e.status Conf.statuses.first.first
+  e.duration 25
 end

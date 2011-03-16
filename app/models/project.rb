@@ -2,13 +2,17 @@ class Project < ActiveRecord::Base
 
   include DateUtils
   
+  has_many :events, :dependent => :delete_all
+  belongs_to :owner, :class_name => 'User'
   belongs_to :dev, :class_name => 'User', :foreign_key => :dev_id
 
   validates :org_unit, :presence => true
   validates :area, :presence => true
   validates :first_name, :presence => true
   validates :description, :presence => true
-  validates :dev_id, :numericality => { :greater_than => 0, :message => I18n.t('errors.messages.blank') }
+  validates :dev_id, :numericality => { :greater_than => 0, 
+                                        :message => I18n.t('errors.messages.blank') }
+  validates :owner_id, :numericality => true
   validates :estimated_start_date, :presence => true
   validates :estimated_end_date, :presence => true
   validates :estimated_duration, :numericality => { :greater_than => 0 }
@@ -18,10 +22,11 @@ class Project < ActiveRecord::Base
   validate :estimated_dates
   validate :dates
   
-  scope :active, lambda { where(:started_on.gteq => Date.today, :ended_on => nil) }
+  scope :active, lambda { where(:started_on.lteq => Date.today, :ended_on => nil) }
+  scope :ordered, order(:started_on.desc, :first_name, :last_name)
   
-  def name
-    last_name ? first_name+' - '+last_name : first_name
+  def to_s
+    last_name.blank? ? first_name : first_name+' - '+last_name
   end
   
   %w{estimated_start_date estimated_end_date started_on ended_on}.each do |attr|

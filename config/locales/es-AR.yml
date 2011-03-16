@@ -178,6 +178,7 @@ es-AR:
         
     models:
       project: proyecto
+      event: evento
     attributes:
       user:
         email: Correo electrónico
@@ -200,14 +201,15 @@ es-AR:
         estimated_duration: Duración estimada (en hrs)
         actual_duration: Duración real (en hrs)
         dev_id: Desarrollador
+      event:
+        stage: Etapa
+        status: Estado
+        duration: Horas insumidas
+        attachment1: Archivo 1
+        attachment2: Archivo 2
+        attachment3: Archivo 3
+        author_id: Responsable
         
-  devise:
-    failure:
-      unauthenticated: 'Usted necesita ingresar a la aplicación antes de continuar.'
-    sessions:
-      signed_in: 'Sesión iniciada.'
-      signed_out: 'Sesión terminada.'
-      
   views:
     pagination:
       previous: "&lt; Ant."

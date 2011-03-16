@@ -3,7 +3,7 @@ class ProjectsController < ApplicationController
   before_filter :authenticate_user!
   
   def index
-    @projects = Project.active.page(params[:page]).per(10)
+    @projects = Project.active.ordered.page(params[:page]).per(10)
   end
   
   def new
@@ -12,6 +12,7 @@ class ProjectsController < ApplicationController
   
   def create
     @project = Project.new(params[:project])
+    @project.owner = current_user
     
     if @project.save
       redirect_to @project, :notice => "#{Project.model_name.human.humanize} creado"
@@ -39,7 +40,7 @@ class ProjectsController < ApplicationController
   end
   
   def destroy
-    Project.delete_all(['id = ?', params[:id]])
+    Project.destroy(params[:id])
     redirect_to projects_path, :notice => "#{Project.model_name.human.humanize} eliminado"
   end
 

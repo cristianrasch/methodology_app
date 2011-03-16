@@ -6,3 +6,16 @@ common:
   admin_users:
     root: pass123
   devs: crr,sva,fol,pap,dda,gbe,mpa,lsg,mag,snc
+  stages:
+    1: definición
+    2: diseño funcional
+    3: demostración
+    4: testing
+    5: presentación
+    6: prueba de usuario
+    7: implementación
+  statuses:
+    1: en desarrollo
+    2: pendiente de aprobación
+    3: aprobado
+    4: rechazado

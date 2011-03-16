@@ -5,4 +5,4 @@
 - if @projects.empty?
   %p No se encontraron #{Project.model_name.human.pluralize}
 - else
-  = render 'list', :projects => @projects
+  = render 'list', :list => @projects

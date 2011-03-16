@@ -1,0 +1,8 @@
+= content_for :title, "Editando #{Event.model_name.human}"
+= content_for :sidebar do
+  = render 'sidebar'
+  
+= form_for [@project, @event], :html => {:multipart => true} do |f|
+  = render f
+  = f.submit 'Actualizar'
+  

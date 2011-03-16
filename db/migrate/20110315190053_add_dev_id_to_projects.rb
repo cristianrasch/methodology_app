@@ -5,7 +5,7 @@ class AddDevIdToProjects < ActiveRecord::Migration
   end
 
   def self.down
-    remove_column :projects, :dev_id
     remove_index :projects, :dev_id
+    remove_column :projects, :dev_id
   end
 end
