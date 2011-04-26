@@ -1,0 +1,96 @@
+http://localhost:8080/certWEB/index.html
+
+http://localhost:8080/certWEBIntranet/session/loginForm.html?sessionID=JN3ZEGTQVGSYOZ26Y0HA67JDGV8UOKKO
+
+mat: 1
+tomo: 352
+folio: 245
+
+select fechaalta,nroconv,m.legajo,trim(nombre) nombre,
+        trim(apellido) apellido,m1.tipomatricula,m1.tomo,
+        m1.folio
+from cw_convenio c,matriculado m,matricula m1,persona p
+where p.documtipo = 1 and
+      p.documnro = 18285726 and
+      p.codpersona = m.codpersona and
+      m.estadoactual in (1,70) and
+      m.legajo = m1.legajo and      
+      m.legajo = c.legajo and      
+      c.estado = 1
+      
+      
+fechaalta      22/12/2010
+nroconv        28
+legajo         60551
+(expression)   DIEGO
+(expression)   JAUNARENA
+tipomatricula  1
+tomo           220
+folio          147
+documtipo    documnro
+
+        1    18285726
+
+
+delete from cw_ingr_per;
+delete from cw_cert_matric;
+delete from cw_compro_cert;
+delete from cw_reg_compro_cert;
+delete from cw_convenio;
+delete from cw_histo_tarjeta;
+
+
+select first 5 t.*, prdecrypt(mediopago,nrotarjeta) nro
+from debtarjeta t
+where idcliente = 60551
+order by idtarjeta desc
+
+idtarjeta    329303
+mediopago    2
+nrotarjeta   4540457533546189
+fechavto     01/02/2011
+idcliente    60551
+tipocliente  1
+estado       1
+nro          4540 7580 0176 6189
+
+329303
+
+idtarjeta    348552
+
+select first 3 fechavto, mediopago,
+prdecrypt(mediopago,nrotarjeta) nrotarjeta 
+from debtarjeta
+where idcliente = 60551 and
+mediopago = 3 and
+tipocliente = 1 and 
+estado = 1
+order by fechavto desc
+
+fechavto   mediopago nrotarjeta
+
+01/03/2011         7 3777 9100 3599 411
+
+fechavto   mediopago nrotarjeta
+
+01/05/2111         5 3648 1402 8629 99
+
+fechavto   mediopago nrotarjeta
+
+01/02/2011         2 4540 7500 1064 8946
+01/02/2011         2 4540 7580 0176 6189
+
+fechavto   mediopago nrotarjeta
+
+28/02/2011         3 4540812704096189
+01/12/2005         3 5399212133333333
+01/12/2005         3 5399111120001000
+
+select t.*
+from cw_convenio c, debtarjeta t
+where c.nroconv = 61 and
+c.idtarjeta = t.idtarjeta
+
+select first 1 *
+from matricula
+order by legajo desc

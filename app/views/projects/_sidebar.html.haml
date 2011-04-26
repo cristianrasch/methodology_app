@@ -17,6 +17,8 @@
                       :confirm => "¿Está seguro que desea eliminar el #{Project.model_name.human}?"
           %li
             = link_to Event.model_name.human.humanize.pluralize, project_events_path(@project)
+          %li
+            = link_to Task.model_name.human.humanize.pluralize, project_tasks_path(@project)
         %li
           = link_to 'Volver', :back
 / end #sidebar

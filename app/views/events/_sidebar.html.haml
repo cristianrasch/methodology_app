@@ -5,16 +5,18 @@
       %ul
         - if controller.action_name == 'index'
           %li
-            = link_to 'Nuevo', new_project_event_path(@project)
+            = link_to 'Nuevo', new_project_event_path(@project || @event.project)
         - else
           %li
-            = link_to 'Inicio', project_events_path(@project)
+            = link_to 'Inicio', project_events_path(@event.project)
         - if controller.action_name == 'show'
           %li
-            = link_to 'Editar', edit_project_event_path(@project, @event)
+            = link_to 'Editar', edit_event_path(@event)
           %li
-            = link_to 'Eliminar', [@project, @event], :method => :delete, 
+            = link_to 'Eliminar', @event, :method => :delete, 
                       :confirm => "¿Está seguro que desea eliminar el #{Event.model_name.human}?"
+          %li
+            = link_to Comment.model_name.human.humanize.pluralize, event_comments_path(@event)
         %li
           = link_to 'Volver', :back
 / end #sidebar

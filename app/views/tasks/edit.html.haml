@@ -1,0 +1,8 @@
+= content_for :title, "Editando #{Task.model_name.human}"
+= content_for :sidebar do
+  = render 'sidebar'
+  
+= form_for @task, :html => {:multipart => true} do |f|
+  = render f
+  = f.submit 'Actualizar'
+  

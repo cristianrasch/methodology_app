@@ -1,0 +1,22 @@
+= content_for :title, Comment.model_name.human.humanize
+  
+= content_for :sidebar do
+  = render 'sidebar'
+  
+%p
+  = Comment.human_attribute_name(:content)
+  %br/
+  = @comment
+
+%p
+  = Comment.human_attribute_name(:author_id)
+  %br/
+  = @comment.author.name
+
+- if @comment.attachment?  
+  %p
+    = link_to Comment.human_attribute_name(:attachment), @comment.attachment.url
+    
+= created_at(@comment)
+= updated_at(@comment)
+

@@ -1,0 +1,5 @@
+Se ha dado de alta un nuevo #{Project.model_name.human},
+%strong= @project
+%br
+Puede accederlo clickeando
+=link_to 'aquí', project_url(@project)

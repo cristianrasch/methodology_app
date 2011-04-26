@@ -13,8 +13,12 @@
   = Event.human_attribute_name(:duration)
   %br/
   = pluralize(@event.duration, 'hora')
-  
-- 1.upto(3) do |i|
-  - if @event.send("attachment#{i}?")
-    = link_to Event.human_attribute_name("attachment#{i}"), 
-              @event.send("attachment#{i}").url
+
+- if @event.has_attachments?
+  %ul
+    - 1.upto(3) do |i|
+      - if @event.send("attachment#{i}?")
+        %li= link_to Event.human_attribute_name("attachment#{i}"), @event.send("attachment#{i}").url
+        
+= created_at(@event)
+= updated_at(@event)

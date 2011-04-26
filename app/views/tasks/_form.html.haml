@@ -1,0 +1,31 @@
+= content_for :head do
+  :javascript
+    $(document).ready(function () {
+      $('#task_description').focus();
+    });
+
+= form.error_messages :header_message => nil, :message => nil
+
+%p
+  = form.label :description
+  %br/
+  = form.text_area :description, :cols => 30, :rows => 5
+  
+%p
+  = form.label :owner_id
+  %br/
+  = form.collection_select :owner_id, User.it_staff, :id, :name, :include_blank => true
+
+- 1.upto(3) do |i|
+  %p
+    = form.label "attachment#{i}"
+    - if @task.send("attachment#{i}?")
+      &nbsp;[#{File.basename(@task.send("attachment#{i}").path)}]
+    %br/
+    = form.file_field "attachment#{i}"
+    = form.hidden_field "attachment#{i}_cache"
+  
+%p
+  = form.label :duration
+  %br/
+  = form.text_field :duration, :size => 4

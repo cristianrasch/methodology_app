@@ -1,0 +1,7 @@
+= content_for :title, "Nueva #{Task.model_name.human}"
+= content_for :sidebar do
+  = render 'sidebar'
+  
+= form_for [@project, @task], :html => {:multipart => true} do |f|
+  = render f
+  = f.submit 'Crear'

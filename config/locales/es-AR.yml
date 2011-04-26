@@ -177,8 +177,11 @@ es-AR:
         format: "%{attribute}%{message}"
         
     models:
+      user: usuario
       project: proyecto
       event: evento
+      comment: comentario
+      task: tarea
     attributes:
       user:
         email: Correo electrónico
@@ -201,6 +204,7 @@ es-AR:
         estimated_duration: Duración estimada (en hrs)
         actual_duration: Duración real (en hrs)
         dev_id: Desarrollador
+        user_ids: Usuarios involucrados
       event:
         stage: Etapa
         status: Estado
@@ -209,9 +213,27 @@ es-AR:
         attachment2: Archivo 2
         attachment3: Archivo 3
         author_id: Responsable
-        
+      comment:
+        content: Contenido
+        attachment: Archivo
+        author_id: Autor
+        recipient_ids: Destinatarios
+      task:
+        finished_at: Terminada el
+        description: Descripción
+        attachment1: Archivo 1
+        attachment2: Archivo 2
+        attachment3: Archivo 3
+        author_id: Autor
+        owner_id: Resonsable
+        duration: Horas insumidas
+        finished_at: Fecha de finalización
+        updated_by: Actualizada por
   views:
     pagination:
       previous: "&lt; Ant."
       next: "Sig. &gt;"
       truncate: "..."
+  lbls:
+    created_at: Fecha de creación
+    updated_at: Fecha de modificación

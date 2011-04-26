@@ -1,0 +1,8 @@
+= content_for :title, "#{Task.model_name.human.humanize.pluralize} del #{Project.model_name.human} #{@project}"
+= content_for :sidebar do
+  = render 'sidebar'
+
+- if @tasks.empty?
+  = not_found(Task)
+- else
+  = render 'list', :list => @tasks

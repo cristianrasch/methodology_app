@@ -3,6 +3,6 @@
   = render 'sidebar'
 
 - if @events.empty?
-  %p No se encontraron #{Event.model_name.human.pluralize}
+  = not_found(Event)
 - else
   = render 'list', :list => @events

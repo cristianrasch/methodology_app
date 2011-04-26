@@ -13,6 +13,7 @@ describe Project do
     project.should have(1).error_on(:estimated_start_date)
     project.should have(1).error_on(:estimated_end_date)
     project.should have(1).error_on(:estimated_duration)
+    project.should have(1).error_on(:user_ids)
   end
   
   it "should find active projects" do
@@ -76,13 +77,14 @@ describe Project do
     end
   end
 
-  it "should delete its events once deleted" do
-    user = Factory(:user)
-    project = new_project_by(user)
-    3.times { project.events.create!(Factory.attributes_for(:event, :author => user)) }
-    lambda {
-      project.destroy
-    }.should change(Event, :count).by(-3)
+  it "should delete its events & tasks once deleted" do
+    project = Factory(:project)
+    3.times { Factory(:event, :project => project) }
+    2.times { Factory(:task, :project => project) }
+    
+    # 3.times { project.events.create!(Factory.attributes_for(:event, :author => user)) }
+    project.destroy
+    project.events(true).should be_empty
+    project.tasks(true).should be_empty
   end
-  
 end

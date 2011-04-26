@@ -1,0 +1,39 @@
+= content_for :title, Task.model_name.human.humanize
+  
+= content_for :sidebar do
+  = render 'sidebar'
+
+%p
+  = Task.human_attribute_name(:description)
+  %br/
+  = @task.description.humanize
+  
+%p
+  = Task.human_attribute_name(:author_id)
+  %br/
+  = @task.author.name
+
+%p
+  = Task.human_attribute_name(:owner_id)
+  %br/
+  = @task.owner.name
+
+- if @task.finished_at
+  %p
+    = Task.human_attribute_name(:finished_at)
+    %br/
+    = l @task.finished_at, :format => :short
+  
+  %p
+    = Task.human_attribute_name(:duration)
+    %br/
+    = pluralize(@task.duration, 'hora')
+
+- if @task.has_attachments?
+  %ul
+    - 1.upto(3) do |i|
+      - if @task.send("attachment#{i}?")
+        %li= link_to Task.human_attribute_name("attachment#{i}"), @task.send("attachment#{i}").url
+
+= created_at(@task)
+= updated_at(@task)

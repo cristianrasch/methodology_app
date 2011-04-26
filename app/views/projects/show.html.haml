@@ -32,6 +32,12 @@
   = label_tag Project.human_attribute_name('dev_id')
   %br/
   = @project.dev.name
+  
+%p
+  = label_tag User.model_name.human.humanize.pluralize
+%ul
+  - @project.users.each do |user|
+    %li= user.name
 
 %p
   = label_tag Project.human_attribute_name('estimated_start_date')
@@ -65,3 +71,6 @@
     = label_tag Project.human_attribute_name('actual_duration')
     %br/
     = pluralize(@project.actual_duration, 'hora')
+    
+= created_at(@project)
+= updated_at(@project)

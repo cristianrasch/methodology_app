@@ -35,10 +35,12 @@ describe ProjectsController do
     end
     
     it "should create a new project when valid params supplied" do
-      attrs = Factory.attributes_for(:project, :dev => @current_user)
+      attrs = Factory.attributes_for(:project, :dev => @current_user, :user_ids => [Factory(:user).id])
       lambda {
-        post :create, :project => attrs
-      }.should change(Project, :count).by(1)
+        lambda {
+          post :create, :project => attrs
+        }.should change(Project, :count).by(1)
+      }.should change(ActionMailer::Base.deliveries, :length)
       
       response.should be_redirect
       assigns[:project].should_not be_nil
@@ -48,7 +50,7 @@ describe ProjectsController do
   end
   
   it "should render the show action" do
-    get :show, :id => new_project_by(@current_user)
+    get :show, :id => Factory(:project)
     
     response.should be_success
     response.should render_template('show')
@@ -57,7 +59,7 @@ describe ProjectsController do
   end
   
   it "should render the edit action" do
-    get :edit, :id => new_project_by(@current_user)
+    get :edit, :id => Factory(:project)
     
     response.should be_success
     response.should render_template('edit')
@@ -88,7 +90,7 @@ describe ProjectsController do
   
   it "should delete an existing project" do
     lambda {
-      delete :destroy, :id => new_project_by(@current_user)
+      delete :destroy, :id => Factory(:project)
     }.should_not change(Project, :count)
     
     response.should be_redirect

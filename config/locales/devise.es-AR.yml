@@ -1,6 +1,7 @@
 es-AR:
   devise:
     failure:
+      invalid: 'Nombre de usuario o contraseña inválidos.'
       unauthenticated: 'Usted necesita ingresar a la aplicación antes de continuar.'
     sessions:
       signed_in: 'Sesión iniciada.'

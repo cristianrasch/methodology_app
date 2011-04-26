@@ -2,7 +2,7 @@ source 'http://rubygems.org'
 
 gem 'jquery-rails', '>= 0.2.6'
 gem 'haml'
-gem 'rails', '3.0.5'
+gem 'rails', '3.0.7'
 gem 'hpricot'
 gem 'ruby_parser'
 gem 'devise'
@@ -11,6 +11,7 @@ gem "carrierwave"
 gem 'meta_where'
 gem 'sqlite3'
 gem 'net-ssh'
+gem 'delayed_job'
 
 group :test, :development do
   gem "rspec-rails", "~> 2.4"

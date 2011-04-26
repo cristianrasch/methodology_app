@@ -1,0 +1,22 @@
+#sidebar
+  %ul
+    %li
+      %h2 Menú
+      %ul
+        - if controller.action_name == 'index'
+          %li
+            = link_to 'Nueva', new_project_task_path(@project || @task.project)
+        - else
+          %li
+            = link_to 'Inicio', project_tasks_path(@task.project)
+        - if controller.action_name == 'show'
+          %li
+            = link_to 'Editar', edit_task_path(@task)
+          %li
+            = link_to 'Eliminar', @task, :method => :delete, 
+                      :confirm => "¿Está seguro que desea eliminar la #{Task.model_name.human}?"
+          %li
+            = link_to Comment.model_name.human.humanize.pluralize, task_comments_path(@task)
+        %li
+          = link_to 'Volver', :back
+/ end #sidebar

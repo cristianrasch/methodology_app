@@ -1,0 +1,9 @@
+Se ha
+- if @comment.created_at == @comment.updated_at
+  cargado un nuevo
+- else
+  actualizado un
+#{Comment.model_name.human}
+%br
+Puede accederlo clickeando
+=link_to 'aquí', comment_url(@comment)

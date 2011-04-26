@@ -1,0 +1,20 @@
+= content_for :head do
+  :javascript
+    $(document).ready(function () {
+      $('#comment_content').focus();
+    });
+
+= form.error_messages :header_message => nil, :message => nil
+
+%p
+  = form.label :content
+  %br/
+  = form.text_area :content, :cols => 30, :rows => 5
+  
+%p
+  = form.label :attachment
+  - if @comment.attachment?
+    &nbsp;[#{File.basename(@comment.attachment.path)}]
+  %br/
+  = form.file_field :attachment
+  

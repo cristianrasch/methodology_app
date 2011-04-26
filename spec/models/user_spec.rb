@@ -24,4 +24,19 @@ describe User do
     3.times { |i| Factory(:user, :username => "mr#{i}", :email => "nodev#{i}@consejo.org.ar") }
     User.devs.should have(3).records
   end
+  
+  it "should return an array of IT staff" do
+    %w{gbe mpa}.each_with_index { |user, i| Factory(:user, :username => user, :email => "#{user}@consejo.org.ar") }
+    3.times { Factory(:user) }
+    User.it_staff.should have(2).records
+  end
+  
+  it "should find users by position" do
+    user = Factory(:user)
+    User.others.should_not be_empty
+    user.update_attribute(:position, User::Position::BOSS)
+    User.bosses.should_not be_empty
+    user.update_attribute(:position, User::Position::MANAGER)
+    User.managers.should_not be_empty
+  end
 end

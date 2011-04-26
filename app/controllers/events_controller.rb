@@ -1,7 +1,7 @@
 class EventsController < ApplicationController
 
   before_filter :authenticate_user!
-  before_filter :grab_project
+  before_filter :grab_project, :only => [:index, :new, :create]
   
   def index
     @events = @project.events.ordered.page(params[:page]).per(10)
@@ -16,25 +16,35 @@ class EventsController < ApplicationController
     @event.author = current_user
     
     if @event.save
-      redirect_to([@project, @event], :notice => "#{Event.model_name.human.humanize} creado")
+      redirect_to(@event, :notice => "#{Event.model_name.human.humanize} creado")
     else
       render :action => :new
     end
   end
   
   def show
-    @event = @project.events.find(params[:id], :include => :author)
+    @event = Event.find(params[:id], :include => [:project, :author])
   end
   
   def edit
-    @event = @project.events.find(params[:id])
+    @event = Event.find(params[:id], :include => :project)
+  end
+  
+  def update
+    @event = Event.find(params[:id])
+    
+    if @event.update_attributes(params[:event])
+      redirect_to(@event, :notice => "#{Event.model_name.human.humanize} actualizado")
+    else
+      render :action => :edit
+    end
   end
 
   def destroy
-    @event = @project.events.find(params[:id])
+    @event = Event.find(params[:id], :include => :project)
     @event.destroy
-    redirect_to(project_events_path(@project), 
-                                    :notice => "#{Event.model_name.human.humanize} eliminado")
+    redirect_to(project_events_path(@event.project), 
+                :notice => "#{Event.model_name.human.humanize} eliminado")
   end
   
   private

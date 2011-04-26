@@ -6,9 +6,16 @@
 #   cities = City.create([{ :name => 'Chicago' }, { :name => 'Copenhagen' }])
 #   Mayor.create(:name => 'Daley', :city => cities.first)
 
-#User.import
-crr = User.find_by_username('crr')
-3.times {|i|
-  project = Factory(:project, :dev_id => crr.id, :owner_id => crr.id,
-                    :started_on => i.days.ago.to_date)
-}
+# import production users
+User.import
+User.find_by_username('gar').update_attribute(:position, User::Position::MANAGER)
+User.find_by_username('mev').update_attribute(:position, User::Position::BOSS)
+
+# create random projects
+3.times do |i|
+  project = Factory(:project, :started_on => i.days.ago.to_date)
+  # add some events to those projects
+  2.times { Factory(:event, :status => i+1, :project => project) }
+  # add some comments to those events
+  project.events.each { |event| Factory(:comment, :commentable => event) }
+end

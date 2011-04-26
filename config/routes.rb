@@ -1,5 +1,6 @@
 MethodologyApp::Application.routes.draw do
 
+
   get "home/index"
 
   resource :account, :only => [:edit, :update]
@@ -8,8 +9,13 @@ MethodologyApp::Application.routes.draw do
   
   match 'admin/users/import' => 'admin/users#import', :via => :post
 
-  resources :projects do
-    resources :events
+  resources :projects, :shallow => true do
+    resources :events do
+      resources :comments
+    end
+    resources :tasks do
+      resources :comments
+    end
   end
 
   root :to => "projects#index"

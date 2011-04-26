@@ -11,7 +11,7 @@ class CreateEvents < ActiveRecord::Migration
       t.references :project
       t.integer :author_id
 
-      t.datetime :created_at
+      t.timestamps
     end
     
     add_index :events, :author_id
