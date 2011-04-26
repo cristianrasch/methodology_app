@@ -1,0 +1,9 @@
+Se ha
+- if @event.created_at == @event.updated_at
+  cargado un nuevo
+- else
+  actualizado un
+#{Event.model_name.human}
+%br
+Puede accederlo clickeando
+=link_to 'aquí', event_url(@event)

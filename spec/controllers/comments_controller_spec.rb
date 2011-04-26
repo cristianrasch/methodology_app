@@ -28,10 +28,8 @@ describe CommentsController do
   context "create action" do
     it "should render the new action when invalid params supplied" do
       lambda {
-        lambda {
-          post :create, :event_id => Factory(:event), :comment => {}
-        }.should_not change(Comment, :count)
-      }.should change(ActionMailer::Base.deliveries, :length)
+        post :create, :event_id => Factory(:event), :comment => {}
+      }.should_not change(Comment, :count)
       
       response.should be_success
       response.should render_template(:new)
@@ -43,10 +41,8 @@ describe CommentsController do
     it "should create a new comment when valid params supplied" do
       event = Factory(:event)
       lambda {
-        lambda {
-          post :create, :event_id => event, :comment => Factory.attributes_for(:comment)
-        }.should change(Comment, :count).by(1)
-      }.should change(ActionMailer::Base.deliveries, :length)
+        post :create, :event_id => event, :comment => Factory.attributes_for(:comment)
+      }.should change(Comment, :count).by(1)
       
       response.should be_redirect
       response.should redirect_to(event_comments_path(event))

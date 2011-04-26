@@ -82,9 +82,21 @@ describe Project do
     3.times { Factory(:event, :project => project) }
     2.times { Factory(:task, :project => project) }
     
-    # 3.times { project.events.create!(Factory.attributes_for(:event, :author => user)) }
     project.destroy
     project.events(true).should be_empty
     project.tasks(true).should be_empty
+  end
+  
+  it "should send emails after being created" do
+    lambda {
+      Factory(:project)
+    }.should change(ActionMailer::Base.deliveries, :length)
+  end
+  
+  it "should send emails after being updated" do
+    project = Factory(:project)
+    lambda {
+      project.update_attribute(:estimated_end_date, 3.months.from_now.to_date)
+    }.should change(ActionMailer::Base.deliveries, :length)
   end
 end

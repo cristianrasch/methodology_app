@@ -14,3 +14,4 @@ common:
     1: your
     2: statuses
     3: here
+  notifications_from: desarrollo@consejo.org.ar

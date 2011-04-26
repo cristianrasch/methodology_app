@@ -16,4 +16,17 @@ describe Task do
     task.finished_at.should_not be_nil
   end
   
+  it "should send emails after being created" do
+    lambda {
+      Factory(:task)
+    }.should change(ActionMailer::Base.deliveries, :length)
+  end
+  
+  it "should send emails after being updated" do
+    task = Factory(:task)
+    lambda {
+      task.update_attribute(:description, 'xxx')
+    }.should change(ActionMailer::Base.deliveries, :length)
+  end
+  
 end

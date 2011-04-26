@@ -13,7 +13,7 @@ class Comment < ActiveRecord::Base
   
   scope :ordered, order(:created_at.desc)
   
-  after_save :send_after_save_notifications
+  after_save :notify_comment_saved
   
   def to_s
     content.to_s.humanize
@@ -25,7 +25,7 @@ class Comment < ActiveRecord::Base
   
   private
   
-  def send_after_save_notifications
+  def notify_comment_saved
     if Rails.env == 'test'
       CommentNotifier.comment_saved(self).deliver
     else

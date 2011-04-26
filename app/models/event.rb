@@ -15,9 +15,24 @@ class Event < ActiveRecord::Base
   scope :ordered, order(:created_at.desc)
   
   1.upto(3) { |i| mount_uploader "attachment#{i}", FileUploader }
+  
+  after_save :notify_event_saved
 
   def to_s
-    Event.human_attribute_name(:stage)+': '+Conf.stages[stage].humanize+' - '+Event.human_attribute_name(:status)+': '+Conf.statuses[status].humanize
+    Event.human_attribute_name(:stage)+': '+
+    Conf.stages[stage].humanize+' - '+
+    Event.human_attribute_name(:status)+': '+
+    Conf.statuses[status].humanize
+  end
+  
+  private
+  
+  def notify_event_saved
+    if Rails.env == 'test'
+      EventNotifier.event_saved(self).deliver
+    else
+      EventNotifier.delay.event_saved(self)
+    end
   end
   
 end

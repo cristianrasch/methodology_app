@@ -22,4 +22,17 @@ describe Comment do
     comment.should_not be_updatable_by(Factory(:user))
   end
   
+  it "should send emails after being created" do
+    lambda {
+      Factory(:comment)
+    }.should change(ActionMailer::Base.deliveries, :length)
+  end
+  
+  it "should send emails after being updated" do
+    comment = Factory(:comment)
+    lambda {
+      comment.update_attribute(:content, 'xxx')
+    }.should change(ActionMailer::Base.deliveries, :length)
+  end
+  
 end

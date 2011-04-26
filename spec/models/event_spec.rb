@@ -13,5 +13,18 @@ describe Event do
       event.should have(1).error_on(:author_id)
     end
   end
+  
+  it "should send emails after being created" do
+    lambda {
+      Factory(:event)
+    }.should change(ActionMailer::Base.deliveries, :length)
+  end
+  
+  it "should send emails after being updated" do
+    event = Factory(:event)
+    lambda {
+      event.update_attribute(:duration, 5)
+    }.should change(ActionMailer::Base.deliveries, :length)
+  end
 
 end

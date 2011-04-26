@@ -1,0 +1,9 @@
+Se ha
+- if @task.created_at == @task.updated_at
+  cargado una nueva
+- else
+  actualizado una
+#{Task.model_name.human}
+%br
+Puede accederla clickeando
+=link_to 'aquí', task_url(@task)

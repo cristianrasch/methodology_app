@@ -28,7 +28,7 @@ class Project < ActiveRecord::Base
   scope :active, lambda { where(:started_on.lteq => Date.today, :ended_on => nil) }
   scope :ordered, order(:started_on.desc, :first_name, :last_name)
   
-  after_create :send_after_create_notifications
+  after_save :notify_project_saved
   
   def to_s
     last_name.blank? ? first_name : first_name+' - '+last_name
@@ -62,11 +62,11 @@ class Project < ActiveRecord::Base
     errors.add(:user_ids, I18n.t('errors.messages.empty')) if user_ids.empty?
   end
   
-  def send_after_create_notifications
+  def notify_project_saved
     if Rails.env == 'test'
-      ProjectNotifier.project_created(self).deliver
+      ProjectNotifier.project_saved(self).deliver
     else
-      ProjectNotifier.delay.project_created(self)
+      ProjectNotifier.delay.project_saved(self)
     end
   end
 

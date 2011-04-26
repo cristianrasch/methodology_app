@@ -1,7 +1,7 @@
 # coding: utf-8
 
 class CommentNotifier < ActionMailer::Base
-  default :from => "desarrollo@consejo.org.ar"
+  default :from => Conf.notifications_from
 
   # Subject can be set in your I18n file at config/locales/en.yml
   # with the following lookup:

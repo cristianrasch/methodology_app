@@ -37,10 +37,8 @@ describe ProjectsController do
     it "should create a new project when valid params supplied" do
       attrs = Factory.attributes_for(:project, :dev => @current_user, :user_ids => [Factory(:user).id])
       lambda {
-        lambda {
-          post :create, :project => attrs
-        }.should change(Project, :count).by(1)
-      }.should change(ActionMailer::Base.deliveries, :length)
+        post :create, :project => attrs
+      }.should change(Project, :count).by(1)
       
       response.should be_redirect
       assigns[:project].should_not be_nil

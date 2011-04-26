@@ -24,10 +24,22 @@ class Task < ActiveRecord::Base
   
   1.upto(3) { |i| mount_uploader "attachment#{i}", FileUploader }
   
+  after_save :notify_task_saved
+  
   def duration=(dur)
     if dur.present?
       write_attribute(:duration, dur)
       self.finished_at = Time.now
+    end
+  end
+  
+  private
+  
+  def notify_task_saved
+    if Rails.env == 'test'
+      TaskNotifier.task_saved(self).deliver
+    else
+      TaskNotifier.delay.task_saved(self)
     end
   end
   
