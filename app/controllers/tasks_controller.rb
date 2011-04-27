@@ -4,7 +4,7 @@ class TasksController < ApplicationController
   before_filter :grab_project, :only => [:index, :new, :create]
   
   def index
-    @tasks = @project.tasks.incomplete.ordered.page(params[:page]).per(10)
+    @tasks = @project.tasks.list(params)
   end
   
   def new

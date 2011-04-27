@@ -11,7 +11,7 @@ describe CommentNotifier do
     it "renders the headers" do
       mail.to.should include(@comment.users.first.email)
       mail.to.should include(@comment.commentable.project.dev.email)
-      mail.from.should eq(["desarrollo@consejo.org.ar"])
+      mail.from.should eq([Conf.notifications_from])
     end
     
     it "should display a subject for new comments" do

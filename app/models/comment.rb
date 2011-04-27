@@ -1,5 +1,7 @@
 class Comment < ActiveRecord::Base
 
+  include AsyncEmail
+
   mount_uploader :attachment, FileUploader
 
   belongs_to :commentable, :polymorphic => true
@@ -26,11 +28,7 @@ class Comment < ActiveRecord::Base
   private
   
   def notify_comment_saved
-    if Rails.env == 'test'
-      CommentNotifier.comment_saved(self).deliver
-    else
-      CommentNotifier.delay.comment_saved(self)
-    end
+    send_async(CommentNotifier, :comment_saved, self)
   end
   
 end

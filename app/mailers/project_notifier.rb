@@ -1,3 +1,5 @@
+# coding: utf-8
+
 class ProjectNotifier < ActionMailer::Base
   default :from => Conf.notifications_from
 
@@ -10,6 +12,6 @@ class ProjectNotifier < ActionMailer::Base
     @project = project
     recipients = project.users.map(&:email)
     recipients << project.dev.email
-    mail(:to => recipients, :subject => "Nuevo #{Project.model_name.human} - #{project}")
+    mail(:to => recipients, :subject => "#{project.created_at == project.updated_at ? 'Nuevo' : 'Edición de'} #{Project.model_name.human}")
   end
 end

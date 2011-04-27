@@ -26,7 +26,7 @@ describe User do
   end
   
   it "should return an array of IT staff" do
-    %w{gbe mpa}.each_with_index { |user, i| Factory(:user, :username => user, :email => "#{user}@consejo.org.ar") }
+    %w{gbe mpa}.each { |user| Factory(:user, :username => user, :email => "#{user}@consejo.org.ar") }
     3.times { Factory(:user) }
     User.it_staff.should have(2).records
   end

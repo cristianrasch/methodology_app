@@ -34,6 +34,11 @@
   = @project.dev.name
   
 %p
+  = label_tag Project.human_attribute_name('owner_id')
+  %br/
+  = @project.owner.name
+  
+%p
   = label_tag User.model_name.human.humanize.pluralize
 %ul
   - @project.users.each do |user|

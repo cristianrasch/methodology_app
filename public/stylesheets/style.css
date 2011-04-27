@@ -430,3 +430,7 @@ hr {
 #footer a {
 	color: #000000;
 }
+
+.hidden {
+  display: none;
+}

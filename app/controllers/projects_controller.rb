@@ -3,7 +3,8 @@ class ProjectsController < ApplicationController
   before_filter :authenticate_user!
   
   def index
-    @projects = Project.active.ordered.page(params[:page]).per(10)
+    @project = Project.new
+    @projects = Project.active.ordered.page(params[:page]).per(Project.per_page)
   end
   
   def new
@@ -12,7 +13,6 @@ class ProjectsController < ApplicationController
   
   def create
     @project = Project.new(params[:project])
-    @project.owner = current_user
     
     if @project.save
       redirect_to @project, :notice => "#{Project.model_name.human.humanize} creado"

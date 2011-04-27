@@ -205,6 +205,7 @@ es-AR:
         actual_duration: Duración real (en hrs)
         dev_id: Desarrollador
         user_ids: Usuarios involucrados
+        owner_id: Usuario responsable
       event:
         stage: Etapa
         status: Estado
@@ -229,11 +230,6 @@ es-AR:
         duration: Horas insumidas
         finished_at: Fecha de finalización
         updated_by: Actualizada por
-  views:
-    pagination:
-      previous: "&lt; Ant."
-      next: "Sig. &gt;"
-      truncate: "..."
   lbls:
     created_at: Fecha de creación
     updated_at: Fecha de modificación

@@ -1,6 +1,7 @@
 class Event < ActiveRecord::Base
 
   include Commentable
+  include AsyncEmail
 
   belongs_to :project
   belongs_to :author, :class_name => 'User'
@@ -28,11 +29,7 @@ class Event < ActiveRecord::Base
   private
   
   def notify_event_saved
-    if Rails.env == 'test'
-      EventNotifier.event_saved(self).deliver
-    else
-      EventNotifier.delay.event_saved(self)
-    end
+    send_async(EventNotifier, :event_saved, self)
   end
   
 end

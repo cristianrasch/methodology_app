@@ -6,3 +6,10 @@ es-AR:
     sessions:
       signed_in: 'Sesión iniciada.'
       signed_out: 'Sesión terminada.'
+  views:
+    pagination:
+      previous: "Ant."
+      next: "Sig."
+      truncate: "..."
+      first: "&lt;&lt;"
+      last: "&gt;&gt;"

@@ -13,6 +13,7 @@ describe ProjectsController do
     response.should be_success
     response.should render_template('index')
     assigns[:projects].should_not be_nil
+    assigns[:project].should_not be_nil
   end
   
   it "should render the new action" do
@@ -35,7 +36,9 @@ describe ProjectsController do
     end
     
     it "should create a new project when valid params supplied" do
-      attrs = Factory.attributes_for(:project, :dev => @current_user, :user_ids => [Factory(:user).id])
+      attrs = Factory.attributes_for(:project, :dev => @current_user,
+                                    :owner => Factory(:user),  
+                                    :user_ids => [Factory(:user).id])
       lambda {
         post :create, :project => attrs
       }.should change(Project, :count).by(1)

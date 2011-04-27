@@ -1,8 +1,20 @@
-= content_for :title, "Listando #{Project.model_name.human.pluralize}"
+= content_for :title do 
+  Listando #{Project.model_name.human.pluralize}
+  = link_to_function image_tag('search.png', :border => 0), "toggle_search_form();"
+
+= content_for :head do
+  :javascript
+    function toggle_search_form() {
+      $('#search_form').toggle();
+      $('#project_org_unit').focus();
+    }
+
+= render 'projects/search_form'
+
 = content_for :sidebar do
-  = render 'sidebar'
+  = render 'projects/sidebar'
 
 - if @projects.empty?
   = not_found(Project)
 - else
-  = render 'list', :list => @projects
+  = render 'projects/list', :list => @projects

@@ -3,6 +3,7 @@
 class Task < ActiveRecord::Base
 
   include Commentable
+  include AsyncEmail
 
   belongs_to :project
   belongs_to :author, :class_name => 'User'
@@ -36,11 +37,7 @@ class Task < ActiveRecord::Base
   private
   
   def notify_task_saved
-    if Rails.env == 'test'
-      TaskNotifier.task_saved(self).deliver
-    else
-      TaskNotifier.delay.task_saved(self)
-    end
+    send_async(TaskNotifier, :task_saved, self)
   end
   
 end

@@ -44,6 +44,11 @@
   = form.collection_select :dev_id, User.devs, :id, :name, :include_blank => true
 
 %p
+  = form.label :owner_id
+  %br/
+  = form.collection_select :owner_id, User.nondevs, :id, :name, :include_blank => true
+
+%p
   = form.label :user_ids
   
 %table{:border => 0, :cellpadding => 2, :cellspacing => 2}
@@ -61,7 +66,7 @@
     %td
       Otros
       %br/
-      = form.collection_select(:user_ids, User.others, :id, :name, 
+      = form.collection_select(:user_ids, User.others & User.nondevs, :id, :name, 
                               {:include_blank => true}, :multiple => true)
 
 %p

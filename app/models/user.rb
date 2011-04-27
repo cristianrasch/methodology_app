@@ -33,6 +33,7 @@ class User < ActiveRecord::Base
   validates :name, :presence => true
 
   scope :devs, where(:username => Conf.devs.split(',')).order(:name)
+  scope :nondevs, where(:username - Conf.devs.split(',')).order(:name)
   
   # Setup accessible (or protected) attributes for your model
   attr_accessible :name, :org_unit, :position, :email, :password, :password_confirmation, :remember_me

@@ -1,12 +1,9 @@
 MethodologyApp::Application.routes.draw do
 
-
   get "home/index"
 
   resource :account, :only => [:edit, :update]
-  
   devise_for :users
-  
   match 'admin/users/import' => 'admin/users#import', :via => :post
 
   resources :projects, :shallow => true do
@@ -17,6 +14,8 @@ MethodologyApp::Application.routes.draw do
       resources :comments
     end
   end
+  
+  get 'search/projects'
 
   root :to => "projects#index"
   

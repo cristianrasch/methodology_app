@@ -1,3 +1,5 @@
+# coding: utf-8
+
 require 'spec_helper'
 
 describe Project do
@@ -99,4 +101,26 @@ describe Project do
       project.update_attribute(:estimated_end_date, 3.months.from_now.to_date)
     }.should change(ActionMailer::Base.deliveries, :length)
   end
+  
+  it "should list its tasks depending on the params supplied" do
+    project = Factory(:project)
+    2.times { Factory(:task, :project => project) }
+    3.times { Factory(:task, :project => project, :duration => 4) }
+    project.tasks.list.should have(2).records
+    project.tasks.list(:show_all => true).should have(5).records
+  end
+  
+  it "should search for projects based on the supplied params" do
+    p1 = Factory(:project, :org_unit => 'matriculas')
+    p2 = Factory(:project, :first_name => 'certificado de inscripción, libre deuda y sanción en la matric')
+    p3 = Factory(:project, :started_on => 1.month.ago.to_date)
+    dev = Factory(:user)
+    p4 = Factory(:project, :dev => dev)
+    
+    Project.search(Project.new(:org_unit => 'matriculas'), nil).should have(1).record
+    Project.search(Project.new(:first_name => 'inscripción'), nil).should have(1).record
+    Project.search(Project.new(:started_on => 5.weeks.ago.to_date), nil).should have(1).record
+    Project.search(Project.new(:dev => dev), nil).should have(1).record
+  end
+  
 end

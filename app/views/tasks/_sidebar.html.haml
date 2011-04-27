@@ -6,6 +6,11 @@
         - if controller.action_name == 'index'
           %li
             = link_to 'Nueva', new_project_task_path(@project || @task.project)
+          %li
+            - if params.has_key?(:show_all)
+              = link_to 'Incompletas', project_tasks_path(@project)
+            - else
+              = link_to 'Todas', project_tasks_path(@project, :show_all => true)
         - else
           %li
             = link_to 'Inicio', project_tasks_path(@task.project)
