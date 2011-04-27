@@ -50,7 +50,7 @@ describe Project do
   end
   
   it "should require started_on & actual_duration when ended_on supplied" do
-    project = Factory.build(:project, :ended_on => Date.today)
+    project = Factory.build(:project, :started_on => nil, :ended_on => Date.today)
     project.should_not be_valid
     project.should have(1).error_on(:started_on)
     project.should have(1).error_on(:actual_duration)
@@ -113,14 +113,39 @@ describe Project do
   it "should search for projects based on the supplied params" do
     p1 = Factory(:project, :org_unit => 'matriculas')
     p2 = Factory(:project, :first_name => 'certificado de inscripción, libre deuda y sanción en la matric')
-    p3 = Factory(:project, :started_on => 1.month.ago.to_date)
+    p3 = Factory(:project, :started_on => 1.week.ago.to_date)
     dev = Factory(:user)
     p4 = Factory(:project, :dev => dev)
     
-    Project.search(Project.new(:org_unit => 'matriculas'), nil).should have(1).record
-    Project.search(Project.new(:first_name => 'inscripción'), nil).should have(1).record
-    Project.search(Project.new(:started_on => 5.weeks.ago.to_date), nil).should have(1).record
-    Project.search(Project.new(:dev => dev), nil).should have(1).record
+    Project.search(Project.new(:org_unit => 'matriculas')).should have(1).record
+    Project.search(Project.new(:first_name => 'inscripción')).should have(1).record
+    Project.search(Project.new(:started_on => 2.weeks.ago.to_date)).should have(1).record
+    Project.search(Project.new(:dev => dev)).should have(1).record
+  end
+  
+  context "search for active projects" do
+    before do
+      2.times { Factory(:project) }
+      @dev = find_dev
+      3.times { Factory(:project, :dev => @dev) }
+    end
+  
+    it "should return dev's current projects" do
+      Project.search_for(@dev).should have_at_most(3).records
+    end
+  
+    it "should return the latest projects for a non-dev user" do
+      Project.search_for(Factory(:user)).should have_at_least(5).records
+    end
+  end
+  
+  it "should know all project's participants" do
+    project = Factory(:project)
+    users = project.all_users
+    
+    users.should have(5).records
+    users.should include(project.dev)
+    users.should include(project.owner)
   end
   
 end

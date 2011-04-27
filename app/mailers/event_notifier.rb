@@ -11,8 +11,7 @@ class EventNotifier < ActionMailer::Base
   def event_saved(event)
     @event = event
     project = event.project
-    recipients = project.users.map(&:email)
-    recipients << project.dev.email
+    recipients = project.all_users.map(&:email)
     mail(:to => recipients, :subject => "#{event.created_at == event.updated_at ? 'Nuevo' : 'Edición de'} #{Event.model_name.human}")
   end
 end

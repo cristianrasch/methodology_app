@@ -230,6 +230,7 @@ es-AR:
         duration: Horas insumidas
         finished_at: Fecha de finalización
         updated_by: Actualizada por
+        status: Estado
   lbls:
     created_at: Fecha de creación
     updated_at: Fecha de modificación

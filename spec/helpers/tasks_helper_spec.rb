@@ -11,4 +11,9 @@ require 'spec_helper'
 #   end
 # end
 describe TasksHelper do
+
+  it "should provide a description for task statuses" do
+    helper.status_str(Task::Status::NEW).should be_present
+  end
+
 end

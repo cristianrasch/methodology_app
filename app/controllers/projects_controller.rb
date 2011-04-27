@@ -4,7 +4,7 @@ class ProjectsController < ApplicationController
   
   def index
     @project = Project.new
-    @projects = Project.active.ordered.page(params[:page]).per(Project.per_page)
+    @projects = Project.search_for(current_user, params[:page])
   end
   
   def new

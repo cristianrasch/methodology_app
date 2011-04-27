@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110323155132) do
+ActiveRecord::Schema.define(:version => 20110427195023) do
 
   create_table "comments", :force => true do |t|
     t.text     "content"
@@ -105,11 +105,15 @@ ActiveRecord::Schema.define(:version => 20110323155132) do
     t.datetime "updated_at"
     t.datetime "finished_at"
     t.integer  "duration"
+    t.integer  "status",      :limit => 1, :default => 1
+    t.integer  "updated_by"
   end
 
   add_index "tasks", ["author_id"], :name => "index_tasks_on_author_id"
   add_index "tasks", ["owner_id"], :name => "index_tasks_on_owner_id"
   add_index "tasks", ["project_id"], :name => "index_tasks_on_project_id"
+  add_index "tasks", ["status"], :name => "index_tasks_on_status"
+  add_index "tasks", ["updated_by"], :name => "index_tasks_on_updated_by"
 
   create_table "users", :force => true do |t|
     t.string   "username"
@@ -117,7 +121,6 @@ ActiveRecord::Schema.define(:version => 20110323155132) do
     t.string   "org_unit"
     t.string   "email",                               :default => "", :null => false
     t.string   "encrypted_password",   :limit => 128, :default => "", :null => false
-    t.string   "password_salt",                       :default => "", :null => false
     t.string   "reset_password_token"
     t.string   "remember_token"
     t.datetime "remember_created_at"

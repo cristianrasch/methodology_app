@@ -69,7 +69,7 @@ describe TasksController do
     end
   
     it "should render the edit action when invalid params supplied" do
-      put :update, :id => @task, :task => {:duration => 0}
+      put :update, :id => @task, :task => {:description => ''}
       
       response.should be_success
       response.should render_template(:edit)

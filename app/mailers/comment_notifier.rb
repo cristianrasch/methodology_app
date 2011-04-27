@@ -10,8 +10,7 @@ class CommentNotifier < ActionMailer::Base
   #
   def comment_saved(comment)
     @comment = comment
-    recipients = comment.users.map(&:email)
-    recipients << comment.commentable.project.dev.email
-    mail(:to => recipients, :subject => "#{comment.created_at == comment.updated_at ? 'Nuevo' : 'Edición de'} #{Comment.model_name.human}")
+    recipients = comment.users.map(&:email) << comment.commentable.project.dev.email
+    mail(:to => recipients.uniq, :subject => "#{comment.created_at == comment.updated_at ? 'Nuevo' : 'Edición de'} #{Comment.model_name.human}")
   end
 end

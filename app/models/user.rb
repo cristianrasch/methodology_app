@@ -2,6 +2,8 @@ require 'net/ssh'
 
 class User < ActiveRecord::Base
 
+  extend ArrayUtils
+
   USERNAME_REGEXP = /\A[a-z]{3}\z/
 
   class Position
@@ -58,12 +60,10 @@ class User < ActiveRecord::Base
       }
     end
     
-    def it_staff
-      User.where(:org_unit => ['sistemas', 'Desarrollo', 'Gerencia de Sistemas']).
-          order(:name).
-          select {|user| 
-        user.username.match USERNAME_REGEXP
-      }
+    def it_staff(options = {})
+      users =  User.where(:org_unit => ['sistemas', 'Desarrollo', 'Gerencia de Sistemas']).order(:name)
+      users = users.where(:username - to_a(options[:except]).map(&:username)) if options.has_key?(:except)
+      users.select {|user| user.username.match(USERNAME_REGEXP)}
     end
     
     private
@@ -73,12 +73,17 @@ class User < ActiveRecord::Base
       Net::SSH.start(Conf.produ['ip'], Conf.produ['user'], :password => Conf.produ['passwd']) do |ssh|
         users = ssh.exec!("cat /etc/passwd").split("\n")
       end
-      users
+      # just to speed things up a bit
+      users[0,100]
     end
   end
   
   def password_required?
     new_record?
+  end
+  
+  def dev?
+    Conf.devs.split(',').include?(username)
   end
   
 end

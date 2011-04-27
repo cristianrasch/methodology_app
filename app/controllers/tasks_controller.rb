@@ -1,13 +1,14 @@
 class TasksController < ApplicationController
 
   before_filter :authenticate_user!
-  before_filter :grab_project, :only => [:index, :new, :create]
+  before_filter :grab_project, :only => [:index, :create]
   
   def index
     @tasks = @project.tasks.list(params)
   end
   
   def new
+    @project = Project.find(params[:project_id], :include => :dev)
     @task = @project.tasks.build
   end
   
@@ -27,13 +28,14 @@ class TasksController < ApplicationController
   end
   
   def edit
-    @task = Task.find(params[:id], :include => :project)
+    @task = Task.find(params[:id], :include => [:project => :dev])
+    @project = @task.project
   end
   
   def update
     @task = Task.find(params[:id])
     
-    if @task.update_attributes(params[:task])
+    if @task.update_attributes(params[:task].merge(:updated_by => current_user.id))
       redirect_to(@task, :notice => "#{Task.model_name.human.humanize} actualizada")
     else
       render :action => :edit

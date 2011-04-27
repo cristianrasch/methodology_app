@@ -34,6 +34,7 @@ class Project < ActiveRecord::Base
   
   scope :active, lambda { where(:started_on.lteq => Date.today, :ended_on => nil) }
   scope :ordered, order(:started_on.desc, :first_name, :last_name)
+  scope :developed_by, lambda { |dev| where(:dev => dev) }
   
   after_save :notify_project_saved
   
@@ -41,7 +42,7 @@ class Project < ActiveRecord::Base
   @@per_page = 10
   
   class << self
-    def search(template, page)
+    def search(template, page = nil)
       projects = scoped
       
       [:org_unit, :area, :dev_id, :owner_id].each { |col|
@@ -57,6 +58,11 @@ class Project < ActiveRecord::Base
     
       projects.ordered.page(page).per(per_page)
     end
+    
+    def search_for(user, page = nil)
+      projects = user.dev? ? developed_by(user) : scoped
+      projects.active.ordered.page(page).per(Project.per_page)
+    end
   end
   
   def to_s
@@ -71,6 +77,10 @@ class Project < ActiveRecord::Base
         write_attribute(attr, (date.blank? ? nil : format_date(date)))
       end
     end
+  end
+  
+  def all_users
+    users(true).to_a.push(dev, owner)
   end
   
   private

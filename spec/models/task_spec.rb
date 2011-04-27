@@ -29,4 +29,21 @@ describe Task do
     }.should change(ActionMailer::Base.deliveries, :length)
   end
   
+  it "should only set its status if no duration is provided" do
+    task = Factory.build(:task, :status => Task::Status::ACCEPTED)
+    task.status.should == Task::Status::ACCEPTED
+    task = Factory.build(:task, :status => Task::Status::ACCEPTED, :duration => 120)
+    task.status.should == Task::Status::FINISHED
+  end
+  
+  it "should only allow its owner set its duration & status" do
+    task = Factory(:task)
+    owner = task.owner
+    updater = Factory(:user)
+    task.update_attributes(:status => Task::Status::ACCEPTED, :duration => 120, :updated_by => updater.id)
+    task.status.should == Task::Status::NEW
+    task.duration.should be_nil
+    task.updater.should == updater
+  end
+  
 end

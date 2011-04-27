@@ -14,7 +14,7 @@
 %p
   = form.label :owner_id
   %br/
-  = form.collection_select :owner_id, User.it_staff, :id, :name, :include_blank => true
+  = form.collection_select :owner_id, User.it_staff(:except => @project.dev), :id, :name, :include_blank => true
 
 - 1.upto(3) do |i|
   %p
@@ -24,8 +24,3 @@
     %br/
     = form.file_field "attachment#{i}"
     = form.hidden_field "attachment#{i}_cache"
-  
-%p
-  = form.label :duration
-  %br/
-  = form.text_field :duration, :size => 4

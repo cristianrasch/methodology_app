@@ -1,6 +1,7 @@
 require 'spec_helper'
 
 describe User do
+  
   it "should only save valid instances" do
     user = User.new
     user.should_not be_valid
@@ -26,9 +27,11 @@ describe User do
   end
   
   it "should return an array of IT staff" do
-    %w{gbe mpa}.each { |user| Factory(:user, :username => user, :email => "#{user}@consejo.org.ar") }
+    users = []
+    %w{gbe mpa}.each { |user| users << Factory(:user, :username => user, :org_unit => 'sistemas') }
     3.times { Factory(:user) }
     User.it_staff.should have(2).records
+    User.it_staff(:except => users.first).should have(1).record
   end
   
   it "should find users by position" do
@@ -39,4 +42,12 @@ describe User do
     user.update_attribute(:position, User::Position::MANAGER)
     User.managers.should_not be_empty
   end
+  
+  it "should be able to tell when a user is a dev" do
+    nondev = Factory(:user)
+    nondev.should_not be_a_dev
+    dev = Factory(:user, :username => 'crr')
+    dev.should be_a_dev
+  end
+  
 end

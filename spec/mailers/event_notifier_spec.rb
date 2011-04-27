@@ -11,6 +11,7 @@ describe EventNotifier do
     it "renders the headers" do
       mail.to.should include(@event.project.users.first.email)
       mail.to.should include(@event.project.dev.email)
+      mail.to.should include(@event.project.owner.email)
       mail.from.should eq([Conf.notifications_from])
     end
     

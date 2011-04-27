@@ -3,7 +3,7 @@ Factory.define :user do |u|
   u.sequence(:email) {|n| "#{ActiveSupport::SecureRandom.hex(4)}#{n}@consejo.org.ar"}
   u.name { |uu| "User ##{uu.username}" }
   u.password ActiveSupport::SecureRandom.hex(3)
-  u.org_unit 'sistemas'
+  u.org_unit 'turismo'
 end
 
 Factory.define :project do |p|
@@ -11,7 +11,8 @@ Factory.define :project do |p|
   p.area 'asientos contables'
   p.sequence(:first_name) {|n| "Project ##{n}"}
   p.description Faker::Lorem.paragraph
-  p.estimated_start_date 1.week.ago.to_date
+  p.estimated_start_date 2.months.ago.to_date
+  p.started_on 3.weeks.ago.to_date
   p.estimated_end_date 3.months.from_now.to_date
   p.estimated_duration 80
   p.association :owner, :factory => :user

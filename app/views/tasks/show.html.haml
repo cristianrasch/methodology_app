@@ -18,6 +18,11 @@
   %br/
   = @task.owner.name
 
+%p
+  = Task.human_attribute_name(:status)
+  %br/
+  = status_str(@task.status)
+
 - if @task.finished_at
   %p
     = Task.human_attribute_name(:finished_at)

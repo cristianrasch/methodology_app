@@ -40,3 +40,7 @@ def admin_login(user = nil, passwd = nil)
   passwd ||= credentials.last
   request.env['HTTP_AUTHORIZATION'] = ActionController::HttpAuthentication::Basic.encode_credentials(user, passwd)
 end
+
+def find_dev(username = 'crr')
+  User.find_by_username(username) || Factory(:user, :username => username)
+end

@@ -4,5 +4,17 @@
   
 = form_for @task, :html => {:multipart => true} do |f|
   = render f
+  
+  - if current_user == @task.owner
+    %p
+      = f.label :status
+      %br/
+      = f.select :status, options_for_select(Task::Status::SELECT), :include_blank => true
+      
+    %p
+      = f.label :duration
+      %br/
+      = f.text_field :duration, :size => 4
+  
   = f.submit 'Actualizar'
   
