@@ -23,5 +23,7 @@
           %li
             = link_to Comment.model_name.human.humanize.pluralize, task_comments_path(@task)
         %li
+          = link_to Project.model_name.human.humanize, (@project || @task.project)
+        %li
           = link_to 'Volver', :back
 / end #sidebar

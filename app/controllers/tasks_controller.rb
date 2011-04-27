@@ -24,7 +24,7 @@ class TasksController < ApplicationController
   end
   
   def show
-    @task = Task.find(params[:id], :include => [:author, :owner])
+    @task = Task.find(params[:id], :include => [:author, :owner, :project])
   end
   
   def edit
