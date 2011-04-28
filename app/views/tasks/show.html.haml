@@ -38,7 +38,7 @@
   %ul
     - 1.upto(3) do |i|
       - if @task.send("attachment#{i}?")
-        %li= link_to Task.human_attribute_name("attachment#{i}"), @task.send("attachment#{i}").url
+        %li= link_to File.basename(@task.send("attachment#{i}").to_s), @task.send("attachment#{i}").url
 
 = created_at(@task)
 = updated_at(@task)

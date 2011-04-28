@@ -98,5 +98,13 @@ describe ProjectsController do
     response.should redirect_to(projects_path)
     flash[:notice].should == "#{Project.model_name.human.humanize} eliminado"
   end
+  
+  it "should display the project's library" do
+    get :library, :id => Factory(:project)
+    
+    response.should be_success
+    response.should render_template('library')
+    assigns[:project].should_not be_nil
+  end
 
 end

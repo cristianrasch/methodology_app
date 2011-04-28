@@ -18,7 +18,8 @@
   %ul
     - 1.upto(3) do |i|
       - if @event.send("attachment#{i}?")
-        %li= link_to Event.human_attribute_name("attachment#{i}"), @event.send("attachment#{i}").url
+        %li
+          = link_to File.basename(@event.send("attachment#{i}").to_s), @event.send("attachment#{i}").url
         
 = created_at(@event)
 = updated_at(@event)

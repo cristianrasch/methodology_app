@@ -43,5 +43,9 @@ class ProjectsController < ApplicationController
     Project.destroy(params[:id])
     redirect_to projects_path, :notice => "#{Project.model_name.human.humanize} eliminado"
   end
+  
+  def library
+    @project = Project.find(params[:id], :include => :events)
+  end
 
 end

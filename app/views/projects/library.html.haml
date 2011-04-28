@@ -1,0 +1,13 @@
+= content_for :title do 
+  Biblioteca del 
+  = Project.model_name.human.humanize
+  = @project
+  
+= content_for :sidebar do
+  = render 'projects/sidebar'
+  
+%ul
+  - @project.events.each do |event|
+    - 1.upto(3) do |i|
+      - if event.send("attachment#{i}?")
+        %li= link_to File.basename(event.send("attachment#{i}").to_s), event.send("attachment#{i}").url

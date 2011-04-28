@@ -7,6 +7,10 @@ MethodologyApp::Application.routes.draw do
   match 'admin/users/import' => 'admin/users#import', :via => :post
 
   resources :projects, :shallow => true do
+    member do
+      get 'library'
+    end
+    
     resources :events do
       resources :comments
     end

@@ -14,7 +14,7 @@ class Project < ActiveRecord::Base
   include DateUtils
   include AsyncEmail
   
-  has_many :events, :dependent => :destroy
+  has_many :events, :dependent => :destroy, :order => 'created_at desc'
   has_many :tasks, :dependent => :destroy do
     def list(options={})
       t = options.has_key?(:show_all) ? scoped : incomplete
