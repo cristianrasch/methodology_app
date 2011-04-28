@@ -16,6 +16,7 @@ class Comment < ActiveRecord::Base
   scope :ordered, order(:created_at.desc)
   
   after_save :notify_comment_saved
+  after_save :add_commentable_author_n_owner_as_users
   
   def to_s
     content.to_s.humanize
@@ -29,6 +30,10 @@ class Comment < ActiveRecord::Base
   
   def notify_comment_saved
     send_async(CommentNotifier, :comment_saved, self)
+  end
+  
+  def add_commentable_author_n_owner_as_users
+    users << commentable.author << commentable.owner if commentable.is_a?(Task)
   end
   
 end

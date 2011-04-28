@@ -1,4 +1,7 @@
-= content_for :title, Project.model_name.human.humanize+' '+@project.to_s
+= content_for :title do 
+  = Project.model_name.human.humanize
+  = @project
+  = " [#{@project.status_str}] "
 = content_for :sidebar do
   = render 'sidebar'
 

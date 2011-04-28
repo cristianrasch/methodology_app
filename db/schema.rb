@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110427195023) do
+ActiveRecord::Schema.define(:version => 20110428164143) do
 
   create_table "comments", :force => true do |t|
     t.text     "content"
@@ -79,11 +79,15 @@ ActiveRecord::Schema.define(:version => 20110427195023) do
     t.datetime "updated_at"
     t.integer  "dev_id"
     t.integer  "owner_id"
+    t.integer  "status",               :limit => 1, :default => 1
+    t.integer  "updated_by"
   end
 
   add_index "projects", ["dev_id"], :name => "index_projects_on_dev_id"
   add_index "projects", ["owner_id"], :name => "index_projects_on_owner_id"
   add_index "projects", ["started_on", "ended_on"], :name => "index_projects_on_started_on_and_ended_on"
+  add_index "projects", ["status"], :name => "index_projects_on_status"
+  add_index "projects", ["updated_by"], :name => "index_projects_on_updated_by"
 
   create_table "projects_users", :id => false, :force => true do |t|
     t.integer "user_id"

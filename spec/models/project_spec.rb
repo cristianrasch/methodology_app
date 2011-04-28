@@ -148,4 +148,16 @@ describe Project do
     users.should include(project.owner)
   end
   
+  it "should only allow its dev to change its status" do
+    project = Factory(:project)
+    project.update_attributes(:status => Project::Status::IN_DEV)
+    project.status.should == Project::Status::NEW
+    project.update_attributes(:status => Project::Status::IN_DEV, :updated_by => project.dev.id)
+    project.status.should == Project::Status::IN_DEV
+  end
+  
+  it "should return a string representation of its status" do
+    Factory.build(:project).status_str.should be_present
+  end
+  
 end

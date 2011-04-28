@@ -206,6 +206,7 @@ es-AR:
         dev_id: Desarrollador
         user_ids: Usuarios involucrados
         owner_id: Usuario responsable
+        status: Estado
       event:
         stage: Etapa
         status: Estado

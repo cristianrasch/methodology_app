@@ -11,7 +11,7 @@ class AddPositionToUsers < ActiveRecord::Migration
   end
 
   def self.down
-    remove_column :users, :position
     remove_index :users, :position
+    remove_column :users, :position
   end
 end

@@ -21,7 +21,7 @@
 %p
   = Task.human_attribute_name(:status)
   %br/
-  = status_str(@task.status)
+  = @task.status_str
 
 - if @task.finished_at
   %p

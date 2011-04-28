@@ -16,5 +16,5 @@ describe ProjectsHelper do
     helper.project_date(nil).should be_nil
     helper.project_date(Date.civil(2008, 12, 23)).should == '23/12/2008'
   end
-
+  
 end

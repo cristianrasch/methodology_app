@@ -35,4 +35,12 @@ describe Comment do
     }.should change(ActionMailer::Base.deliveries, :length)
   end
   
+  it "should automatically include its author & owner as part of its users" do
+    author, owner = Factory(:user), Factory(:user)
+    task = Factory(:task, :author => author, :owner => owner)
+    comment = Factory(:comment, :commentable => task, :author => Factory(:user))
+    comment.users.should include(author)
+    comment.users.should include(owner)
+  end
+  
 end

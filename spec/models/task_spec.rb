@@ -44,6 +44,14 @@ describe Task do
     task.status.should == Task::Status::NEW
     task.duration.should be_nil
     task.updater.should == updater
+    task.update_attributes(:status => Task::Status::ACCEPTED, :duration => 120, :updated_by => owner.id)
+    task.status.should == Task::Status::FINISHED
+    task.duration.should_not be_nil
+    task.updater(true).should == owner
+  end
+  
+  it "should provide a description its status" do
+    Factory.build(:task).status_str.should be_present
   end
   
 end

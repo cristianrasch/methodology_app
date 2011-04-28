@@ -1,5 +1,16 @@
 class Project < ActiveRecord::Base
 
+  class Status
+    NEW = 1
+    IN_DEV = 2
+    STOPPED = 3
+    CANCELED = 4
+    FINISHED = 5
+    
+    SELECT = [['Nuevo', NEW], ['En desarrollo', IN_DEV], ['Detenido', STOPPED], 
+              ['Cancelado', CANCELED], ['Terminado', FINISHED]]
+  end
+
   include DateUtils
   include AsyncEmail
   
@@ -12,6 +23,7 @@ class Project < ActiveRecord::Base
   end
   belongs_to :owner, :class_name => 'User'
   belongs_to :dev, :class_name => 'User', :foreign_key => :dev_id
+  belongs_to :updater, :class_name => 'User', :foreign_key => :updated_by
   has_and_belongs_to_many :users
 
   validates :org_unit, :presence => true
@@ -81,6 +93,16 @@ class Project < ActiveRecord::Base
   
   def all_users
     users(true).to_a.push(dev, owner)
+  end
+  
+  def attributes=(attrs)
+    attrs.delete(:status) if attrs.has_key?(:status) && (attrs[:updated_by].to_i != (attrs.has_key?(:dev_id) ? attrs[:dev_id].to_i : dev.id))
+    super
+  end
+  
+  def status_str
+    arr = Status::SELECT.find {|arr| arr.last == status}
+    arr.first if arr
   end
   
   private

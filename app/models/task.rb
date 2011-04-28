@@ -12,7 +12,8 @@ class Task < ActiveRecord::Base
     IN_PROGRESS = 4
     FINISHED = 5
     
-    SELECT = [['Aceptada', ACCEPTED], ['Rechazada', REJECTED], ['En progreso', IN_PROGRESS]]
+    SELECT = [['Nueva', NEW], ['Aceptada', ACCEPTED], ['Rechazada', REJECTED], 
+              ['En progreso', IN_PROGRESS], ['Finalizada', FINISHED]]
   end
 
   belongs_to :project
@@ -47,11 +48,16 @@ class Task < ActiveRecord::Base
   end
   
   def attributes=(attrs)
-    if attrs.has_key?(:updated_by) && attrs[:updated_by].to_i != attrs[:owner_id].to_i
+    if (attrs.has_key?(:duration) || attrs.has_key?(:status)) && (attrs[:updated_by].to_i != (attrs.has_key?(:owner_id) ? attrs[:owner_id].to_i : owner.id))
       attrs.delete(:duration)
       attrs.delete(:status)
     end
     super
+  end
+  
+  def status_str
+    arr = Status::SELECT.find {|arr| arr.last == status}
+    arr.first if arr
   end
   
   private

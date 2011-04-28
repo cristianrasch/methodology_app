@@ -9,7 +9,7 @@
     %p
       = f.label :status
       %br/
-      = f.select :status, options_for_select(Task::Status::SELECT), :include_blank => true
+      = f.select :status, options_for_select(Task::Status::SELECT[1,3]), :include_blank => true
       
     %p
       = f.label :duration

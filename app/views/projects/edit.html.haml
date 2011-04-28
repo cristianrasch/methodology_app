@@ -4,4 +4,9 @@
 
 = form_for @project do |f|
   = render f
+  - if @project.dev == current_user
+    %p
+      = f.label :status
+      %br/
+      = f.select :status, options_for_select(Project::Status::SELECT, @project.status)
   = f.submit 'Actualizar'

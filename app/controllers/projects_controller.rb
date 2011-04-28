@@ -32,7 +32,7 @@ class ProjectsController < ApplicationController
   def update
     @project = Project.find(params[:id])
     
-    if @project.update_attributes(params[:project])
+    if @project.update_attributes(params[:project].merge(:updated_by => current_user.id))
       redirect_to @project, :notice => "#{Project.model_name.human.humanize} actualizado"
     else
       render :action => :edit
