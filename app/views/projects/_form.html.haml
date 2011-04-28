@@ -7,7 +7,6 @@
       $('#project_estimated_end_date').datepicker();
       if($('input[id="project_started_on"]').length > 0) {
         $('#project_started_on').datepicker();
-        $('#project_ended_on').datepicker();
       }
     });
 
@@ -88,19 +87,7 @@
     = form.text_field :started_on, :size => 27, 
                       :value => project_date(@project.started_on)
 
-  %p
-    = form.label :ended_on
-    %br/
-    = form.text_field :ended_on, :size => 27, 
-                      :value => project_date(@project.ended_on)
-
 %p
   = form.label :estimated_duration
   %br/
   = form.text_field :estimated_duration, :size => 4
-
-- unless @project.new_record?
-  %p
-    = form.label :actual_duration
-    %br/
-    = form.text_field :actual_duration, :size => 4

@@ -41,19 +41,6 @@ describe Project do
       project.should_not be_valid
       project.should have(1).error_on(:ended_on)
     end
-    
-    it "should require the ended_on date if actual_duration is specified" do
-      project = Factory.build(:project, :actual_duration => 25)
-      project.should_not be_valid
-      project.should have(1).error_on(:ended_on)
-    end
-  end
-  
-  it "should require started_on & actual_duration when ended_on supplied" do
-    project = Factory.build(:project, :started_on => nil, :ended_on => Date.today)
-    project.should_not be_valid
-    project.should have(1).error_on(:started_on)
-    project.should have(1).error_on(:actual_duration)
   end
   
   it "should display its name correctly" do
@@ -158,6 +145,17 @@ describe Project do
   
   it "should return a string representation of its status" do
     Factory.build(:project).status_str.should be_present
+  end
+  
+  it "should calculate its actual duration once closed" do
+    project = Factory(:project)
+    2.times { |i| Factory(:event, :duration => 5*(i+1), :project => project) }
+    2.times { |i| Factory(:task, :duration => 3*(i+1), :project => project) }
+    project.actual_duration.should be_nil
+    project.update_attributes(:status => Project::Status::FINISHED, :updated_by => project.dev.id)
+    project.reload
+    project.actual_duration.should_not be_nil
+    project.actual_duration.should == 24
   end
   
 end

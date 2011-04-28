@@ -37,9 +37,6 @@ class Project < ActiveRecord::Base
   validates :estimated_start_date, :presence => true
   validates :estimated_end_date, :presence => true
   validates :estimated_duration, :numericality => { :greater_than => 0 }
-  validates :started_on, :presence => true, :if => Proc.new { |project| project.ended_on }
-  validates :ended_on, :presence => true, :if => Proc.new { |project| project.actual_duration }
-  validates :actual_duration, :presence => true, :if => Proc.new { |project| project.ended_on }
   validate :estimated_dates
   validate :dates
   validate :implicated_users
@@ -97,6 +94,14 @@ class Project < ActiveRecord::Base
   
   def attributes=(attrs)
     attrs.delete(:status) if attrs.has_key?(:status) && (attrs[:updated_by].to_i != (attrs.has_key?(:dev_id) ? attrs[:dev_id].to_i : dev.id))
+    super
+  end
+  
+  def status=(stat)
+    if stat.to_i == Status::FINISHED
+      self.actual_duration = events.sum(:duration) + tasks.sum(:duration)
+      self.ended_on = Date.today
+    end
     super
   end
   

@@ -70,7 +70,7 @@ describe ProjectsController do
   
   context "update action" do
     it "should render the edit action when invalid params supplied" do
-      put :update, :id => Factory(:project), :project => {:ended_on => Date.today}
+      put :update, :id => Factory(:project), :project => {:estimated_duration => 0}
       
       response.should be_success
       response.should render_template('edit')
