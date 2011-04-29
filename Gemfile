@@ -18,3 +18,5 @@ group :test, :development do
   gem 'factory_girl_rails'
   gem 'ffaker'
 end
+
+gem 'cover_me', '>= 1.0.0.rc6', :group => :test

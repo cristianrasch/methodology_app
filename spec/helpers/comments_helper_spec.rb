@@ -18,8 +18,8 @@ describe CommentsHelper do
   end
   
   it "return a comments link based on the params supplied" do
-    helper.new_comment_link(:event_id => 2).should include('events/2/comments')
-    helper.new_comment_link(:task_id => 2).should include('tasks/2/comments')
+    helper.comments_link(Factory(:event)).should match(/events\/\d+\/comments/)
+    helper.comments_link(Factory(:task)).should match(/tasks\/\d+\/comments/)
   end
-
+  
 end

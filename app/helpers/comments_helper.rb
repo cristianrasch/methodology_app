@@ -7,16 +7,14 @@ module CommentsHelper
     link_to 'Nuevo', url_for(options)
   end
   
-  def comments_link
+  def comments_link(commentable)
     options = {:controller => :comments}
-    options["#{@commentable.class.name.downcase}_id".to_sym] = @commentable.id
-    # value = params.find {|k,v| k.to_s =~ /(.+)_id$/}
-    # options[value.first] = value.last
+    options["#{commentable.class.name.downcase}_id".to_sym] = commentable.id
     link_to 'Comentarios', url_for(options)
   end
   
-  def link_to_commentable
-    link_to @commentable.class.model_name.human.humanize, @commentable
+  def link_to_commentable(commentable)
+    link_to commentable.class.model_name.human.humanize, commentable
   end
 
 end
