@@ -8,7 +8,7 @@ describe SearchController do
   end
   
   it "should search for projects" do
-    get :projects
+    get :projects, :project => {}
     
     response.should be_success
     response.should render_template('projects/index')

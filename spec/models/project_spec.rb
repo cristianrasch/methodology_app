@@ -104,6 +104,7 @@ describe Project do
     p3 = create_model(:project, :started_on => 1.week.ago.to_date)
     dev = Factory(:user)
     p4 = Factory(:project, :dev => dev)
+    p5 = create_model(:project, :status => Project::Status::CANCELED)
     
     Project.search(Project.new(:org_unit => 'matriculas')).should have(1).record
     Project.search(Project.new(:first_name => 'inscripción')).should have(1).record
@@ -111,13 +112,16 @@ describe Project do
     pr.started_on = 8.days.ago.to_date
     Project.search(pr).should have(1).record
     Project.search(Project.new(:dev_id => dev.id)).should have(1).record
+    pr.started_on = nil
+    pr.status = Project::Status::CANCELED
+    Project.search(pr).should have(1).record
   end
   
   context "search for active projects" do
     before do
-      2.times { Factory(:project) }
+      2.times { Factory(:project, :status => Project::Status::IN_DEV) }
       @dev = find_dev
-      3.times { Factory(:project, :dev => @dev) }
+      3.times { Factory(:project, :dev => @dev, :status => Project::Status::IN_DEV) }
     end
   
     it "should return dev's current projects" do
@@ -140,10 +144,10 @@ describe Project do
   
   it "should only allow its dev to change its status" do
     project = Factory(:project)
-    project.update_attributes(:status => Project::Status::STOPPED)
+    project.update_attributes(:status => Project::Status::IN_DEV)
+    project.status.should == Project::Status::NEW
+    project.update_attributes(:status => Project::Status::IN_DEV, :updated_by => project.dev.id)
     project.status.should == Project::Status::IN_DEV
-    project.update_attributes(:status => Project::Status::STOPPED, :updated_by => project.dev.id)
-    project.status.should == Project::Status::STOPPED
   end
   
   it "should return a string representation of its status" do

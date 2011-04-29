@@ -56,7 +56,7 @@ class Project < ActiveRecord::Base
     def search(template, page = nil)
       projects = scoped
       
-      [:org_unit, :area, :dev_id, :owner_id].each { |col|
+      [:org_unit, :area, :dev_id, :owner_id, :status].each { |col|
         projects = projects.where(col => template.send(col)) if template.send(col).present?
       }
     
