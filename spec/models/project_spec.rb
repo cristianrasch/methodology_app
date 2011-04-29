@@ -20,8 +20,9 @@ describe Project do
   
   it "should find active projects" do
     active_project = Factory(:project, :started_on => Date.today)
-    2.times { 
-      Factory(:project, :started_on => 4.days.ago.to_date, :ended_on => Date.yesterday, :actual_duration => 20) 
+    2.times {
+      create_model(:project, :started_on => 4.days.ago.to_date, :ended_on => Date.yesterday, 
+                   :actual_duration => 20)
     }
     
     projects = Project.active.all
@@ -100,14 +101,16 @@ describe Project do
   it "should search for projects based on the supplied params" do
     p1 = Factory(:project, :org_unit => 'matriculas')
     p2 = Factory(:project, :first_name => 'certificado de inscripción, libre deuda y sanción en la matric')
-    p3 = Factory(:project, :started_on => 1.week.ago.to_date)
+    p3 = create_model(:project, :started_on => 1.week.ago.to_date)
     dev = Factory(:user)
     p4 = Factory(:project, :dev => dev)
     
     Project.search(Project.new(:org_unit => 'matriculas')).should have(1).record
     Project.search(Project.new(:first_name => 'inscripción')).should have(1).record
-    Project.search(Project.new(:started_on => 2.weeks.ago.to_date)).should have(1).record
-    Project.search(Project.new(:dev => dev)).should have(1).record
+    pr = Project.new
+    pr.started_on = 8.days.ago.to_date
+    Project.search(pr).should have(1).record
+    Project.search(Project.new(:dev_id => dev.id)).should have(1).record
   end
   
   context "search for active projects" do
@@ -137,10 +140,10 @@ describe Project do
   
   it "should only allow its dev to change its status" do
     project = Factory(:project)
-    project.update_attributes(:status => Project::Status::IN_DEV)
-    project.status.should == Project::Status::NEW
-    project.update_attributes(:status => Project::Status::IN_DEV, :updated_by => project.dev.id)
+    project.update_attributes(:status => Project::Status::STOPPED)
     project.status.should == Project::Status::IN_DEV
+    project.update_attributes(:status => Project::Status::STOPPED, :updated_by => project.dev.id)
+    project.status.should == Project::Status::STOPPED
   end
   
   it "should return a string representation of its status" do
@@ -156,6 +159,12 @@ describe Project do
     project.reload
     project.actual_duration.should_not be_nil
     project.actual_duration.should == 24
+  end
+  
+  it "should auto-start a project when its status is set to in development" do
+    project = Factory(:project, :started_on => nil)
+    project.update_attributes(:status => Project::Status::IN_DEV, :updated_by => project.dev.id)
+    project.started_on.should_not be_nil
   end
   
 end

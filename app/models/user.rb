@@ -31,7 +31,8 @@ class User < ActiveRecord::Base
   has_and_belongs_to_many :projects
   has_and_belongs_to_many :comments
   
-  validates :username, :length => {:is => 3}, :uniqueness => true
+  validates :username, :presence => true, :uniqueness => true
+  validates_length_of :username, :is => 3 unless Rails.env == 'test'
   validates :name, :presence => true
 
   scope :devs, where(:username => Conf.devs.split(',')).order(:name)

@@ -19,6 +19,9 @@ class Event < ActiveRecord::Base
   
   after_save :notify_event_saved
 
+  attr_accessible :stage, :status, :duration
+  1.upto(3) { |i| attr_accessible "attachment#{i}", "attachment#{i}_cache" }
+
   def to_s
     Event.human_attribute_name(:stage)+': '+
     Conf.stages[stage].humanize+' - '+

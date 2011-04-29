@@ -1,5 +1,5 @@
 Factory.define :user do |u|
-  u.username { ActiveSupport::SecureRandom.hex(2).chop }
+  u.username { ActiveSupport::SecureRandom.hex(3) }
   u.sequence(:email) {|n| "#{ActiveSupport::SecureRandom.hex(4)}#{n}@consejo.org.ar"}
   u.name { |uu| "User ##{uu.username}" }
   u.password ActiveSupport::SecureRandom.hex(3)
@@ -12,6 +12,7 @@ Factory.define :project do |p|
   p.sequence(:first_name) {|n| "Project ##{n}"}
   p.description Faker::Lorem.paragraph
   p.estimated_start_date 2.months.ago.to_date
+  p.status Project::Status::IN_DEV
   p.started_on 3.weeks.ago.to_date
   p.estimated_end_date 3.months.from_now.to_date
   p.estimated_duration 80

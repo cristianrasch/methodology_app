@@ -36,8 +36,8 @@ describe ProjectsController do
     end
     
     it "should create a new project when valid params supplied" do
-      attrs = Factory.attributes_for(:project, :dev => @current_user,
-                                    :owner => Factory(:user),  
+      attrs = Factory.attributes_for(:project, :dev_id => @current_user.id,
+                                    :owner_id => Factory(:user).id,  
                                     :user_ids => [Factory(:user).id])
       lambda {
         post :create, :project => attrs

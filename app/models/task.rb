@@ -1,9 +1,6 @@
 # coding: utf-8
 
 class Task < ActiveRecord::Base
-
-  include Commentable
-  include AsyncEmail
   
   class Status
     NEW = 1
@@ -15,6 +12,9 @@ class Task < ActiveRecord::Base
     SELECT = [['Nueva', NEW], ['Aceptada', ACCEPTED], ['Rechazada', REJECTED], 
               ['En progreso', IN_PROGRESS], ['Finalizada', FINISHED]]
   end
+  
+  include Commentable
+  include AsyncEmail
 
   belongs_to :project
   belongs_to :author, :class_name => 'User'
@@ -32,12 +32,12 @@ class Task < ActiveRecord::Base
   scope :ordered, order(:created_at.desc)
   scope :incomplete, where(:finished_at => nil)
   
-  attr_accessible :description, :owner_id, :duration, :updated_by, :status
-  1.upto(3) { |i| attr_accessible "attachment#{i}", "attachment#{i}_cache" }
+  after_save :notify_task_saved
   
   1.upto(3) { |i| mount_uploader "attachment#{i}", FileUploader }
   
-  after_save :notify_task_saved
+  attr_accessible :description, :owner_id, :duration, :updated_by, :status
+  1.upto(3) { |i| attr_accessible "attachment#{i}", "attachment#{i}_cache" }
   
   def duration=(dur)
     if dur.present?

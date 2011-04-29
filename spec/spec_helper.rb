@@ -44,3 +44,16 @@ end
 def find_dev(username = 'crr')
   User.find_by_username(username) || Factory(:user, :username => username)
 end
+
+def build_model(model, attrs)
+  m = Factory.build(model)
+  attrs.each { |k, v| m.send("#{k}=", v) }
+  m
+end
+
+def create_model(model, attrs)
+  m = Factory.build(model)
+  attrs.each { |k, v| m.send("#{k}=", v) }
+  m.save!
+  m
+end

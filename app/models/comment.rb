@@ -2,8 +2,6 @@ class Comment < ActiveRecord::Base
 
   include AsyncEmail
 
-  mount_uploader :attachment, FileUploader
-
   belongs_to :commentable, :polymorphic => true
   belongs_to :author, :class_name => 'User'
   has_and_belongs_to_many :users
@@ -17,6 +15,10 @@ class Comment < ActiveRecord::Base
   
   after_save :notify_comment_saved
   after_save :add_commentable_author_n_owner_as_users
+  
+  mount_uploader :attachment, FileUploader
+  
+  attr_accessible :content, :attachment, :attachment_cache, :user_ids
   
   def to_s
     content.to_s.humanize

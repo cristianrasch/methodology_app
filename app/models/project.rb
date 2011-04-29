@@ -14,6 +14,9 @@ class Project < ActiveRecord::Base
   include DateUtils
   include AsyncEmail
   
+  belongs_to :owner, :class_name => 'User'
+  belongs_to :dev, :class_name => 'User', :foreign_key => :dev_id
+  belongs_to :updater, :class_name => 'User', :foreign_key => :updated_by
   has_many :events, :dependent => :destroy, :order => 'created_at desc'
   has_many :tasks, :dependent => :destroy do
     def list(options={})
@@ -21,9 +24,6 @@ class Project < ActiveRecord::Base
       t.ordered.page(options[:page]).per(10)
     end
   end
-  belongs_to :owner, :class_name => 'User'
-  belongs_to :dev, :class_name => 'User', :foreign_key => :dev_id
-  belongs_to :updater, :class_name => 'User', :foreign_key => :updated_by
   has_and_belongs_to_many :users
 
   validates :org_unit, :presence => true
@@ -49,6 +49,8 @@ class Project < ActiveRecord::Base
   
   cattr_reader :per_page
   @@per_page = 10
+  attr_accessible :org_unit, :area, :first_name, :last_name, :description, :dev_id, :owner_id, :user_ids,
+                  :estimated_start_date, :estimated_end_date, :estimated_duration, :status, :updated_by
   
   class << self
     def search(template, page = nil)
@@ -98,7 +100,9 @@ class Project < ActiveRecord::Base
   end
   
   def status=(stat)
-    if stat.to_i == Status::FINISHED
+    if stat.to_i == Status::IN_DEV
+      self.started_on = Date.today
+    elsif stat.to_i == Status::FINISHED
       self.actual_duration = events.sum(:duration) + tasks.sum(:duration)
       self.ended_on = Date.today
     end
