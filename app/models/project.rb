@@ -1,3 +1,5 @@
+# coding: utf-8
+
 class Project < ActiveRecord::Base
 
   class Status
@@ -9,6 +11,14 @@ class Project < ActiveRecord::Base
     
     SELECT = [['Nuevo', NEW], ['En desarrollo', IN_DEV], ['Detenido', STOPPED], 
               ['Cancelado', CANCELED], ['Terminado', FINISHED]]
+  end
+  
+  class Klass
+    DEV = 1
+    IMPR = 2
+    PROC = 3
+    
+    SELECT = [['Desarrollo', DEV], ['Valorización', IMPR], ['Proceso', PROC]]
   end
 
   include DateUtils
@@ -32,6 +42,8 @@ class Project < ActiveRecord::Base
   validates :description, :presence => true
   validates :compl_perc, :numericality => { :greater_than_or_equal_to => 0, 
                                             :message => I18n.t('errors.messages.blank') }
+  validates :klass, :numericality => { :greater_than => 0, 
+                                       :message => I18n.t('errors.messages.blank') }
   validates :dev_id, :numericality => { :greater_than => 0, 
                                         :message => I18n.t('errors.messages.blank') }
   validates :owner_id, :numericality => { :greater_than => 0, 
@@ -54,7 +66,7 @@ class Project < ActiveRecord::Base
   attr_reader :user_tokens
   attr_accessible :org_unit, :area, :first_name, :last_name, :description, :dev_id, :owner_id, :user_ids,
                   :estimated_start_date, :estimated_end_date, :estimated_duration, :status, :updated_by,
-                  :user_tokens, :compl_perc
+                  :user_tokens, :compl_perc, :klass
   
   class << self
     def search(template, page = nil)
@@ -120,6 +132,11 @@ class Project < ActiveRecord::Base
   
   def status_str
     arr = Status::SELECT.find {|arr| arr.last == status}
+    arr.first if arr
+  end
+  
+  def klass_str
+    arr = Klass::SELECT.find {|arr| arr.last == klass}
     arr.first if arr
   end
   

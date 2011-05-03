@@ -25,6 +25,11 @@
     = label_tag Project.human_attribute_name('last_name')
     %br/
     = @project.last_name.humanize
+
+%p
+  = label_tag Project.human_attribute_name('klass')
+  %br/
+  = @project.klass_str
   
 %p
   = label_tag Project.human_attribute_name('description')

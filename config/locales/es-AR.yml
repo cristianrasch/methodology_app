@@ -208,6 +208,7 @@ es-AR:
         owner_id: Usuario responsable
         status: Estado
         compl_perc: Porcentaje de completitud
+        klass: Tipo
       event:
         stage: Etapa
         status: Estado

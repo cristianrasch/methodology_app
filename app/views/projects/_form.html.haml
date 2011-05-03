@@ -35,6 +35,12 @@
   = form.text_field :last_name
 
 %p
+  = form.label :klass
+  %br/
+  = form.select :klass, options_for_select(Project::Klass::SELECT, @project.new_record? ? nil : @project.klass), 
+                :include_blank => @project.new_record?
+
+%p
   = form.label :description
   %br/
   = form.text_area :description, :cols => 30, :rows => 5

@@ -189,5 +189,9 @@ describe Project do
     project.update_attributes(:compl_perc => 10, :status => Project::Status::IN_DEV)
     project.compl_perc.should == 10
   end
+
+  it "should return a string representation of its klass" do
+    Factory.build(:project).klass_str.should be_present
+  end
   
 end
