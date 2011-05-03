@@ -1,7 +1,7 @@
 = content_for :title do 
   = Project.model_name.human.humanize
   = @project
-  = " [#{@project.status_str}] "
+  [#{@project.status_str} - &#37;#{@project.compl_perc}]
 = content_for :sidebar do
   = render 'sidebar'
 

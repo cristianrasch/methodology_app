@@ -70,3 +70,8 @@
   = form.label :estimated_duration
   %br/
   = form.text_field :estimated_duration, :size => 4
+  
+%p
+  = form.label :compl_perc
+  %br/
+  = form.select :compl_perc, options_for_select((0..10).map {|i| [i*10, i*10]}, @project.compl_perc)

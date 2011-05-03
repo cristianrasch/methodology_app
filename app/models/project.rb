@@ -30,6 +30,8 @@ class Project < ActiveRecord::Base
   validates :area, :presence => true
   validates :first_name, :presence => true
   validates :description, :presence => true
+  validates :compl_perc, :numericality => { :greater_than_or_equal_to => 0, 
+                                            :message => I18n.t('errors.messages.blank') }
   validates :dev_id, :numericality => { :greater_than => 0, 
                                         :message => I18n.t('errors.messages.blank') }
   validates :owner_id, :numericality => { :greater_than => 0, 
@@ -52,7 +54,7 @@ class Project < ActiveRecord::Base
   attr_reader :user_tokens
   attr_accessible :org_unit, :area, :first_name, :last_name, :description, :dev_id, :owner_id, :user_ids,
                   :estimated_start_date, :estimated_end_date, :estimated_duration, :status, :updated_by,
-                  :user_tokens
+                  :user_tokens, :compl_perc
   
   class << self
     def search(template, page = nil)
@@ -101,6 +103,7 @@ class Project < ActiveRecord::Base
   end
   
   def attributes=(attrs)
+    attrs.delete(:compl_perc) if attrs[:status].to_i == Status::NEW
     attrs.delete(:status) if attrs.has_key?(:status) && (attrs[:updated_by].to_i != (attrs.has_key?(:dev_id) ? attrs[:dev_id].to_i : dev.id))
     super
   end

@@ -181,5 +181,13 @@ describe Project do
     project.users(true).should include(users.first)
     project.users.should include(users.last)
   end
+
+  it "should not mass-assign its compl_perc attr when the status supplied is NEW" do
+    project = Factory(:project)
+    project.update_attributes(:compl_perc => 10, :status => Project::Status::NEW)
+    project.compl_perc.should == 0
+    project.update_attributes(:compl_perc => 10, :status => Project::Status::IN_DEV)
+    project.compl_perc.should == 10
+  end
   
 end
