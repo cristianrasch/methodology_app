@@ -171,4 +171,15 @@ describe Project do
     project.started_on.should_not be_nil
   end
   
+  it "should be able to set its users" do
+    project = Factory(:project)
+    users = []
+    2.times { users << Factory(:user) }
+    project.users.should_not include(users.first)
+    project.users.should_not include(users.last)
+    project.user_tokens = users.map(&:id).join(',')
+    project.users(true).should include(users.first)
+    project.users.should include(users.last)
+  end
+  
 end

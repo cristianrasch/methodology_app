@@ -1,10 +1,15 @@
 = content_for :head do
-  = javascript_include_tag 'jquery-ui-1.8.10.custom.min', 'jquery.ui.datepicker-es'
-  = stylesheet_link_tag 'jquery-ui-1.8.10.custom'
+  = javascript_include_tag 'jquery-ui-1.8.10.custom.min', 'jquery.ui.datepicker-es', 'jquery.tokeninput'
+  = stylesheet_link_tag 'jquery-ui-1.8.10.custom', 'token-input-facebook'
   :javascript
     $(document).ready(function() {
       $('#project_estimated_start_date').datepicker();
       $('#project_estimated_end_date').datepicker();
+      $("#project_user_tokens").tokenInput("/users.json", {
+        crossDomain: false,
+        prePopulate: $("#project_user_tokens").data("pre"),
+        theme: "facebook"
+      });
     });
 
 = form.error_messages :header_message => nil, :message => nil
@@ -46,24 +51,8 @@
 
 %p
   = form.label :user_ids
-  
-%table{:border => 0, :cellpadding => 2, :cellspacing => 2}
-  %tr
-    %td
-      Gerentes
-      %br/
-      = form.collection_select(:user_ids, User.managers, :id, :name, 
-                              {:include_blank => true}, :multiple => true)
-    %td
-      Jefes
-      %br/
-      = form.collection_select(:user_ids, User.bosses, :id, :name, 
-                              {:include_blank => true}, :multiple => true)
-    %td
-      Otros
-      %br/
-      = form.collection_select(:user_ids, User.others & User.nondevs, :id, :name, 
-                              {:include_blank => true}, :multiple => true)
+  %br/
+  = form.text_field :user_tokens, "data-pre" => @project.users.map(&:attributes).to_json
 
 %p
   = form.label :estimated_start_date

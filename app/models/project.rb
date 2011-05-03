@@ -49,8 +49,10 @@ class Project < ActiveRecord::Base
   
   cattr_reader :per_page
   @@per_page = 10
+  attr_reader :user_tokens
   attr_accessible :org_unit, :area, :first_name, :last_name, :description, :dev_id, :owner_id, :user_ids,
-                  :estimated_start_date, :estimated_end_date, :estimated_duration, :status, :updated_by
+                  :estimated_start_date, :estimated_end_date, :estimated_duration, :status, :updated_by,
+                  :user_tokens
   
   class << self
     def search(template, page = nil)
@@ -74,6 +76,10 @@ class Project < ActiveRecord::Base
       projects = user.dev? ? developed_by(user) : scoped
       projects.active.ordered.page(page).per(Project.per_page)
     end
+  end
+  
+  def user_tokens=(ids)
+    self.user_ids = ids.split(",")
   end
   
   def to_s
