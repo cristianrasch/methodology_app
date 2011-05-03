@@ -9,7 +9,7 @@ gem 'devise'
 gem 'kaminari'
 gem "carrierwave"
 gem 'meta_where'
-gem 'sqlite3'
+gem 'mysql'
 gem 'net-ssh'
 gem 'delayed_job'
 
