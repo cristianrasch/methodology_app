@@ -50,10 +50,4 @@
           = f.collection_select :owner_id, User.nondevs, :id, :name, :include_blank => true
       %tr
         %td{:colspan => 2}
-          = f.label :status
-          %br/
-          = f.select :status, options_for_select(Project::Status::SELECT), 
-                     :include_blank => true
-      %tr
-        %td{:colspan => 2}
           = f.submit 'Filtrar'

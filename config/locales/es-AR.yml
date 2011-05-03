@@ -57,11 +57,13 @@ es-AR:
     day_names: [Domingo, Lunes, Martes, Miércoles, Jueves, Viernes, Sábado]
     month_names: [~, Enero, Febrero, Marzo, Abril, Mayo, Junio, Julio, Agosto, Septiembre, Octubre, Noviembre, Diciembre]
     formats:
+      tiny: "%d/%m"
       short: "%d de %b"
       default: "%d/%m/%Y"
       long: "%A, %d de %B de %Y"
   time:
     formats:
+      tiny: "%d/%m"
       short: "%d de %b a las %H:%M hrs"
       default: "%a, %d de %b de %Y a las %H:%M:%S %Z"
       long: "%A, %d de %B de %Y a las %I:%M %p"

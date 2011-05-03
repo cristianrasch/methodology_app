@@ -1,0 +1,157 @@
+<html><head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<%= stylesheet_link_tag "consejo.css" %>
+<style type="text/css">
+<!--
+A.relacionadas { color: #483D8B ; text-decoration: none }
+A.relacionadas:hover { color: #483D8B ; text-decoration: underline }
+-->
+</style>
+<title>CPCECABA</title>
+</head>
+
+<body topmargin="0" leftmargin="0" marginheigth="0" alink="#0000FF" bgcolor="#F9F9F9" link="#0000FF" marginwidth="0" vlink="#0000FF">
+
+<table border="0" cellpadding="0" cellspacing="0" height="40" width="100">
+  <tbody><tr>
+    <td width="100%"></td>
+
+  </tr>
+</tbody></table>
+<div align="center"><center>
+
+<table border="0" cellpadding="0" cellspacing="0" width="90%">
+  <tbody><tr>
+    <td width="100%"><table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tbody><tr>
+        <td colspan="2" width="100%"><p style="margin-left: 2"><span style="font-size: 13"><font color="#483D8B" face="Verdana"><strong>Estado de proyectos</strong></font></span></p></td>
+      </tr>
+
+      <tr>
+        <td height="2" width="9%"></td>
+        <td height="2" width="91%"></td>
+      </tr>
+      <tr>
+        <td bgcolor="#D7D2EC" height="3" valign="top" width="9%"></td>
+        <td height="3" valign="top" width="91%"><table border="0" cellpadding="0" cellspacing="0" width="100%">
+          <tbody><tr>
+            <td bgcolor="#D7D2EC" height="1" width="100%"></td>
+
+          </tr>
+        </tbody></table>
+        </td>
+      </tr>
+    </tbody></table>
+    </td>
+  </tr>
+  <tr>
+    <td bgcolor="#FFFFFF" height="15" width="100%"></td>
+
+  </tr>
+  <tr>
+    <td bgcolor="#FFFFFF" width="100%">
+		<%= form_for @project, :url => projects_status_index_path, :html => {:method => :get} do |f| %>		
+			<div align="right">
+				<p><font color="#000000" face="Verdana"><span style="font-size: 11">Filtrar por:&nbsp;&nbsp;&nbsp; </span></font>
+				<%= f.collection_select :owner_id, User.nondevs, :id, :name, {:prompt => 'Solicitante', :include_blank => @project.owner_id.present?}, 
+										:style => "font-family: Verdana; font-size: 11; background-color: rgb(255,255,255); color: rgb(0,0,128)",
+										:onchange => "this.form.submit();" %>
+				
+				<font color="#000000" face="Verdana"><span style="font-size: 11">&nbsp;&nbsp;&nbsp; </span></font>
+				<%= f.collection_select :dev_id, User.devs, :id, :name, {:prompt => 'Analista', :include_blank => @project.dev_id.present?}, 
+										:style => "font-family: Verdana; font-size: 11; background-color: rgb(255,255,255); color: rgb(0,0,128)",
+										:onchange => "this.form.submit();" %>
+      			
+				<font color="#000000" face="Verdana"><span style="font-size: 11">&nbsp;&nbsp;&nbsp; </span></font>
+				<%= f.select :indicator, options_for_select(Project::Indicator::SELECT, @project.indicator), {:prompt => 'Indicador', :include_blank => @project.indicator.present?}, 
+							 :style => "font-family: Verdana; font-size: 11; background-color: rgb(255,255,255); color: rgb(0,0,128)",
+							 :onchange => "this.form.submit();" %>
+				<font color="#000000" face="Verdana"><span style="font-size: 11">&nbsp;&nbsp;&nbsp; </span></font></p>
+      		</div>
+		<% end %>
+    </td>
+  </tr>
+  <tr>
+    <td height="40" width="100%"></td>
+  </tr>
+  <tr>
+    <td width="100%"><table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tbody><tr>
+
+        <td bgcolor="#004080" width="100%"><table border="0" cellpadding="4" cellspacing="1" width="100%">
+          <tbody><tr>
+            <td rowspan="2" align="center" bgcolor="#0271DF" height="50" width="30"><font color="#FFFFFF" face="Verdana"><span style="font-size: 11"><strong>N°</strong></span></font></td>
+            <td rowspan="2" align="center" bgcolor="#0271DF" height="50" width="50"><font color="#FFFFFF" face="Verdana"><span style="font-size: 11"><strong>Fecha</strong></span></font></td>
+            <td rowspan="2" align="center" bgcolor="#0271DF" height="50" width="100"><font color="#FFFFFF" face="Verdana"><span style="font-size: 11"><strong>Sistema</strong></span></font></td>
+            <td rowspan="2" align="center" bgcolor="#0271DF" height="50" width="100"><font color="#FFFFFF" face="Verdana"><span style="font-size: 11"><strong>Subsistema</strong></span></font></td>
+            <!--
+			<td rowspan="2" align="center" bgcolor="#0271DF" height="50" width="100"><font color="#FFFFFF" face="Verdana"><span style="font-size: 11"><strong>Proyecto</strong></span></font></td>
+			-->
+            <td rowspan="2" align="center" bgcolor="#0271DF" height="50"><font color="#FFFFFF" face="Verdana"><span style="font-size: 11"><strong>Objetivo</strong></span></font></td>
+            <td rowspan="2" align="center" bgcolor="#0271DF" height="50" width="30"><font color="#FFFFFF" face="Verdana"><span style="font-size: 11"><strong>Tipo</strong></span></font></td>
+            <td rowspan="2" align="center" bgcolor="#0271DF" height="50" width="100"><font color="#FFFFFF" face="Verdana"><span style="font-size: 11"><strong>Analista</strong></span></font></td>
+            <td colspan="3" align="center" bgcolor="#0271DF" height="25"><font color="#FFFFFF" face="Verdana"><span style="font-size: 11"><strong>Estimación</strong></span></font></td>
+            <td rowspan="2" align="center" bgcolor="#0271DF" height="50" width="60"><font color="#FFFFFF" face="Verdana"><span style="font-size: 11"><strong>Etapa</strong></span></font></td>
+            <td rowspan="2" align="center" bgcolor="#0271DF" height="50" width="60"><font color="#FFFFFF" face="Verdana"><span style="font-size: 11"><strong>Estado</strong></span></font></td>
+
+            <td rowspan="2" align="center" bgcolor="#0271DF" height="50" width="50"><font color="#FFFFFF" face="Verdana"><span style="font-size: 11; letter-spacing: -1px"><strong>%
+            avance</strong></span></font></td>
+            <td rowspan="2" align="center" bgcolor="#0271DF" height="50" width="55"><font color="#FFFFFF" face="Verdana"><span style="font-size: 11; letter-spacing: -1px"><strong>Fin
+            previsto</strong></span></font></td>
+            <td rowspan="2" align="center" bgcolor="#0271DF" height="50" width="20"></td>
+          </tr>
+          <tr>
+            <td align="center" bgcolor="#0271DF" height="25" width="40"><font color="#FFFFFF" face="Verdana"><span style="font-size: 11"><strong>Inicio</strong></span></font></td>
+            <td align="center" bgcolor="#0271DF" height="25" width="40"><font color="#FFFFFF" face="Verdana"><span style="font-size: 11"><strong>Fin</strong></span></font></td>
+
+            <td align="center" bgcolor="#0271DF" height="25" width="40"><font color="#FFFFFF" face="Verdana"><span style="font-size: 11; letter-spacing: -1px"><strong>Horas</strong></span></font></td>
+          </tr>
+			<% @projects.each do |project| %>
+          <tr>
+            <td align="center" bgcolor="#FFFFFF" height="25" width="30"><font color="#000000" face="Verdana"><span style="font-size: 11"><%= link_to project.id, project %></span></font></td>
+            <td align="center" bgcolor="#FFFFFF" height="25" width="50"><font color="#000000" face="Verdana"><span style="font-size: 11"><%= l(project.created_at, :format => :tiny) %></span></font></td>
+            <td bgcolor="#FFFFFF" height="25" width="100"><font color="#000000" face="Verdana"><span style="font-size: 11"><%= project.first_name.humanize %></span></font></td>
+            <td bgcolor="#FFFFFF" height="25" width="100"><font color="#000000" face="Verdana"><span style="font-size: 11"><%= project.last_name.humanize if project.last_name %></font></td>
+            <!--
+			<td bgcolor="#FFFFFF" height="25" width="100"></td>
+			-->
+            <td bgcolor="#FFFFFF" height="25"><font color="#000000" face="Verdana"><span style="font-size: 11"><%= truncate(project.description.humanize, :length => 35) %></span></font></td>
+            <td align="center" bgcolor="#FFFFFF" height="25" width="30"><font color="#000000" face="Verdana"><span style="font-size: 11"><%= project.klass_str.first.upcase %></span></font></td>
+            <td bgcolor="#FFFFFF" height="25" width="100"><font color="#000000" face="Verdana"><span style="font-size: 11"><%= project.dev.name %></span></font></td>
+            <td align="center" bgcolor="#FFFFFF" height="25" width="40"><font color="#000000" face="Verdana"><span style="font-size: 11"><%= l(project.estimated_start_date, :format => :tiny) %></font></td>
+            <td align="center" bgcolor="#FFFFFF" height="25" width="40"><font color="#000000" face="Verdana"><span style="font-size: 11"><%= l(project.estimated_end_date, :format => :tiny) %></font></td>
+            <td align="center" bgcolor="#FFFFFF" height="25" width="40"><font color="#000000" face="Verdana"><span style="font-size: 11"><%= project.estimated_duration %></font></td>
+
+            <td bgcolor="#FFFFFF" height="25" width="60"><font color="#000000" face="Verdana"><span style="font-size: 11"><%= project.events.first ? project.events.first.stage_str : nil %></span></font></td>
+            <td bgcolor="#FFFFFF" height="25" width="60"><font color="#000000" face="Verdana"><span style="font-size: 11"><%= project.events.first ? project.events.first.status_str : nil %></span></font></td>
+            <td align="center" bgcolor="#FFFFFF" height="25" width="50"><font color="#000000" face="Verdana"><span style="font-size: 11">%<%= project.compl_perc %></font></td>
+            <td align="center" bgcolor="#FFFFFF" height="25" width="55"><font color="#000000" face="Verdana"><span style="font-size: 11"><%= l(project.estimated_end_date, :format => :tiny) %></font></td>
+            <td align="center" bgcolor="#FFFFFF" height="25" width="20" style="background-color: <%= indicator_class_for(project) %>;">
+				<%#= image_tag "#{indicator_class_for(project)}.gif", :alt => "Pendiente", :title => "Pendiente", :height => 12, :width => 12 %>
+			</td>
+          </tr>
+			<% end %>
+        </tbody></table>
+        </td>
+
+      </tr>
+    </tbody></table>
+    <table border="0" cellpadding="0" cellspacing="0" height="0" width="100">
+      <tbody><tr>
+        <td width="100%"></td>
+      </tr>
+    </tbody></table>
+    </td>
+  </tr>
+
+</tbody></table>
+</center></div>
+
+<table border="0" cellpadding="0" cellspacing="0" height="40" width="100">
+  <tbody><tr>
+    <td width="100%"></td>
+  </tr>
+</tbody></table>
+
+
+</body></html>

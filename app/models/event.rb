@@ -29,6 +29,14 @@ class Event < ActiveRecord::Base
     Conf.statuses[status].humanize
   end
   
+  def stage_str
+    Conf.stages[stage].humanize
+  end
+
+  def status_str
+    Conf.statuses[status].humanize
+  end
+  
   private
   
   def notify_event_saved

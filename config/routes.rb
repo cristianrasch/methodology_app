@@ -1,5 +1,7 @@
 MethodologyApp::Application.routes.draw do
 
+  get "projects_status/index"
+
   get "home/index"
 
   devise_for :users

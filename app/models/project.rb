@@ -1,7 +1,6 @@
 # coding: utf-8
 
 class Project < ActiveRecord::Base
-
   class Status
     NEW = 1
     IN_DEV = 2
@@ -11,6 +10,16 @@ class Project < ActiveRecord::Base
     
     SELECT = [['Nuevo', NEW], ['En desarrollo', IN_DEV], ['Detenido', STOPPED], 
               ['Cancelado', CANCELED], ['Terminado', FINISHED]]
+  
+    Project.class_eval do
+      arr = Project::Status.constants.map {|const| const.to_s.downcase}
+      arr.pop
+      arr.each do |stat|
+        define_method("#{stat}?") {
+          status == "Project::Status::#{stat.upcase}".constantize
+        }
+      end
+    end
   end
   
   class Klass
@@ -19,6 +28,25 @@ class Project < ActiveRecord::Base
     PROC = 3
     
     SELECT = [['Desarrollo', DEV], ['Valorización', IMPR], ['Proceso', PROC]]
+  end
+  
+  class Indicator
+    GREEN = 1
+    YELLOW = 2
+    RED = 3
+    BLACK = 4
+    
+    SELECT = [['Verde', GREEN], ['Amarillo', YELLOW], ['Rojo', RED], ['Negro', BLACK]]
+    
+    Project.class_eval do
+      arr = Project::Indicator.constants.map {|const| const.to_s.downcase}
+      arr.pop
+      arr.each do |ind|
+        define_method("#{ind}?") {
+          indicator == "Project::Indicator::#{ind.upcase}".constantize
+        }
+      end
+    end
   end
 
   include DateUtils
@@ -55,7 +83,10 @@ class Project < ActiveRecord::Base
   validate :dates
   validate :implicated_users
   
-  scope :active, lambda { where(:started_on.lteq => Date.today, :ended_on => nil) }
+  scope :green, lambda { where(:started_on.lteq => Date.today, :ended_on => nil) }
+  scope :yellow, lambda { where(:estimated_start_date.gt => Date.today) }
+  scope :red, lambda { where(:estimated_start_date.lt => Date.today, :status => Project::Status::NEW) }
+  scope :black, lambda { where(:estimated_end_date.lt => Date.today, :ended_on => nil) }
   scope :ordered, order(:started_on.desc, :first_name, :last_name)
   scope :developed_by, lambda { |dev| where(:dev => dev) }
   
@@ -64,15 +95,16 @@ class Project < ActiveRecord::Base
   cattr_reader :per_page
   @@per_page = 10
   attr_reader :user_tokens
+  attr_accessor :indicator
   attr_accessible :org_unit, :area, :first_name, :last_name, :description, :dev_id, :owner_id, :user_ids,
                   :estimated_start_date, :estimated_end_date, :estimated_duration, :status, :updated_by,
-                  :user_tokens, :compl_perc, :klass
+                  :user_tokens, :compl_perc, :klass, :indicator
   
   class << self
     def search(template, page = nil)
       projects = scoped
       
-      [:org_unit, :area, :dev_id, :owner_id, :status].each { |col|
+      [:org_unit, :area, :dev_id, :owner_id].each { |col|
         projects = projects.where(col => template.send(col)) if template.send(col).present?
       }
     
@@ -83,12 +115,18 @@ class Project < ActiveRecord::Base
       projects = projects.where(:started_on >= template.started_on) if template.started_on.present?
       projects = projects.where(:estimated_end_date <= template.estimated_end_date) if template.estimated_end_date.present?
     
+      if template.indicator.present?
+        arr = Project::Indicator.constants.map {|const| const.to_s.downcase}
+        arr.pop
+        arr.each { |ind| projects = projects.send(ind) if template.indicator.to_i == "Project::Indicator::#{ind.upcase}".constantize }
+      end
+    
       projects.ordered.page(page).per(per_page)
     end
     
     def search_for(user, page = nil)
       projects = user.dev? ? developed_by(user) : scoped
-      projects.active.ordered.page(page).per(Project.per_page)
+      projects.green.ordered.page(page).per(Project.per_page)
     end
   end
   
@@ -161,5 +199,4 @@ class Project < ActiveRecord::Base
   def notify_project_saved
     send_async(ProjectNotifier, :project_saved, self)
   end
-
 end

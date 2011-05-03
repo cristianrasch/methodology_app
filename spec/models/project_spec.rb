@@ -25,7 +25,7 @@ describe Project do
                    :actual_duration => 20)
     }
     
-    projects = Project.active.all
+    projects = Project.green.all
     projects.should have(1).record
     projects.first.should == active_project
   end
@@ -112,9 +112,6 @@ describe Project do
     pr.started_on = 8.days.ago.to_date
     Project.search(pr).should have(1).record
     Project.search(Project.new(:dev_id => dev.id)).should have(1).record
-    pr.started_on = nil
-    pr.status = Project::Status::CANCELED
-    Project.search(pr).should have(1).record
   end
   
   context "search for active projects" do

@@ -27,4 +27,10 @@ describe Event do
     }.should change(ActionMailer::Base.deliveries, :length)
   end
 
+  it "should display its status & stage descriptions" do
+    event = Event.new :stage => Conf.stages.first.first, :status => Conf.statuses.first.first
+    event.stage_str.should be_present
+    event.status_str.should be_present
+  end
+
 end
