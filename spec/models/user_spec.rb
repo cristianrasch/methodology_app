@@ -34,15 +34,6 @@ describe User do
     User.it_staff(:except => users.first).should have(1).record
   end
   
-  it "should find users by position" do
-    user = Factory(:user)
-    User.others.should_not be_empty
-    user.update_attribute(:position, User::Position::BOSS)
-    User.bosses.should_not be_empty
-    user.update_attribute(:position, User::Position::MANAGER)
-    User.managers.should_not be_empty
-  end
-  
   it "should be able to tell when a user is a dev" do
     nondev = Factory(:user)
     nondev.should_not be_a_dev

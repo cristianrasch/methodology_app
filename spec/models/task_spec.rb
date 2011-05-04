@@ -45,7 +45,7 @@ describe Task do
     task.duration.should be_nil
     task.updater.should == updater
     task.update_attributes(:status => Task::Status::ACCEPTED, :duration => 120, :updated_by => owner.id)
-    task.status.should == Task::Status::FINISHED
+    task.status.should == Task::Status::ACCEPTED
     task.duration.should_not be_nil
     task.updater(true).should == owner
   end

@@ -1,4 +1,4 @@
-require 'cover_me'
+require 'cover_me' if RUBY_VERSION =~ /1.9/
 
 # This file is copied to spec/ when you run 'rails generate rspec:install'
 ENV["RAILS_ENV"] ||= 'test'

@@ -12,12 +12,6 @@
     = f.label :org_unit
     %br/
     = f.text_field :org_unit
-    %br/
-    - User::Position::SELECT.each_with_index do |arr, i|
-      = f.radio_button :position, arr.first
-      = f.label :position, arr.last
-      - if i < User::Position::SELECT.length - 1
-        &nbsp;/&nbsp;
     
   %p
     = f.label :email
