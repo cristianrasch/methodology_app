@@ -1,5 +1,5 @@
 Factory.define :user do |u|
-  u.username { Rails.env == 'test' ? ActiveSupport::SecureRandom.hex(3) : ActiveSupport::SecureRandom.hex(2).chop }
+  u.username { ActiveSupport::SecureRandom.hex(3) }
   u.sequence(:email) {|n| "#{ActiveSupport::SecureRandom.hex(4)}#{n}@consejo.org.ar"}
   u.name { |uu| "User ##{uu.username}" }
   u.password ActiveSupport::SecureRandom.hex(3)

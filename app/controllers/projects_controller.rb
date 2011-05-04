@@ -2,6 +2,8 @@ class ProjectsController < ApplicationController
 
   before_filter :authenticate_user!
   
+  autocomplete :project, :area, :column_name => 'area'
+  
   def index
     @project = Project.new
     @projects = Project.search_for(current_user, params[:page])

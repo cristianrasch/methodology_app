@@ -58,9 +58,9 @@ GEM
     hashie (1.0.0)
     hpricot (0.8.4)
     i18n (0.5.0)
-    jquery-rails (0.2.7)
+    jquery-rails (1.0)
       rails (~> 3.0)
-      thor (~> 0.14.4)
+      thor (~> 0.14)
     kaminari (0.12.2)
       rails (>= 3.0.0)
     mail (2.2.19)
@@ -90,6 +90,9 @@ GEM
       activesupport (= 3.0.7)
       bundler (~> 1.0)
       railties (= 3.0.7)
+    rails3-jquery-autocomplete (0.7.0)
+      rails (~> 3.0.0)
+      yajl-ruby
     railties (3.0.7)
       actionpack (= 3.0.7)
       activesupport (= 3.0.7)
@@ -118,6 +121,7 @@ GEM
     tzinfo (0.3.27)
     warden (1.0.3)
       rack (>= 1.0.0)
+    yajl-ruby (0.8.2)
     yamler (0.1.0)
 
 PLATFORMS
@@ -138,5 +142,6 @@ DEPENDENCIES
   mysql
   net-ssh
   rails (= 3.0.7)
+  rails3-jquery-autocomplete
   rspec-rails (~> 2.4)
   ruby_parser

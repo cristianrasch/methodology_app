@@ -32,7 +32,7 @@ class User < ActiveRecord::Base
   has_and_belongs_to_many :comments
   
   validates :username, :presence => true, :uniqueness => true
-  validates_length_of :username, :is => 3 unless Rails.env == 'test'
+  validates_length_of :username, :is => 3 if Rails.env == 'production'
   validates :name, :presence => true
 
   scope :devs, where(:username => Conf.devs.split(',')).order(:name)
@@ -74,8 +74,7 @@ class User < ActiveRecord::Base
       Net::SSH.start(Conf.produ['ip'], Conf.produ['user'], :password => Conf.produ['passwd']) do |ssh|
         users = ssh.exec!("cat /etc/passwd").split("\n")
       end
-      # just to speed things up a bit
-      users[0,100]
+      users
     end
   end
   

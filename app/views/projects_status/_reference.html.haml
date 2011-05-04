@@ -1,0 +1,15 @@
+%table{:border => 0, :cellpadding => 5, :cellspacing => 5}
+  %tr
+    %td{:colspan => 2} Referencia
+  %tr
+    %td{:style => 'background-color: green; width: 25%'}
+    %td= Project::Indicator.to_s(Project::Indicator::ON_COURSE)
+  %tr
+    %td{:style => 'background-color: yellow; width: 25%'}
+    %td= Project::Indicator.to_s(Project::Indicator::PENDING)
+  %tr
+    %td{:style => 'background-color: red; width: 25%'}
+    %td= Project::Indicator.to_s(Project::Indicator::NOT_STARTED)
+  %tr
+    %td{:style => 'background-color: black; width: 25%'}
+    %td= Project::Indicator.to_s(Project::Indicator::NOT_FINISHED)

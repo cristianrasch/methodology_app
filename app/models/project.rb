@@ -31,12 +31,13 @@ class Project < ActiveRecord::Base
   end
   
   class Indicator
-    GREEN = 1
-    YELLOW = 2
-    RED = 3
-    BLACK = 4
+    ON_COURSE = 1
+    PENDING = 2
+    NOT_STARTED = 3
+    NOT_FINISHED = 4
     
-    SELECT = [['Verde', GREEN], ['Amarillo', YELLOW], ['Rojo', RED], ['Negro', BLACK]]
+    SELECT = [['En curso', ON_COURSE], ['Pendiente', PENDING], ['No iniciado', NOT_STARTED], 
+             ['No finalizado', NOT_FINISHED]]
     
     Project.class_eval do
       arr = Project::Indicator.constants.map {|const| const.to_s.downcase}
@@ -45,6 +46,13 @@ class Project < ActiveRecord::Base
         define_method("#{ind}?") {
           indicator == "Project::Indicator::#{ind.upcase}".constantize
         }
+      end
+    end
+    
+    class << self
+      def to_s(indicator)
+        arr = SELECT.find {|arr| arr.last == indicator}
+        arr.first if arr
       end
     end
   end
@@ -83,10 +91,10 @@ class Project < ActiveRecord::Base
   validate :dates
   validate :implicated_users
   
-  scope :green, lambda { where(:started_on.lteq => Date.today, :ended_on => nil) }
-  scope :yellow, lambda { where(:estimated_start_date.gt => Date.today) }
-  scope :red, lambda { where(:estimated_start_date.lt => Date.today, :status => Project::Status::NEW) }
-  scope :black, lambda { where(:estimated_end_date.lt => Date.today, :ended_on => nil) }
+  scope :on_course, lambda { where(:started_on.lteq => Date.today, :ended_on => nil) }
+  scope :pending, lambda { where(:estimated_start_date.gt => Date.today) }
+  scope :not_started, lambda { where(:estimated_start_date.lt => Date.today, :status => Project::Status::NEW) }
+  scope :not_finished, lambda { where(:estimated_end_date.lt => Date.today, :ended_on => nil) }
   scope :ordered, order(:started_on.desc, :first_name, :last_name)
   scope :developed_by, lambda { |dev| where(:dev => dev) }
   
@@ -126,7 +134,7 @@ class Project < ActiveRecord::Base
     
     def search_for(user, page = nil)
       projects = user.dev? ? developed_by(user) : scoped
-      projects.green.ordered.page(page).per(Project.per_page)
+      projects.on_course.ordered.page(page).per(Project.per_page)
     end
   end
   

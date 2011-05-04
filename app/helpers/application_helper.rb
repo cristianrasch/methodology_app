@@ -1,7 +1,9 @@
 module ApplicationHelper
   
   def not_found(model)
-    content_tag :p, "No se encontraron #{model.model_name.human.pluralize}"
+    content_tag :p do
+      content_tag :em, "No se encontraron #{model.model_name.human.pluralize}"
+    end 
   end
 
   def created_at(model)

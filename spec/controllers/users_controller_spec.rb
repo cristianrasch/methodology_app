@@ -11,7 +11,7 @@ describe UsersController do
   
   it "should return a list of users matching the given name" do
     Factory(:user, :name => 'Mr. Bean')
-    get :index, :format => :json, :q => 'bea'
+    get :index, :format => :json, :q => 'mr'
     
     response.should be_success
     assigns[:users].should_not be_nil

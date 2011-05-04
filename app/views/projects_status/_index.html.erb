@@ -8,6 +8,16 @@ A.relacionadas:hover { color: #483D8B ; text-decoration: underline }
 -->
 </style>
 <title>CPCECABA</title>
+
+<%= javascript_include_tag 'jquery.min', 'jquery-ui-1.8.12.custom.min', 'autocomplete-rails', 'rails'  %>
+<%= stylesheet_link_tag 'jquery-ui-1.8.12.custom' %>
+
+<%= javascript_tag do %>
+$(document).ready(function () {
+	$('input[type!="hidden"]').first().focus();
+}); 
+<% end %>
+
 </head>
 
 <body topmargin="0" leftmargin="0" marginheigth="0" alink="#0000FF" bgcolor="#F9F9F9" link="#0000FF" marginwidth="0" vlink="#0000FF">
@@ -24,7 +34,11 @@ A.relacionadas:hover { color: #483D8B ; text-decoration: underline }
   <tbody><tr>
     <td width="100%"><table border="0" cellpadding="0" cellspacing="0" width="100%">
       <tbody><tr>
-        <td colspan="2" width="100%"><p style="margin-left: 2"><span style="font-size: 13"><font color="#483D8B" face="Verdana"><strong>Estado de proyectos</strong></font></span></p></td>
+        <td colspan="2" width="100%">
+			<p style="margin-left: 2">
+				<span style="font-size: 13"><font color="#483D8B" face="Verdana"><strong>Estado de proyectos</strong></font></span>
+			</p>
+		</td>
       </tr>
 
       <tr>
@@ -53,9 +67,7 @@ A.relacionadas:hover { color: #483D8B ; text-decoration: underline }
 		<%= form_for @project, :url => projects_status_index_path, :html => {:method => :get} do |f| %>		
 			<div align="right">
 				<p><font color="#000000" face="Verdana"><span style="font-size: 11">Filtrar por:&nbsp;&nbsp;&nbsp; </span></font>
-				<%= f.collection_select :owner_id, User.nondevs, :id, :name, {:prompt => 'Solicitante', :include_blank => @project.owner_id.present?}, 
-										:style => "font-family: Verdana; font-size: 11; background-color: rgb(255,255,255); color: rgb(0,0,128)",
-										:onchange => "this.form.submit();" %>
+				<%= f.autocomplete_field :area, autocomplete_project_area_projects_path %>
 				
 				<font color="#000000" face="Verdana"><span style="font-size: 11">&nbsp;&nbsp;&nbsp; </span></font>
 				<%= f.collection_select :dev_id, User.devs, :id, :name, {:prompt => 'Analista', :include_blank => @project.dev_id.present?}, 

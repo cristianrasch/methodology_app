@@ -25,7 +25,7 @@ describe Project do
                    :actual_duration => 20)
     }
     
-    projects = Project.green.all
+    projects = Project.on_course.all
     projects.should have(1).record
     projects.first.should == active_project
   end

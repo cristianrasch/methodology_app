@@ -10,7 +10,7 @@ describe ProjectsStatusController do
   it "should display a list of projects based on the supplied params" do
     dev = Factory(:user)
     Factory(:project, :dev => dev, :estimated_start_date => Date.tomorrow)
-    get :index, :dev_id => dev.id, :indicator => Project::Indicator::YELLOW
+    get :index, :dev_id => dev.id, :indicator => Project::Indicator::PENDING
     
     response.should be_success
     response.should render_template('index')

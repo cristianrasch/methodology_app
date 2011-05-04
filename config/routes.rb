@@ -10,6 +10,8 @@ MethodologyApp::Application.routes.draw do
   match 'users' => 'users#index'
 
   resources :projects, :shallow => true do
+    get :autocomplete_project_area, :on => :collection
+    
     member do
       get 'library'
     end

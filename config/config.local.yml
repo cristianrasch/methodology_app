@@ -5,7 +5,7 @@ common:
     passwd: crr000
   admin_users:
     root: pass123
-  devs: crr,sva,fol,pap,dda,gbe,mpa,lsg,mag,snc,adf,ljg,clv
+  devs: crr,sva,fol,pap,dda,gbe,mpa,lsg,mag,snc,adf,ljg,clb
   stages:
     1: definición
     2: diseño funcional

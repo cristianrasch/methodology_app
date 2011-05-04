@@ -1,0 +1,48 @@
+- if list.empty?
+  %p= not_found(Project)
+- else
+  %table{:border => 0, :cellpadding => 5, :cellspacing => 5, :width => '100%'}
+    %thead
+      %tr
+        %th N°
+        %th Fecha
+        %th Sistema
+        %th Subsistema
+        %th Objetivo
+        %th Tipo
+        %th Analista
+        %th
+          %table{:border => 0, :cellpadding => 5, :cellspacing => 5, :width => '100%'}
+            %thead
+              %tr
+                %th{:colspan => 3}= 'Estimación'
+              %tr
+                %td Inicio
+                %td Fin
+                %td Horas
+        %th Etapa
+        %th Estado
+        %th % Avance
+        %th Fin previsto
+    %tbody
+    - list.each do |project|
+      %tr
+        %td= link_to(project.id, project)
+        %td= l(project.created_at, :format => :tiny)
+        %td= project.first_name.humanize
+        %td= project.last_name.humanize if project.last_name
+        %td= truncate(project.description.humanize, :length => 35)
+        %td= project.klass_str.first.upcase
+        %td= project.dev.name
+        %td
+          %table{:border => 0, :cellpadding => 5, :cellspacing => 5, :width => '100%'}
+            %thead
+              %tr
+                %td= l(project.estimated_start_date, :format => :tiny)
+                %td= l(project.estimated_end_date, :format => :tiny)
+                %td= project.estimated_duration
+        %td= project.events.first ? project.events.first.stage_str : nil
+        %td= project.events.first ? project.events.first.status_str : nil
+        %td #{project.compl_perc} %
+        %td= l(project.estimated_end_date, :format => :tiny)
+        %td{:style => "background-color: #{indicator_class_for(project)};"}
