@@ -31,7 +31,7 @@
         %td= l(project.created_at, :format => :tiny)
         %td= project.first_name.humanize
         %td= project.last_name.humanize if project.last_name
-        %td= truncate(project.description.humanize, :length => 35)
+        %td= truncate(project.description.humanize, :length => 25)
         %td= project.klass_str.first.upcase
         %td= project.dev.name
         %td

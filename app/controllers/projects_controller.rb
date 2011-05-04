@@ -2,7 +2,7 @@ class ProjectsController < ApplicationController
 
   before_filter :authenticate_user!
   
-  autocomplete :project, :area, :column_name => 'area'
+  autocomplete :project, :area, :column_name => 'area', :scopes => :by_area
   
   def index
     @project = Project.new

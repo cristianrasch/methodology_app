@@ -95,7 +95,7 @@ hr {
 }
 
 #header {
-	width: 1200px;
+	width: 1250px;
 	height: 60px;
 	margin: 0 auto;
 	background: #FFFFFF;
@@ -195,7 +195,7 @@ hr {
 /* Page */
 
 #page {
-	width: 1150px;
+	width: 1200px;
 	margin: 0 auto;
 	padding: 0px 25px;
 	background: #FFFFFF;
@@ -410,7 +410,7 @@ hr {
 /* Footer */
 
 #footer {
-	width: 1200px;
+	width: 1250px;
 	height: 95px;
 	margin: 0 auto;
 	padding: 0;

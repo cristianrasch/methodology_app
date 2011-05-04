@@ -97,6 +97,7 @@ class Project < ActiveRecord::Base
   scope :not_finished, lambda { where(:estimated_end_date.lt => Date.today, :ended_on => nil) }
   scope :ordered, order(:started_on.desc, :first_name, :last_name)
   scope :developed_by, lambda { |dev| where(:dev => dev) }
+  scope :by_area, group('area') 
   
   after_save :notify_project_saved
   

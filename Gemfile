@@ -10,7 +10,7 @@ gem 'devise'
 gem 'kaminari'
 gem "carrierwave"
 gem 'meta_where'
-gem 'mysql'
+gem 'mysql2', '< 0.3'
 gem 'net-ssh'
 gem 'delayed_job'
 
