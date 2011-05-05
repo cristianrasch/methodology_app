@@ -12,9 +12,10 @@ require 'spec_helper'
 # end
 describe ApplicationHelper do
 
-  it "should display the model not found message" do
-    msg = helper.not_found(Comment)
-    msg.should =~ /No se encontraron comentarios/
+  it "should display a not found message" do
+    helper.not_found(Comment).should =~ /No se encontraron comentarios/
+    str = 'archivos'
+    helper.not_found(str).should =~ /No se encontraron #{str}/
   end
   
   it "should display a created_at parag for a given record" do

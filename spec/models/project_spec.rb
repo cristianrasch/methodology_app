@@ -191,4 +191,11 @@ describe Project do
     Factory.build(:project).klass_str.should be_present
   end
   
+  it "should be able to tell whether its library is empty or not" do
+    project = Factory(:project)
+    project.library_empty?.should be_true
+    event = Factory(:event, :attachment1 => File.open(File.join(Rails.root, 'README')), :project => project)
+    project.events.reload
+    project.library_empty?.should be_false
+  end
 end

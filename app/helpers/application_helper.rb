@@ -2,7 +2,7 @@ module ApplicationHelper
   
   def not_found(model)
     content_tag :p do
-      content_tag :em, "No se encontraron #{model.model_name.human.pluralize}"
+      content_tag :em, "No se encontraron #{model.is_a?(Class) ? model.model_name.human.pluralize : model}"
     end 
   end
 

@@ -187,6 +187,16 @@ class Project < ActiveRecord::Base
     arr.first if arr
   end
   
+  def library_empty?
+    empty = true
+    events.each do |event|
+      1.upto(3) { |i|
+        empty = false and break if event.send("attachment#{i}?") 
+      }      
+    end
+    empty
+  end
+  
   private
   
   def estimated_dates
