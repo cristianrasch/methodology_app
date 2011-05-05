@@ -1,8 +1,10 @@
 require 'bundler/capistrano'
+require "delayed/recipes"
 
 default_run_options[:pty] = true
 
 set :application, 'methodology_app'
+set :rails_env, "production" #added for delayed job 
 
 set :scm, :git
 set :repository,  "ssh://git@git-server:14725/~/repos/#{application}.git"
@@ -22,13 +24,12 @@ task :symlink_database_yml, :roles => :app do
 end
 after 'deploy:update_code', 'symlink_database_yml'
 
-namespace :delayed_job do 
-  desc "Restart the delayed_job process"
-    task :restart, :roles => :app do
-      run "cd #{current_path}; RAILS_ENV=#{rails_env} script/delayed_job restart"
-  end
-end
-after "deploy:update_code", "delayed_job:restart"
+# Delayed Job  
+before "deploy:restart", "delayed_job:stop"
+after  "deploy:restart", "delayed_job:start"
+
+after "deploy:stop",  "delayed_job:stop"
+after "deploy:start", "delayed_job:start"
 
 namespace(:deploy) do
   desc 'Restart the app server'
