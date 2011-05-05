@@ -24,6 +24,14 @@ task :symlink_database_yml, :roles => :app do
 end
 after 'deploy:update_code', 'symlink_database_yml'
 
+desc "Symlink the config.local.yml file from shared
+      directory to current release directory."
+task :symlink_config_local_yml, :roles => :app do
+  run "ln -nsf #{shared_path}/config/config.local.yml
+       #{release_path}/config/config.local.yml"
+end
+after 'deploy:update_code', 'symlink_database_yml'
+
 # Delayed Job  
 before "deploy:restart", "delayed_job:stop"
 after  "deploy:restart", "delayed_job:start"
