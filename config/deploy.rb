@@ -30,7 +30,7 @@ task :symlink_config_local_yml, :roles => :app do
   run "ln -nsf #{shared_path}/config/config.local.yml
        #{release_path}/config/config.local.yml"
 end
-after 'deploy:update_code', 'symlink_database_yml'
+after 'deploy:update_code', 'symlink_config_local_yml'
 
 # Delayed Job  
 before "deploy:restart", "delayed_job:stop"
