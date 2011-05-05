@@ -20,4 +20,8 @@ group :test, :development do
   gem 'ffaker'
 end
 
-gem 'cover_me', '>= 1.0.0.rc6', :group => :test if RUBY_VERSION =~ /1.9/
+if RUBY_VERSION =~ /1.9/
+  gem 'cover_me', '>= 1.0.0.rc6', :group => :test
+else
+  gem 'rcov', :group => :test
+end

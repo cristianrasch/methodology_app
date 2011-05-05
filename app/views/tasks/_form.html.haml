@@ -14,7 +14,7 @@
 %p
   = form.label :owner_id
   %br/
-  = form.collection_select :owner_id, User.it_staff(:except => @project.dev), :id, :name, :include_blank => true
+  = form.collection_select :owner_id, User.it_staff(:except => @task.project.dev), :id, :name, :include_blank => true
 
 - 1.upto(3) do |i|
   %p

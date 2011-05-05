@@ -1,7 +1,8 @@
 require 'spec_helper'
 
 describe EventsController do
-
+  render_views
+  
   before do 
     @current_user = Factory(:user)
     sign_in @current_user
@@ -99,5 +100,4 @@ describe EventsController do
     assigns[:event].should_not be_nil
     flash[:notice].should == "#{Event.model_name.human.humanize} eliminado"
   end
-
 end

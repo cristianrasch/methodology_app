@@ -1,7 +1,8 @@
 require 'spec_helper'
 
 describe ProjectsStatusController do
-
+  render_views
+  
   before do 
     @current_user = Factory(:user)
     sign_in @current_user
@@ -18,5 +19,4 @@ describe ProjectsStatusController do
     assigns[:projects].should_not be_nil
     assigns[:projects].should_not be_empty
   end
-
 end

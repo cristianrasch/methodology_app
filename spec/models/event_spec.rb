@@ -32,5 +32,10 @@ describe Event do
     event.stage_str.should be_present
     event.status_str.should be_present
   end
-
+  
+  it "should return a string representation of itself" do
+    str = Factory.build(:event).to_s
+    str.should match(/#{Conf.stages.first.last}/i)
+    str.should match(/#{Conf.statuses.first.last}/i)
+  end
 end

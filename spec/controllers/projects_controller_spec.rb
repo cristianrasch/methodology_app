@@ -1,7 +1,8 @@
 require 'spec_helper'
 
 describe ProjectsController do
-
+  render_views
+  
   before do 
     @current_user = Factory(:user)
     sign_in @current_user
@@ -106,5 +107,12 @@ describe ProjectsController do
     response.should render_template('library')
     assigns[:project].should_not be_nil
   end
-
+  
+  it "should autocomplete project's area" do
+    area = ('a'..'h').map(&:to_s).join
+    Factory(:project, :area => area)
+    get :autocomplete_project_area, :term => area[1,3]
+    
+    response.should be_success
+  end
 end

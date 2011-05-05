@@ -1,7 +1,8 @@
 require 'spec_helper'
 
 describe Admin::UsersController do
-
+  render_views
+  
   context "users import" do
     it "should deny access to non admin users" do
       admin_login :passwd => '123'
@@ -20,5 +21,4 @@ describe Admin::UsersController do
       response.body.should == 'done.'
     end
   end
-
 end

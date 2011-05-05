@@ -1,6 +1,7 @@
 require 'spec_helper'
 
 describe CommentsController do
+  render_views
 
   before do 
     @current_user = Factory(:user)
@@ -125,5 +126,4 @@ describe CommentsController do
     assigns[:commentable].should_not be_nil
     flash[:notice].should == "#{Comment.model_name.human.humanize} eliminado"
   end
-
 end

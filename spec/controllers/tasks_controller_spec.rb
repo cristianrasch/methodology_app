@@ -1,7 +1,8 @@
 require 'spec_helper'
 
 describe TasksController do
-
+  render_views
+  
   before do 
     @current_user = Factory(:user)
     sign_in @current_user
@@ -100,5 +101,4 @@ describe TasksController do
     assigns[:task].should_not be_nil
     flash[:notice].should == "#{Task.model_name.human.humanize} eliminada"
   end
-
 end

@@ -19,7 +19,7 @@
           %li
             = comments_link(@commentable)
         %li
-          = link_to commentable.class.model_name.human.humanize, commentable
+          = link_to @commentable.class.model_name.human.humanize, @commentable
         %li
           = link_to 'Volver', :back
 / end #sidebar

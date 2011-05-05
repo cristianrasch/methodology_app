@@ -29,11 +29,10 @@ class TasksController < ApplicationController
   
   def edit
     @task = Task.find(params[:id], :include => [:project => :dev])
-    @project = @task.project
   end
   
   def update
-    @task = Task.find(params[:id])
+    @task = Task.find(params[:id], :include => [:project => :dev])
     
     if @task.update_attributes(params[:task].merge(:updated_by => current_user.id))
       redirect_to(@task, :notice => "#{Task.model_name.human.humanize} actualizada")

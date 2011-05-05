@@ -1,12 +1,12 @@
 require 'spec_helper'
 
 describe AccountsController do
-
+  render_views
+  
   before do 
     @current_user = Factory(:user)
     sign_in @current_user
   end
-    
 
   it "render the edit action" do
     get :edit
@@ -37,5 +37,4 @@ describe AccountsController do
       flash[:notice].should == 'Cuenta actualizada'
     end
   end
-
 end
