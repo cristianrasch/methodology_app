@@ -7,3 +7,4 @@ public/uploads
 coverage
 coverage.data
 config/database.yml
+config/config.local.yml
