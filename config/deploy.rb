@@ -22,7 +22,13 @@ task :symlink_database_yml, :roles => :app do
 end
 after 'deploy:update_code', 'symlink_database_yml'
 
-after 'deploy', 'deploy:cleanup'
+namespace :delayed_job do 
+  desc "Restart the delayed_job process"
+    task :restart, :roles => :app do
+      run "cd #{current_path}; RAILS_ENV=#{rails_env} script/delayed_job restart"
+  end
+end
+after "deploy:update_code", "delayed_job:restart"
 
 namespace(:deploy) do
   desc 'Restart the app server'
@@ -30,3 +36,4 @@ namespace(:deploy) do
     run "touch #{current_path}/tmp/restart.txt"
   end
 end
+after 'deploy', 'deploy:cleanup'
