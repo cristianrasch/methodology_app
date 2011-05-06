@@ -40,16 +40,6 @@ class Project < ActiveRecord::Base
     SELECT = [['En curso', ON_COURSE], ['Pendiente', PENDING], ['No iniciado', NOT_STARTED], 
              ['No finalizado', NOT_FINISHED], ['Finalizado', FINISHED]]
     
-    #Project.class_eval do
-    #  arr = Project::Indicator.constants.map {|const| const.to_s.downcase}
-    #  arr.pop
-    #  arr.each do |ind|
-    #    define_method("#{ind}?") {
-    #      indicator == "Project::Indicator::#{ind.upcase}".constantize
-    #    }
-    #  end
-    #end
-    
     class << self
       def to_s(indicator)
         arr = SELECT.find {|arr| arr.last == indicator}
@@ -88,9 +78,8 @@ class Project < ActiveRecord::Base
   validates :estimated_start_date, :presence => true
   validates :estimated_end_date, :presence => true
   validates :estimated_duration, :numericality => { :greater_than => 0 }
-  validate :estimated_dates
-  validate :dates
-  validate :implicated_users
+  validate :dates_set
+  validate :participating_users
   
   scope :on_course, lambda { where(:started_on.lteq => Date.today, :ended_on => nil) }
   scope :pending, lambda { where(:estimated_start_date.gt => Date.today) }
@@ -100,7 +89,8 @@ class Project < ActiveRecord::Base
   scope :ordered, order(:started_on.desc, :first_name, :last_name)
   scope :developed_by, lambda { |dev| where(:dev => dev) }
   scope :by_area, group('area') 
-  
+
+  before_save :set_default_envisaged_end_date  
   after_save :notify_project_saved
   
   cattr_reader :per_page
@@ -109,7 +99,7 @@ class Project < ActiveRecord::Base
   attr_accessor :indicator
   attr_accessible :org_unit, :area, :first_name, :last_name, :description, :dev_id, :owner_id, :user_ids,
                   :estimated_start_date, :estimated_end_date, :estimated_duration, :status, :updated_by,
-                  :user_tokens, :compl_perc, :klass, :indicator
+                  :user_tokens, :compl_perc, :klass, :indicator, :envisaged_end_date
   
   class << self
     def search(template, page = nil)
@@ -149,7 +139,7 @@ class Project < ActiveRecord::Base
     last_name.blank? ? first_name : first_name+' - '+last_name
   end
   
-  %w{estimated_start_date estimated_end_date started_on ended_on}.each do |attr|
+  %w{estimated_start_date estimated_end_date started_on ended_on, envisaged_end_date}.each do |attr|
     define_method("#{attr}=") do |date|
       if date.is_a?(Date)
         write_attribute(attr, date)
@@ -164,10 +154,21 @@ class Project < ActiveRecord::Base
   end
   
   def attributes=(attrs)
-    attrs.delete(:compl_perc) if (attrs.has_key?(:status) ? attrs[:status].to_i : status) == Status::NEW
     if attrs.has_key?(:status)
       updated_by_dev = attrs[:updated_by].to_i == (attrs.has_key?(:dev_id) ? attrs[:dev_id].to_i : dev.id)
       attrs.delete(:status) if !updated_by_dev || (attrs[:status].to_i == Status::FINISHED && new?)
+    end
+    
+    unless (attrs.has_key?(:status) ? attrs[:status].to_i : status) == Status::NEW
+      cols = Project.column_names.map(&:to_sym)
+      cols.delete(:compl_perc)
+      cols.delete(:status)
+      cols.delete(:envisaged_end_date)
+      cols.each { |col| attrs.delete(col) }
+    end
+    
+    if [Status::NEW, Status::FINISHED].include?(attrs.has_key?(:status) ? attrs[:status].to_i : status)
+      attrs.delete(:compl_perc)
     end
     super
   end
@@ -205,23 +206,22 @@ class Project < ActiveRecord::Base
   
   private
   
-  def estimated_dates
+  def dates_set
     if estimated_start_date && estimated_end_date && estimated_start_date > estimated_end_date
       errors.add(:estimated_end_date)
     end
+    errors.add(:envisaged_end_date) if envisaged_end_date && started_on && envisaged_end_date < started_on 
   end
   
-  def dates
-    if started_on && ended_on && started_on > ended_on
-      errors.add(:ended_on)
-    end
-  end
-  
-  def implicated_users
+  def participating_users
     errors.add(:user_ids, I18n.t('errors.messages.empty')) if user_ids.empty?
   end
   
   def notify_project_saved
     send_async(ProjectNotifier, :project_saved, self)
+  end
+  
+  def set_default_envisaged_end_date
+    self.envisaged_end_date = estimated_end_date unless envisaged_end_date
   end
 end

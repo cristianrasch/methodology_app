@@ -211,6 +211,7 @@ es-AR:
         status: Estado
         compl_perc: Porcentaje de completitud
         klass: Tipo
+        envisaged_end_date: Fecha de finalización prevista
       event:
         stage: Etapa
         status: Estado

@@ -44,5 +44,5 @@
         %td= project.events.first ? project.events.first.stage_str : nil
         %td= project.events.first ? project.events.first.status_str : nil
         %td #{project.compl_perc} %
-        %td= l(project.estimated_end_date, :format => :tiny)
+        %td= l(project.envisaged_end_date, :format => :tiny)
         %td{:style => "background-color: #{indicator_class_for(project)};"}

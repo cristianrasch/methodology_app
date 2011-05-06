@@ -62,6 +62,11 @@
   %br/
   = l @project.estimated_end_date
 
+%p
+  = label_tag Project.human_attribute_name('envisaged_end_date')
+  %br/
+  = l @project.envisaged_end_date
+
 - if @project.started_on
   %p
     = label_tag Project.human_attribute_name('started_on')

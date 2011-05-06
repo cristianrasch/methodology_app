@@ -99,8 +99,11 @@ class User < ActiveRecord::Base
   private
   
   def format_name
-    n, i = name, name.rindex(' ')+1
-    self.name = n[i,n.length-i]+', '+n[0,i-1]
+    i = name.rindex(' ')
+    if i
+      i += 1
+      self.name = name[i,name.length-i]+', '+name[0,i-1]
+    end
   end
   
 end

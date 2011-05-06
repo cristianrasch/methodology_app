@@ -5,6 +5,7 @@
     $(document).ready(function() {
       $('#project_estimated_start_date').datepicker();
       $('#project_estimated_end_date').datepicker();
+      $('#project_envisaged_end_date').datepicker();
       $("#project_user_tokens").tokenInput("#{users_path(:format => :json)}", {
         crossDomain: false,
         prePopulate: $("#project_user_tokens").data("pre"),
@@ -14,70 +15,78 @@
 
 = form.error_messages :header_message => nil, :message => nil
 
-%p
-  = form.label :org_unit
-  %br/
-  = form.text_field :org_unit
-
-%p
-  = form.label :area
-  %br/
-  = form.text_field :area
+- if @project.new?
+  %p
+    = form.label :org_unit
+    %br/
+    = form.text_field :org_unit
   
-%p
-  = form.label :first_name
-  %br/
-  = form.text_field :first_name
-
-%p
-  = form.label :last_name
-  %br/
-  = form.text_field :last_name
-
-%p
-  = form.label :klass
-  %br/
-  = form.select :klass, options_for_select(Project::Klass::SELECT, @project.new_record? ? nil : @project.klass), 
-                :include_blank => @project.new_record?
-
-%p
-  = form.label :description
-  %br/
-  = form.text_area :description, :cols => 30, :rows => 5
-
-%p
-  = form.label :dev_id
-  %br/
-  = form.collection_select :dev_id, User.devs, :id, :name, :include_blank => true
-
-%p
-  = form.label :owner_id
-  %br/
-  = form.collection_select :owner_id, User.nondevs, :id, :name, :include_blank => true
-
-%p
-  = form.label :user_ids
-  %br/
-  = form.text_field :user_tokens, "data-pre" => @project.users.map(&:attributes).to_json
-
-%p
-  = form.label :estimated_start_date
-  %br/
-  = form.text_field :estimated_start_date, :size => 27, 
-                    :value => project_date(@project.estimated_start_date)
+  %p
+    = form.label :area
+    %br/
+    = form.text_field :area
+    
+  %p
+    = form.label :first_name
+    %br/
+    = form.text_field :first_name
   
-%p
-  = form.label :estimated_end_date
-  %br/
-  = form.text_field :estimated_end_date, :size => 27, 
-                    :value => project_date(@project.estimated_end_date)
-
-%p
-  = form.label :estimated_duration
-  %br/
-  = form.text_field :estimated_duration, :size => 4
+  %p
+    = form.label :last_name
+    %br/
+    = form.text_field :last_name
   
-%p
-  = form.label :compl_perc
-  %br/
-  = form.select :compl_perc, options_for_select((0..10).map {|i| [i*10, i*10]}, @project.compl_perc)
+  %p
+    = form.label :klass
+    %br/
+    = form.select :klass, options_for_select(Project::Klass::SELECT, @project.new_record? ? nil : @project.klass), 
+                  :include_blank => @project.new_record?
+  
+  %p
+    = form.label :description
+    %br/
+    = form.text_area :description, :cols => 30, :rows => 5
+  
+  %p
+    = form.label :dev_id
+    %br/
+    = form.collection_select :dev_id, User.devs, :id, :name, :include_blank => true
+  
+  %p
+    = form.label :owner_id
+    %br/
+    = form.collection_select :owner_id, User.nondevs, :id, :name, :include_blank => true
+  
+  %p
+    = form.label :user_ids
+    %br/
+    = form.text_field :user_tokens, "data-pre" => @project.users.map(&:attributes).to_json
+  
+  %p
+    = form.label :estimated_start_date
+    %br/
+    = form.text_field :estimated_start_date, :size => 27, 
+                      :value => project_date(@project.estimated_start_date)
+    
+  %p
+    = form.label :estimated_end_date
+    %br/
+    = form.text_field :estimated_end_date, :size => 27, 
+                      :value => project_date(@project.estimated_end_date)
+  
+  %p
+    = form.label :estimated_duration
+    %br/
+    = form.text_field :estimated_duration, :size => 4
+
+- unless @project.finished?
+  %p
+    = form.label :compl_perc
+    %br/
+    = form.select :compl_perc, options_for_select((0..10).map {|i| [i*10, i*10]}, @project.compl_perc)
+    
+  %p
+    = form.label :envisaged_end_date
+    %br/
+    = form.text_field :envisaged_end_date, :size => 27, 
+                      :value => project_date(@project.envisaged_end_date)
