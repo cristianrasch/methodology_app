@@ -151,21 +151,33 @@ describe Project do
     Factory.build(:project).status_str.should be_present
   end
   
-  it "should calculate its actual duration once closed" do
-    project = Factory(:project)
-    2.times { |i| Factory(:event, :duration => 5*(i+1), :project => project) }
-    2.times { |i| Factory(:task, :duration => 3*(i+1), :project => project) }
-    project.actual_duration.should be_nil
-    project.update_attributes(:status => Project::Status::FINISHED, :updated_by => project.dev.id)
-    project.reload
-    project.actual_duration.should_not be_nil
-    project.actual_duration.should == 24
+  context "once a project is finished" do
+    before do
+      @project = Factory(:project, :status => Project::Status::IN_DEV)
+      2.times { |i| Factory(:event, :duration => 5*(i+1), :project => @project) }
+      2.times { |i| Factory(:task, :duration => 3*(i+1), :project => @project) }
+      @project.actual_duration.should be_nil
+      @project.update_attributes(:status => Project::Status::FINISHED, :updated_by => @project.dev.id)
+      # project.reload
+    end
+    
+    it "should set its compl_perc to 100" do
+      @project.compl_perc.should == 100
+    end
+    
+    it "should set its ended_on date to today" do
+      @project.ended_on.should == Date.today
+    end
+    
+    it "should calculate its actual duration once closed" do
+      @project.actual_duration.should == 24
+    end
   end
   
   it "should auto-start a project when its status is set to in development" do
     project = Factory(:project, :started_on => nil)
     project.update_attributes(:status => Project::Status::IN_DEV, :updated_by => project.dev.id)
-    project.started_on.should_not be_nil
+    project.started_on.should == Date.today
   end
   
   it "should be able to set its users" do
@@ -197,5 +209,11 @@ describe Project do
     event = Factory(:event, :attachment1 => File.open(File.join(Rails.root, 'README')), :project => project)
     project.events.reload
     project.library_empty?.should be_false
+  end
+  
+  it "should not be able to set its status to klass if still NEW" do
+    project = Factory(:project)
+    project.update_attributes(:status => Project::Status::FINISHED, :updated_by => project.dev.id)
+    project.should be_new
   end
 end

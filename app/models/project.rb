@@ -35,19 +35,20 @@ class Project < ActiveRecord::Base
     PENDING = 2
     NOT_STARTED = 3
     NOT_FINISHED = 4
+    FINISHED = 5
     
     SELECT = [['En curso', ON_COURSE], ['Pendiente', PENDING], ['No iniciado', NOT_STARTED], 
-             ['No finalizado', NOT_FINISHED]]
+             ['No finalizado', NOT_FINISHED], ['Finalizado', FINISHED]]
     
-    Project.class_eval do
-      arr = Project::Indicator.constants.map {|const| const.to_s.downcase}
-      arr.pop
-      arr.each do |ind|
-        define_method("#{ind}?") {
-          indicator == "Project::Indicator::#{ind.upcase}".constantize
-        }
-      end
-    end
+    #Project.class_eval do
+    #  arr = Project::Indicator.constants.map {|const| const.to_s.downcase}
+    #  arr.pop
+    #  arr.each do |ind|
+    #    define_method("#{ind}?") {
+    #      indicator == "Project::Indicator::#{ind.upcase}".constantize
+    #    }
+    #  end
+    #end
     
     class << self
       def to_s(indicator)
@@ -95,6 +96,7 @@ class Project < ActiveRecord::Base
   scope :pending, lambda { where(:estimated_start_date.gt => Date.today) }
   scope :not_started, lambda { where(:estimated_start_date.lt => Date.today, :status => Project::Status::NEW) }
   scope :not_finished, lambda { where(:estimated_end_date.lt => Date.today, :ended_on => nil) }
+  scope :finished, lambda { where(:status => Project::Status::FINISHED) }
   scope :ordered, order(:started_on.desc, :first_name, :last_name)
   scope :developed_by, lambda { |dev| where(:dev => dev) }
   scope :by_area, group('area') 
@@ -162,17 +164,21 @@ class Project < ActiveRecord::Base
   end
   
   def attributes=(attrs)
-    attrs.delete(:compl_perc) if attrs[:status].to_i == Status::NEW
-    attrs.delete(:status) if attrs.has_key?(:status) && (attrs[:updated_by].to_i != (attrs.has_key?(:dev_id) ? attrs[:dev_id].to_i : dev.id))
+    attrs.delete(:compl_perc) if (attrs.has_key?(:status) ? attrs[:status].to_i : status) == Status::NEW
+    if attrs.has_key?(:status)
+      updated_by_dev = attrs[:updated_by].to_i == (attrs.has_key?(:dev_id) ? attrs[:dev_id].to_i : dev.id)
+      attrs.delete(:status) if !updated_by_dev || (attrs[:status].to_i == Status::FINISHED && new?)
+    end
     super
   end
   
   def status=(stat)
     if stat.to_i == Status::IN_DEV
-      self.started_on = Date.today
+      self.started_on = Date.today unless started_on
     elsif stat.to_i == Status::FINISHED
-      self.actual_duration = events.sum(:duration) + tasks.sum(:duration)
+      self.compl_perc = 100
       self.ended_on = Date.today
+      self.actual_duration = events.sum(:duration) + tasks.sum(:duration)
     end
     super
   end

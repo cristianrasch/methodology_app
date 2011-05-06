@@ -16,6 +16,8 @@ describe ProjectsStatusHelper do
     helper.indicator_class_for(Factory(:project)).should == 'red'
     helper.indicator_class_for(Factory(:project, :estimated_start_date => Date.tomorrow)).should == 'yellow'
     helper.indicator_class_for(Factory(:project, :started_on => Date.yesterday, 
-                                      :status => Project::Status::IN_DEV)).should == 'green'
+                                       :status => Project::Status::IN_DEV)).should == 'green'
+    helper.indicator_class_for(Factory(:project, :started_on => Date.yesterday, 
+                                       :status => Project::Status::FINISHED)).should == 'blue'
   end
 end

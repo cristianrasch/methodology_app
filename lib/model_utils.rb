@@ -1,7 +1,7 @@
 module ModelUtils
   
-  def build_model(clazz, attrs)
-    model = clazz.new
+  def build_model(klass, attrs)
+    model = klass.new
     attrs.each { |k, v| model.send("#{k}=", v) }
     model
   end  

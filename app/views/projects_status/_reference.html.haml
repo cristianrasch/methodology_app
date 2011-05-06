@@ -13,3 +13,6 @@
   %tr
     %td{:style => 'background-color: black; width: 25%'}
     %td= Project::Indicator.to_s(Project::Indicator::NOT_FINISHED)
+  %tr
+    %td{:style => 'background-color: blue; width: 25%'}
+    %td= Project::Indicator.to_s(Project::Indicator::FINISHED)
