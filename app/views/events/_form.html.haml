@@ -28,4 +28,5 @@
 %p
   = form.label :duration
   %br/
-  = form.text_field :duration, :size => 4
+  = form.text_field :duration, :value => @event.orig_duration, :size => 4
+  = duration_options_for(@event, :duration_unit)

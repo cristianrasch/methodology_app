@@ -6,7 +6,7 @@ class CreateEvents < ActiveRecord::Migration
       
       1.upto(3) { |i| t.string "attachment#{i}" }
       
-      t.integer :duration
+      t.float :duration
       
       t.references :project
       t.integer :author_id

@@ -15,6 +15,7 @@ class Task < ActiveRecord::Base
   
   include Commentable
   include AsyncEmail
+  include Duration::Utils
 
   belongs_to :project
   belongs_to :author, :class_name => 'User'
@@ -32,11 +33,12 @@ class Task < ActiveRecord::Base
   scope :ordered, order(:created_at.desc)
   scope :incomplete, where(:finished_at => nil)
   
+  before_save :translate_duration_into_seconds
   after_save :notify_task_saved
   
   1.upto(3) { |i| mount_uploader "attachment#{i}", FileUploader }
   
-  attr_accessible :description, :owner_id, :duration, :updated_by, :status
+  attr_accessible :description, :owner_id, :duration, :updated_by, :status, :duration_unit
   1.upto(3) { |i| attr_accessible "attachment#{i}", "attachment#{i}_cache" }
   
   def duration=(dur)
@@ -48,8 +50,9 @@ class Task < ActiveRecord::Base
   end
   
   def attributes=(attrs)
-    if (attrs.has_key?(:duration) || attrs.has_key?(:status)) && (attrs[:updated_by].to_i != (attrs.has_key?(:owner_id) ? attrs[:owner_id].to_i : owner.id))
+    if !new_record? && attrs[:updated_by] != (attrs.has_key?(:owner_id) ? attrs[:owner_id].to_i : owner.id)
       attrs.delete(:duration)
+      attrs.delete(:duration_unit)
       attrs.delete(:status)
     end
     super
@@ -60,10 +63,17 @@ class Task < ActiveRecord::Base
     arr.first if arr
   end
   
+  def orig_duration
+    original_duration(self, :duration)
+  end
+  
   private
   
   def notify_task_saved
     send_async(TaskNotifier, :task_saved, self)
   end
   
+  def translate_duration_into_seconds
+    self.duration = duration_in_seconds(self, :duration) if duration
+  end
 end

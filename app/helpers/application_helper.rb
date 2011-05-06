@@ -1,5 +1,4 @@
 module ApplicationHelper
-  
   def not_found(model)
     content_tag :p do
       content_tag :em, "No se encontraron #{model.is_a?(Class) ? model.model_name.human.pluralize : model}"
@@ -20,4 +19,18 @@ module ApplicationHelper
     end if model.updated_at
   end
 
+  def duration_options_for(model, attr)
+    select_tag("#{model.class.name.downcase}[#{attr}]", 
+              options_for_select([['Horas', Duration::HOUR], ['Dias', Duration::DAY], 
+                                ['Semanas', Duration::WEEK]], model.send(attr)))
+  end
+  
+  def duration_desc(model, attr)
+    singular = case(model.send("#{attr}_unit"))
+      when Duration::HOUR then 'hora'
+      when Duration::DAY then 'día'
+      when Duration::WEEK then 'semana'
+    end
+    pluralize(model.send("orig_#{attr}"), singular)
+  end
 end

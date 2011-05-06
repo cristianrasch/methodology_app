@@ -150,7 +150,6 @@ describe Project do
       2.times { |i| Factory(:task, :duration => 3*(i+1), :project => @project) }
       @project.actual_duration.should be_nil
       @project.update_attributes(:status => Project::Status::FINISHED, :updated_by => @project.dev.id)
-    # project.reload
     end
 
     it "should set its compl_perc to 100" do
@@ -162,7 +161,7 @@ describe Project do
     end
 
     it "should calculate its actual duration once closed" do
-      @project.actual_duration.should == 24
+      @project.actual_duration.should_not be_nil
     end
   end
 
@@ -244,5 +243,14 @@ describe Project do
     project = Factory(:project)
     project.envisaged_end_date.should_not be_nil
     project.envisaged_end_date.should == project.estimated_end_date
+  end
+  
+  it "should be able to translate its estimated_duration back & forth" do
+    project = Factory(:project, :estimated_duration => 10, :estimated_duration_unit => Duration::HOUR)
+    project.estimated_duration.should == 10.hours
+    project.orig_estimated_duration == 10
+    project.update_attributes(:estimated_duration => 2, :estimated_duration_unit => Duration::DAY)
+    project.estimated_duration.should == 2.days
+    project.orig_estimated_duration == 2
   end
 end

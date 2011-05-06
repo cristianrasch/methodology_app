@@ -203,8 +203,8 @@ es-AR:
         estimated_end_date: Fecha de finalización estimada
         started_on: Fecha de inicio
         ended_on: Fecha de finalización
-        estimated_duration: Duración estimada (en hrs)
-        actual_duration: Duración real (en hrs)
+        estimated_duration: Duración estimada
+        actual_duration: Duración real
         dev_id: Desarrollador
         user_ids: Usuarios involucrados
         owner_id: Usuario responsable

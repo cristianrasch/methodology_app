@@ -80,12 +80,12 @@ describe ProjectsController do
     end
     
     it "should update an existing project when valid params supplied" do
-      put :update, :id => Factory(:project), :project => {:estimated_duration => 25}
+      put :update, :id => Factory(:project), :project => {:area => 'desarrollo'}
       
       response.should be_redirect
       assigns[:project].should_not be_nil
       response.should redirect_to(assigns[:project])
-      assigns[:project].estimated_duration.should == 25
+      assigns[:project].area.should == 'desarrollo'
       flash[:notice].should == "#{Project.model_name.human.humanize} actualizado"
     end
   end

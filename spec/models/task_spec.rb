@@ -44,8 +44,9 @@ describe Task do
     task.status.should == Task::Status::NEW
     task.duration.should be_nil
     task.updater.should == updater
-    task.update_attributes(:status => Task::Status::ACCEPTED, :duration => 120, :updated_by => owner.id)
+    task.update_attributes(:status => Task::Status::ACCEPTED, :updated_by => owner.id)
     task.status.should == Task::Status::ACCEPTED
+    task.update_attributes(:duration => 120, :updated_by => owner.id)
     task.duration.should_not be_nil
     task.updater(true).should == owner
   end
@@ -53,5 +54,13 @@ describe Task do
   it "should provide a description its status" do
     Factory.build(:task).status_str.should be_present
   end
-  
+
+  it "should be able to translate its duration back & forth" do
+    task = Factory(:task, :duration => 10, :duration_unit => Duration::HOUR)
+    task.duration.should == 10.hours
+    task.orig_duration == 10
+    task.update_attributes(:duration => 2, :duration_unit => Duration::DAY, :updated_by => task.owner.id)
+    task.duration.should == 2.days
+    task.orig_duration == 2
+  end  
 end

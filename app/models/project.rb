@@ -50,6 +50,7 @@ class Project < ActiveRecord::Base
 
   include DateUtils
   include AsyncEmail
+  include Duration::Utils
   
   belongs_to :owner, :class_name => 'User'
   belongs_to :dev, :class_name => 'User', :foreign_key => :dev_id
@@ -90,7 +91,8 @@ class Project < ActiveRecord::Base
   scope :developed_by, lambda { |dev| where(:dev => dev) }
   scope :by_area, group('area') 
 
-  before_save :set_default_envisaged_end_date  
+  before_save :set_default_envisaged_end_date
+  before_save :translate_estimated_duration_into_seconds
   after_save :notify_project_saved
   
   cattr_reader :per_page
@@ -99,7 +101,7 @@ class Project < ActiveRecord::Base
   attr_accessor :indicator
   attr_accessible :org_unit, :area, :first_name, :last_name, :description, :dev_id, :owner_id, :user_ids,
                   :estimated_start_date, :estimated_end_date, :estimated_duration, :status, :updated_by,
-                  :user_tokens, :compl_perc, :klass, :indicator, :envisaged_end_date
+                  :user_tokens, :compl_perc, :klass, :indicator, :envisaged_end_date, :estimated_duration_unit
   
   class << self
     def search(template, page = nil)
@@ -184,6 +186,10 @@ class Project < ActiveRecord::Base
     super
   end
   
+  def orig_estimated_duration
+    original_duration(self, :estimated_duration)
+  end
+  
   def status_str
     arr = Status::SELECT.find {|arr| arr.last == status}
     arr.first if arr
@@ -223,5 +229,9 @@ class Project < ActiveRecord::Base
   
   def set_default_envisaged_end_date
     self.envisaged_end_date = estimated_end_date unless envisaged_end_date
+  end
+  
+  def translate_estimated_duration_into_seconds
+    self.estimated_duration = duration_in_seconds(self, :estimated_duration)
   end
 end

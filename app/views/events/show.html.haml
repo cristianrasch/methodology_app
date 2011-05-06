@@ -12,7 +12,7 @@
 %p
   = Event.human_attribute_name(:duration)
   %br/
-  = pluralize(@event.duration, 'hora')
+  = duration_desc(@event, :duration)
 
 - if @event.has_attachments?
   %ul

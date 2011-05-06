@@ -32,7 +32,7 @@
   %p
     = Task.human_attribute_name(:duration)
     %br/
-    = pluralize(@task.duration, 'hora')
+    = duration_desc(@task, :duration)
 
 - if @task.has_attachments?
   %ul

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110506155357) do
+ActiveRecord::Schema.define(:version => 20110506214957) do
 
   create_table "comments", :force => true do |t|
     t.text     "content"
@@ -53,11 +53,12 @@ ActiveRecord::Schema.define(:version => 20110506155357) do
     t.string   "attachment1"
     t.string   "attachment2"
     t.string   "attachment3"
-    t.integer  "duration"
+    t.float    "duration"
     t.integer  "project_id"
     t.integer  "author_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "duration_unit", :limit => 1, :default => 1
   end
 
   add_index "events", ["author_id"], :name => "index_events_on_author_id"
@@ -73,17 +74,18 @@ ActiveRecord::Schema.define(:version => 20110506155357) do
     t.date     "estimated_end_date"
     t.date     "started_on"
     t.date     "ended_on"
-    t.integer  "estimated_duration"
-    t.integer  "actual_duration"
+    t.float    "estimated_duration"
+    t.float    "actual_duration"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "dev_id"
     t.integer  "owner_id"
-    t.integer  "status",               :limit => 1, :default => 1
+    t.integer  "status",                  :limit => 1, :default => 1
     t.integer  "updated_by"
-    t.integer  "compl_perc",           :limit => 1, :default => 0
-    t.integer  "klass",                :limit => 1, :default => 1
+    t.integer  "compl_perc",              :limit => 1, :default => 0
+    t.integer  "klass",                   :limit => 1, :default => 1
     t.date     "envisaged_end_date"
+    t.integer  "estimated_duration_unit", :limit => 1, :default => 1
   end
 
   add_index "projects", ["dev_id"], :name => "index_projects_on_dev_id"
@@ -111,9 +113,10 @@ ActiveRecord::Schema.define(:version => 20110506155357) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.datetime "finished_at"
-    t.integer  "duration"
-    t.integer  "status",      :limit => 1, :default => 1
+    t.float    "duration"
+    t.integer  "status",        :limit => 1, :default => 1
     t.integer  "updated_by"
+    t.integer  "duration_unit", :limit => 1, :default => 1
   end
 
   add_index "tasks", ["author_id"], :name => "index_tasks_on_author_id"

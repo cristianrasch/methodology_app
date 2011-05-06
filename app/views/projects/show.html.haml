@@ -82,7 +82,7 @@
 %p
   = label_tag Project.human_attribute_name('estimated_duration')
   %br/
-  = pluralize(@project.estimated_duration, 'hora')
+  = duration_desc(@project, :estimated_duration)
   
 - if @project.actual_duration
   %p
