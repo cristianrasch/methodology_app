@@ -22,6 +22,11 @@ describe User do
     end
   end
   
+  it "should format user's name properly" do
+    rms = Factory(:user, :name => 'Richard Matthew Stallman')
+    rms.name.should == 'Stallman, Richard Matthew'
+  end
+  
   it "should import production users" do
     stub_users_fetching
     

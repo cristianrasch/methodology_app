@@ -51,6 +51,8 @@ class User < ActiveRecord::Base
   # Setup accessible (or protected) attributes for your model
   attr_accessible :name, :org_unit, :position, :email, :password, :password_confirmation, :remember_me
   
+  before_create :format_name
+  
   class << self
     def import
       users = fetch_prod_users
@@ -63,7 +65,7 @@ class User < ActiveRecord::Base
       user_ids.each {|user_id|      
         name, org_unit = users_hash[user_id][4].split(/,\s?/)
         next unless name        
-        user = User.new :name => name, :org_unit => org_unit, :email => nil, :password => "#{user_id}123"
+        user = User.new :name => name, :org_unit => org_unit, :password => "#{user_id}123"
         user.username = user_id
         user.save
       }
@@ -92,6 +94,13 @@ class User < ActiveRecord::Base
   
   def dev?
     Conf.devs.split(',').include?(username)
+  end
+  
+  private
+  
+  def format_name
+    n, i = name, name.rindex(' ')+1
+    self.name = n[i,n.length-i]+', '+n[0,i-1]
   end
   
 end
