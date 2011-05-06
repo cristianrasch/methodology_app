@@ -121,6 +121,10 @@ hr {
 	float: left;
 }
 
+#menu li.right {
+	float: right;
+}
+
 #menu a {
 	display: block;
 	float: left;

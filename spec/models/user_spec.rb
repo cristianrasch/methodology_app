@@ -2,14 +2,24 @@ require 'spec_helper'
 
 describe User do
   
-  it "should only save valid instances" do
-    user = User.new
-    user.should_not be_valid
+  context "model validations" do
+    it "should validate new instances" do
+      user = User.new
+      user.should_not be_valid
+      
+      user.should have(1).error_on(:username)
+      user.should have(1).error_on(:name)
+      user.should have(1).error_on(:password)
+    end
     
-    user.should have(1).error_on(:username)
-    user.should have(1).error_on(:name)
-    user.should have(1).error_on(:email)
-    user.should have(1).error_on(:password)
+    it "should validate mass-imported instances" do
+      user = User.new :name => 'Mr X', :password => 'pass123'
+      user.username = 'xxx'
+      user.save!
+      
+      user.should_not be_valid
+      user.should have(1).error_on(:email)
+    end
   end
   
   it "should import production users" do

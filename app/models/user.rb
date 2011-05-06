@@ -24,8 +24,8 @@ class User < ActiveRecord::Base
 
   # Include default devise modules. Others available are:
   # :token_authenticatable, :confirmable, :lockable, :trackable, 
-  # :registerable, :recoverable and :timeoutable
-  devise :database_authenticatable, :rememberable, :validatable
+  # :registerable, :recoverable, :validatable and :timeoutable
+  devise :database_authenticatable, :rememberable
   
   has_many :dev_projects, :foreign_key => :dev_id
   has_and_belongs_to_many :projects
@@ -33,7 +33,17 @@ class User < ActiveRecord::Base
   
   validates :username, :presence => true, :uniqueness => true
   validates_length_of :username, :is => 3 if Rails.env == 'production'
+  
   validates :name, :presence => true
+  
+  validates_format_of :email, :with => /\A([\w\.%\+\-]+)@([\w\-]+\.)+([\w]{2,})\z/i, :on => :update
+  validates_uniqueness_of :email, :on => :update
+  
+  validates :password, :length => {:within => 6..20 }, 
+            :if => Proc.new { |user| user.new_record? || user.encrypted_password_changed? }
+  validates_confirmation_of :password, :if => :encrypted_password_changed?, :on => :update
+  
+  validates_presence_of :password_confirmation, :if => :encrypted_password_changed?, :on => :update
 
   scope :devs, where(:username => Conf.devs.split(',')).order(:name)
   scope :nondevs, where(:username - Conf.devs.split(',')).order(:name)
@@ -53,9 +63,7 @@ class User < ActiveRecord::Base
       user_ids.each {|user_id|      
         name, org_unit = users_hash[user_id][4].split(/,\s?/)
         next unless name        
-        email_prefix = name.first.downcase+name.split(/\s/).last.downcase
-        email = email_prefix+'@consejo.org.ar'
-        user = User.new :name => name, :email => email, :password => email_prefix+'123', :org_unit => org_unit
+        user = User.new :name => name, :org_unit => org_unit, :email => nil, :password => "#{user_id}123"
         user.username = user_id
         user.save
       }

@@ -1,0 +1,5 @@
+- unless current_user.email
+  %p
+    %h3
+      Por favor, verifique su
+      = link_to 'email', edit_account_path
