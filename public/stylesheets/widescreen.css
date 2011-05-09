@@ -104,7 +104,6 @@ hr {
 /* Menu */
 
 #menu {
-	width: 950px;
 	height: 64px;
 }
 
@@ -119,6 +118,10 @@ hr {
 	display: block;
 	background: url(/images/img02.jpg) repeat-y left top;
 	float: left;
+}
+
+#menu li.right {
+  float: right;
 }
 
 #menu a {

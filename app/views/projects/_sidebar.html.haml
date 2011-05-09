@@ -6,6 +6,8 @@
         - if controller.action_name == 'index'
           %li
             = link_to 'Nuevo', new_project_path
+          %li
+            = link_to 'Seguimiento', projects_status_index_path
         - else
           %li
             = link_to 'Inicio', projects_path
