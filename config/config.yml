@@ -6,6 +6,7 @@ common:
   admin_users:
     root: root passwd
   devs: comma,separated,list,of,developers
+  bosses: comma,separated,list,of,bosses
   stages:
     1: your
     2: stages

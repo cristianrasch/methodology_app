@@ -69,7 +69,7 @@ describe CommentsController do
       get :edit, :id => @comment
       
       response.status.should  == 401
-      response.body.should == 'No tiene acceso'
+      response.body.should == 'Acceso denegado.'
       assigns[:comment].should_not be_nil
       assigns[:commentable].should_not be_nil
     end

@@ -50,10 +50,13 @@ describe User do
   end
   
   it "should be able to tell when a user is a dev" do
-    nondev = Factory(:user)
-    nondev.should_not be_a_dev
-    dev = Factory(:user, :username => 'crr')
-    dev.should be_a_dev
+    Factory(:user).should_not be_a_dev
+    Factory(:user, :username => 'crr').should be_a_dev
+  end
+  
+  it "should be able to tell when a user is a boss" do
+    Factory(:user).should_not be_a_boss
+    Factory(:user, :username => 'gar').should be_a_boss
   end
   
 end

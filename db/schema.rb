@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110506214957) do
+ActiveRecord::Schema.define(:version => 20110509181029) do
 
   create_table "comments", :force => true do |t|
     t.text     "content"
@@ -63,6 +63,17 @@ ActiveRecord::Schema.define(:version => 20110506214957) do
 
   add_index "events", ["author_id"], :name => "index_events_on_author_id"
   add_index "events", ["project_id"], :name => "index_events_on_project_id"
+
+  create_table "project_names", :force => true do |t|
+    t.string   "text"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "ancestry"
+    t.integer  "ancestry_depth", :default => 0
+  end
+
+  add_index "project_names", ["ancestry"], :name => "index_project_names_on_ancestry"
+  add_index "project_names", ["text"], :name => "index_project_names_on_text", :unique => true
 
   create_table "projects", :force => true do |t|
     t.string   "org_unit"

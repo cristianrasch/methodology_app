@@ -7,6 +7,7 @@ gem 'rails', '3.0.7'
 gem 'hpricot'
 gem 'ruby_parser'
 gem 'devise'
+gem 'ancestry'
 gem 'kaminari'
 gem "carrierwave"
 gem 'meta_where'

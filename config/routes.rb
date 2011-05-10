@@ -1,5 +1,7 @@
 MethodologyApp::Application.routes.draw do
 
+  resources :project_names
+
   get "projects_status/index"
 
   get "home/index"

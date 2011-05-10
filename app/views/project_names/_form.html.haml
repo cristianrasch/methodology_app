@@ -1,0 +1,13 @@
+= form.error_messages :header_message => nil, :message => nil
+
+%p
+  = form.label :text
+  %br/
+  = form.text_field :text
+
+- unless @project_names.empty?  
+  %p
+    = form.label :parent_id
+  = form.radio_button :parent_id, "", :checked => @project_name.new_record?
+  Ninguno
+  %div.ancestors= potential_ancestors(@project_names)

@@ -184,6 +184,7 @@ es-AR:
       event: evento
       comment: comentario
       task: tarea
+      project_name: nombre de proyecto
     attributes:
       user:
         email: Correo electrónico
@@ -237,6 +238,11 @@ es-AR:
         finished_at: Fecha de finalización
         updated_by: Actualizada por
         status: Estado
+      project_name:
+        text: Nombre
+        ancestry_depth: Profundidad
+        parent_id: Padre
+        path: Camino (padre --> hijo)
   lbls:
     created_at: Fecha de creación
     updated_at: Fecha de modificación

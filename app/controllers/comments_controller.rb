@@ -59,7 +59,7 @@ class CommentsController < ApplicationController
     @comment = Comment.find(params[:id], :include => [:author, {:commentable => {:project => :users}}])
     @commentable = @comment.commentable
     unless @comment.updatable_by?(current_user)
-      render :text => 'No tiene acceso', :status => :unauthorized and return false
+      render(:text => 'Acceso denegado.', :status => :unauthorized) and return false
     end
   end
 

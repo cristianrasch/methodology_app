@@ -28,6 +28,8 @@ GEM
       activemodel (= 3.0.7)
       activesupport (= 3.0.7)
     activesupport (3.0.7)
+    ancestry (1.2.4)
+      activerecord (>= 2.2.2)
     arel (2.0.9)
     bcrypt-ruby (2.1.4)
     builder (2.1.2)
@@ -122,6 +124,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  ancestry
   carrierwave
   delayed_job
   devise

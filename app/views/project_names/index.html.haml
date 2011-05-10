@@ -1,0 +1,9 @@
+= content_for :title, ProjectName.model_name.human.pluralize.humanize
+= content_for :sidebar do
+  = render 'sidebar'
+  
+- if @project_names.empty?
+  = not_found(ProjectName)
+- else
+  %ul
+    = nested_project_names(@project_names)

@@ -40,3 +40,7 @@ Factory.define :task do |t|
   t.association :owner, :factory => :user
   t.association :project
 end
+
+Factory.define :project_name do |pn|
+  pn.sequence(:text) {|n| n.to_s}
+end

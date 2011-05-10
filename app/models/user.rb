@@ -6,22 +6,6 @@ class User < ActiveRecord::Base
 
   USERNAME_REGEXP = /\A[a-z]{3}\z/
 
-  class Position
-    MANAGER = 1
-    BOSS = 2
-    OTHER = 3
-    
-    SELECT = [[MANAGER, 'Gerente'], [BOSS, 'Jefe'], [OTHER, 'Otro']]
-    
-    arr = constants.map(&:to_s)
-    arr.pop
-    arr.each do |position|
-      User.class_eval do
-        scope position.downcase.pluralize, where(:position => "User::Position::#{position}".constantize).order(:username)
-      end
-    end
-  end
-
   # Include default devise modules. Others available are:
   # :token_authenticatable, :confirmable, :lockable, :trackable, 
   # :registerable, :recoverable, :validatable and :timeoutable
@@ -92,8 +76,10 @@ class User < ActiveRecord::Base
     new_record?
   end
   
-  def dev?
-    Conf.devs.split(',').include?(username)
+  %w{dev boss}.each do |method|
+    define_method("#{method}?".to_sym) do
+      Conf.send(method.pluralize).split(',').include?(username)
+    end
   end
   
   private

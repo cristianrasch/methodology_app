@@ -1,0 +1,7 @@
+= content_for :title, "Nuevo #{ProjectName.model_name.human}"
+= content_for :sidebar do
+  = render 'sidebar'
+
+= form_for @project_name do |f|
+  = render f
+  = f.submit 'Crear'
