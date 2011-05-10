@@ -2,7 +2,8 @@ class ProjectsController < ApplicationController
 
   before_filter :authenticate_user!
   
-  autocomplete :project, :area, :column_name => 'area', :scopes => :by_area, :full => true
+  # TODO: update!
+  # autocomplete :project, :area, :column_name => 'area', :scopes => :by_area, :full => true
   
   def index
     @project = Project.new

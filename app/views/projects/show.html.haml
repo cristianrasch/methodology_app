@@ -11,27 +11,6 @@
   = path_for(@project.project_name)
 
 %p
-  = label_tag Project.human_attribute_name('org_unit')
-  %br/
-  = @project.org_unit.humanize
-
-%p
-  = label_tag Project.human_attribute_name('area')
-  %br/
-  = @project.area.humanize
-  
-%p
-  = label_tag Project.human_attribute_name('first_name')
-  %br/
-  = @project.first_name.humanize
-
-- if @project.last_name.present?
-  %p
-    = label_tag Project.human_attribute_name('last_name')
-    %br/
-    = @project.last_name.humanize
-
-%p
   = label_tag Project.human_attribute_name('klass')
   %br/
   = @project.klass_str

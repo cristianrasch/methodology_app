@@ -81,12 +81,12 @@ describe ProjectsController do
     end
     
     it "should update an existing project when valid params supplied" do
-      put :update, :id => Factory(:project), :project => {:area => 'desarrollo'}
+      put :update, :id => Factory(:project), :project => {:description => '..'}
       
       response.should be_redirect
       assigns[:project].should_not be_nil
       response.should redirect_to(assigns[:project])
-      assigns[:project].area.should == 'desarrollo'
+      assigns[:project].description.should == '..'
       flash[:notice].should == "#{Project.model_name.human.humanize} actualizado"
     end
   end
@@ -109,11 +109,11 @@ describe ProjectsController do
     assigns[:project].should_not be_nil
   end
   
-  it "should autocomplete project's area" do
-    area = ('a'..'h').map(&:to_s).join
-    Factory(:project, :area => area)
-    get :autocomplete_project_area, :term => area[1,3]
+  # it "should autocomplete project's area" do
+  #   area = ('a'..'h').map(&:to_s).join
+  #   Factory(:project, :area => area)
+  #   get :autocomplete_project_area, :term => area[1,3]
     
-    response.should be_success
-  end
+  #   response.should be_success
+  # end
 end

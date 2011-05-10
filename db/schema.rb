@@ -76,10 +76,6 @@ ActiveRecord::Schema.define(:version => 20110510162935) do
   add_index "project_names", ["text"], :name => "index_project_names_on_text", :unique => true
 
   create_table "projects", :force => true do |t|
-    t.string   "org_unit"
-    t.string   "area"
-    t.string   "first_name"
-    t.string   "last_name"
     t.text     "description"
     t.date     "estimated_start_date"
     t.date     "estimated_end_date"
@@ -102,6 +98,7 @@ ActiveRecord::Schema.define(:version => 20110510162935) do
 
   add_index "projects", ["dev_id"], :name => "index_projects_on_dev_id"
   add_index "projects", ["owner_id"], :name => "index_projects_on_owner_id"
+  add_index "projects", ["project_name_id"], :name => "index_projects_on_project_name_id"
   add_index "projects", ["started_on", "ended_on"], :name => "index_projects_on_started_on_and_ended_on"
   add_index "projects", ["status"], :name => "index_projects_on_status"
   add_index "projects", ["updated_by"], :name => "index_projects_on_updated_by"

@@ -8,9 +8,6 @@ describe Project do
     project = Project.new
     project.should_not be_valid
 
-    project.should have(1).error_on(:org_unit)
-    project.should have(1).error_on(:area)
-    project.should have(1).error_on(:first_name)
     project.should have(1).error_on(:description)
     project.should have(1).error_on(:estimated_start_date)
     project.should have(1).error_on(:estimated_end_date)
@@ -35,13 +32,6 @@ describe Project do
     project = Factory.build(:project, :estimated_start_date => Date.today, :estimated_end_date => Date.yesterday)
     project.should_not be_valid
     project.should have(1).error_on(:estimated_end_date)
-  end
-
-  it "should display its name correctly" do
-    project = Factory.build(:project)
-    project.to_s.should == project.first_name
-    project.last_name = 'secret'
-    project.to_s.should include('-')
   end
 
   it "should write its dates based on the strings supplieded as params" do
@@ -92,15 +82,11 @@ describe Project do
   end
 
   it "should search for projects based on the supplied params" do
-    p1 = Factory(:project, :org_unit => 'matriculas')
-    p2 = Factory(:project, :first_name => 'certificado de inscripción, libre deuda y sanción en la matric')
     p3 = create_model(:project, :started_on => 1.week.ago.to_date)
     dev = Factory(:user)
     p4 = Factory(:project, :dev => dev)
     p5 = create_model(:project, :status => Project::Status::CANCELED)
 
-    Project.search(Project.new(:org_unit => 'matriculas')).should have(1).record
-    Project.search(Project.new(:first_name => 'inscripción')).should have(1).record
     pr = Project.new
     pr.started_on = 8.days.ago.to_date
     Project.search(pr).should have(1).record
@@ -215,12 +201,12 @@ describe Project do
   context "when updating a project" do
     it "should not allow editing certain attrs when it isn't a new project" do
       project = Factory(:project)
-      new_org_unit = 'matriculas'
-      project.update_attributes(:org_unit => new_org_unit)
-      project.org_unit.should == new_org_unit
-      project.update_attributes(:org_unit => 'legalizaciones', :status => Project::Status::IN_DEV,
+      new_descrip = '...'
+      project.update_attributes(:description => new_descrip)
+      project.description.should == new_descrip
+      project.update_attributes(:description => '..', :status => Project::Status::IN_DEV,
                                 :updated_by => project.dev.id)
-      project.org_unit.should == new_org_unit
+      project.description.should == new_descrip
     end
     
     it "should still allow editing certain attrs when it isn't a new project" do

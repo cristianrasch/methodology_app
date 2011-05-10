@@ -6,8 +6,7 @@
       %tr
         %th N°
         %th Fecha
-        %th Sistema
-        %th Subsistema
+        %th Projecto
         %th Objetivo
         %th Tipo
         %th Analista
@@ -27,10 +26,9 @@
     %tbody
     - list.each do |project|
       %tr
-        %td= link_to(project.id, project)
+        %td= project.id
         %td= l(project.created_at, :format => :tiny)
-        %td= project.first_name.humanize
-        %td= project.last_name.humanize if project.last_name
+        %td= link_to(project, project)
         %td= truncate(project.description.humanize, :length => 25)
         %td= project.klass_str.first.upcase
         %td= project.dev.name

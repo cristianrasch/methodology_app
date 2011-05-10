@@ -62,9 +62,6 @@ class Project < ActiveRecord::Base
   end
   has_and_belongs_to_many :users
 
-  validates :org_unit, :presence => true
-  validates :area, :presence => true
-  validates :first_name, :presence => true
   validates :description, :presence => true
   validates :compl_perc, :numericality => { :greater_than_or_equal_to => 0, 
                                             :message => I18n.t('errors.messages.blank') }
@@ -87,9 +84,8 @@ class Project < ActiveRecord::Base
   scope :not_started, lambda { where(:estimated_start_date.lt => Date.today, :status => Project::Status::NEW) }
   scope :not_finished, lambda { where(:estimated_end_date.lt => Date.today, :ended_on => nil) }
   scope :finished, lambda { where(:status => Project::Status::FINISHED) }
-  scope :ordered, order(:started_on.desc, :first_name, :last_name)
+  scope :ordered, order(:started_on.desc)
   scope :developed_by, lambda { |dev| where(:dev => dev) }
-  scope :by_area, group('area') 
 
   before_save :set_default_envisaged_end_date
   before_save :translate_estimated_duration_into_seconds
@@ -99,21 +95,16 @@ class Project < ActiveRecord::Base
   @@per_page = 10
   attr_reader :user_tokens
   attr_accessor :indicator
-  attr_accessible :org_unit, :area, :first_name, :last_name, :description, :dev_id, :owner_id, :user_ids,
-                  :estimated_start_date, :estimated_end_date, :estimated_duration, :status, :updated_by,
-                  :user_tokens, :compl_perc, :klass, :indicator, :envisaged_end_date, :estimated_duration_unit,
-                  :project_name_id
+  attr_accessible :description, :dev_id, :owner_id, :user_ids, :estimated_start_date, :estimated_end_date, 
+                  :estimated_duration, :status, :updated_by, :user_tokens, :compl_perc, :klass, :indicator, 
+                  :envisaged_end_date, :estimated_duration_unit, :project_name_id
   
   class << self
     def search(template, page = nil)
       projects = scoped
       
-      [:org_unit, :area, :dev_id, :owner_id].each { |col|
+      [:dev_id, :owner_id].each { |col|
         projects = projects.where(col => template.send(col)) if template.send(col).present?
-      }
-    
-      [:first_name, :last_name].each { |col|
-        projects = projects.where(col.matches => "%#{template.send(col)}%") if template.send(col).present?
       }
     
       projects = projects.where(:started_on >= template.started_on) if template.started_on.present?
@@ -139,7 +130,7 @@ class Project < ActiveRecord::Base
   end
   
   def to_s
-    last_name.blank? ? first_name : first_name+' - '+last_name
+    project_name.to_s 
   end
   
   %w{estimated_start_date estimated_end_date started_on ended_on, envisaged_end_date}.each do |attr|

@@ -8,8 +8,4 @@ module ProjectsHelper
       children.empty? ? render('project_name', :project_name => project_name) : potential_project_names(children)
     end.join('<br/>').html_safe
   end
-  
-  def path_for(project_name)
-    project_name.path.map(&:text).join(' --> ')
-  end
 end

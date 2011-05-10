@@ -195,10 +195,6 @@ es-AR:
         name: Nombre
         org_unit: Sector
       project:
-        org_unit: Sector
-        area: Area
-        first_name: Primer Nombre
-        last_name: Segundo Nombre
         description: Descripción
         estimated_start_date: Fecha de inicio estimada
         estimated_end_date: Fecha de finalización estimada

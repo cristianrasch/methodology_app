@@ -25,9 +25,8 @@ class ProjectName < ActiveRecord::Base
     ances.arrange(:order => 'text')
   end
   
-  def select_name
-    txt = is_root? ? '' : "->"*ancestry_depth
-    txt+text
+  def to_s
+    path.map(&:text).join(' --> ')
   end
   
   private

@@ -22,26 +22,6 @@
     = potential_project_names(ProjectName.arranged)
   
   %p
-    = form.label :org_unit
-    %br/
-    = form.text_field :org_unit
-  
-  %p
-    = form.label :area
-    %br/
-    = form.text_field :area
-    
-  %p
-    = form.label :first_name
-    %br/
-    = form.text_field :first_name
-  
-  %p
-    = form.label :last_name
-    %br/
-    = form.text_field :last_name
-  
-  %p
     = form.label :klass
     %br/
     = form.select :klass, options_for_select(Project::Klass::SELECT, @project.new_record? ? nil : @project.klass), 

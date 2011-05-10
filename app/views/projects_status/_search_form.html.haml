@@ -1,7 +1,7 @@
 = form_for project, :url => projects_status_index_path, :html => {:method => :get} do |f|
   = label_tag 'Filtrar por'
-  &nbsp;-&nbsp;
-  = f.autocomplete_field :area, autocomplete_project_area_projects_path
+  / &nbsp;-&nbsp;
+  / = f.autocomplete_field :area, autocomplete_project_area_projects_path
   &nbsp;|&nbsp;
   = f.collection_select :dev_id, User.devs, :id, :name, 
                         {:prompt => 'Analista', :include_blank => project.dev_id.present?}, 
