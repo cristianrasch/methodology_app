@@ -6,6 +6,11 @@
   = render 'sidebar'
 
 %p
+  = label_tag Project.human_attribute_name('project_name_id')
+  %br/
+  = path_for(@project.project_name)
+
+%p
   = label_tag Project.human_attribute_name('org_unit')
   %br/
   = @project.org_unit.humanize

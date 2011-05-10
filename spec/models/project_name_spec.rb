@@ -61,4 +61,13 @@ describe ProjectName do
       ancestors.keys.should_not include(@another_child)
     end
   end
+  
+  it "should return a list of project's names which depth is lower than 3" do
+    roots = []
+    2.times { roots << Factory(:project_name) }
+    Factory(:project_name, :parent => roots.first)
+    project_names = ProjectName.arranged
+    project_names.should have(2).records
+    project_names[roots.first].should have(1).record
+  end
 end

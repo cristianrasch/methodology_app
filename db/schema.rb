@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110509181029) do
+ActiveRecord::Schema.define(:version => 20110510162935) do
 
   create_table "comments", :force => true do |t|
     t.text     "content"
@@ -97,6 +97,7 @@ ActiveRecord::Schema.define(:version => 20110509181029) do
     t.integer  "klass",                   :limit => 1, :default => 1
     t.date     "envisaged_end_date"
     t.integer  "estimated_duration_unit", :limit => 1, :default => 1
+    t.integer  "project_name_id"
   end
 
   add_index "projects", ["dev_id"], :name => "index_projects_on_dev_id"

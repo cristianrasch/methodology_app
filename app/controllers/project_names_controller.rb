@@ -3,7 +3,7 @@ class ProjectNamesController < ApplicationController
   before_filter :ensure_boss_logged_in
   
   def index
-    @project_names = ProjectName.before_depth(3).arrange(:order => 'text')
+    @project_names = ProjectName.arranged
   end
   
   def new

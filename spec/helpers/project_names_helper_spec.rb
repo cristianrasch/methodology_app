@@ -29,7 +29,7 @@ describe ProjectNamesHelper do
     end
     
     it "should display nested project names" do
-      html = helper.nested_project_names(ProjectName.before_depth(3).arrange(:order => 'text'))
+      html = helper.nested_project_names(ProjectName.arranged)
       (@roots.clone << @child << @another_child).each { |project_name|
         html.should include(project_name.text)
       }

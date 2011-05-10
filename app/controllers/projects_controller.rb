@@ -24,7 +24,7 @@ class ProjectsController < ApplicationController
   end
   
   def show
-    @project = Project.find(params[:id], :include => [:dev, :users])
+    @project = Project.find(params[:id], :include => [:dev, :users, :project_name])
   end
 
   def edit

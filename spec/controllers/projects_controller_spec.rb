@@ -39,7 +39,8 @@ describe ProjectsController do
     it "should create a new project when valid params supplied" do
       attrs = Factory.attributes_for(:project, :dev_id => @current_user.id,
                                     :owner_id => Factory(:user).id,  
-                                    :user_ids => [Factory(:user).id])
+                                    :user_ids => [Factory(:user).id],
+                                    :project_name_id => Factory(:project_name).id)
       lambda {
         post :create, :project => attrs
       }.should change(Project, :count).by(1)

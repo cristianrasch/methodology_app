@@ -17,6 +17,11 @@
 
 - if @project.new?
   %p
+    = form.label :project_name_id
+  %p
+    = potential_project_names(ProjectName.arranged)
+  
+  %p
     = form.label :org_unit
     %br/
     = form.text_field :org_unit

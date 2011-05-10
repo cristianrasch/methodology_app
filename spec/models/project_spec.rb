@@ -16,6 +16,7 @@ describe Project do
     project.should have(1).error_on(:estimated_end_date)
     project.should have(1).error_on(:estimated_duration)
     project.should have(1).error_on(:user_ids)
+    project.should have(1).error_on(:project_name_id)
   end
 
   it "should find active projects" do

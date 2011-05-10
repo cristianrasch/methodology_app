@@ -52,6 +52,7 @@ class Project < ActiveRecord::Base
   belongs_to :owner, :class_name => 'User'
   belongs_to :dev, :class_name => 'User', :foreign_key => :dev_id
   belongs_to :updater, :class_name => 'User', :foreign_key => :updated_by
+  belongs_to :project_name
   has_many :events, :dependent => :destroy, :order => 'created_at desc'
   has_many :tasks, :dependent => :destroy do
     def list(options={})
@@ -73,6 +74,8 @@ class Project < ActiveRecord::Base
                                         :message => I18n.t('errors.messages.blank') }
   validates :owner_id, :numericality => { :greater_than => 0, 
                                           :message => I18n.t('errors.messages.blank') }
+  validates :project_name_id, :numericality => { :greater_than => 0, 
+                                                 :message => I18n.t('errors.messages.blank') }
   validates :estimated_start_date, :presence => true
   validates :estimated_end_date, :presence => true
   validates :estimated_duration, :numericality => { :greater_than => 0 }
@@ -98,7 +101,8 @@ class Project < ActiveRecord::Base
   attr_accessor :indicator
   attr_accessible :org_unit, :area, :first_name, :last_name, :description, :dev_id, :owner_id, :user_ids,
                   :estimated_start_date, :estimated_end_date, :estimated_duration, :status, :updated_by,
-                  :user_tokens, :compl_perc, :klass, :indicator, :envisaged_end_date, :estimated_duration_unit
+                  :user_tokens, :compl_perc, :klass, :indicator, :envisaged_end_date, :estimated_duration_unit,
+                  :project_name_id
   
   class << self
     def search(template, page = nil)

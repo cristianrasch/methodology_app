@@ -9,6 +9,12 @@ class ProjectName < ActiveRecord::Base
   
   attr_accessible :text, :parent_id
   
+  class << self
+    def arranged
+      before_depth(3).arrange(:order => 'text')
+    end
+  end
+  
   def potential_ancestors
     if new_record? or ancestry_depth < 2
       ances = self.class.before_depth(2)
@@ -17,6 +23,11 @@ class ProjectName < ActiveRecord::Base
       ances = ancestors
     end
     ances.arrange(:order => 'text')
+  end
+  
+  def select_name
+    txt = is_root? ? '' : "->"*ancestry_depth
+    txt+text
   end
   
   private

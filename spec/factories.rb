@@ -16,6 +16,7 @@ Factory.define :project do |p|
   p.estimated_duration 80
   p.association :owner, :factory => :user
   p.association :dev, :factory => :user
+  p.association :project_name
   3.times { p.after_build { |pp| pp.users << Factory(:user) } }
 end
 
