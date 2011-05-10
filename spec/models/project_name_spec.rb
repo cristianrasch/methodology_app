@@ -70,4 +70,17 @@ describe ProjectName do
     project_names.should have(2).records
     project_names[roots.first].should have(1).record
   end
+  
+  it "should return an Array of leaves" do
+    roots = []
+    2.times { roots << Factory(:project_name) }
+    child = Factory(:project_name, :parent => roots.first)
+    another_child = Factory(:project_name, :parent => child)
+    
+    leaves = ProjectName.leaves(ProjectName.arranged)
+    leaves.should include(roots.last)
+    leaves.should include(another_child)
+    leaves.should_not include(roots.first)
+    leaves.should_not include(child)
+  end
 end

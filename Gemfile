@@ -1,7 +1,6 @@
 source 'http://rubygems.org'
 
 gem 'jquery-rails', '>= 0.2.6'
-gem 'rails3-jquery-autocomplete'
 gem 'haml'
 gem 'rails', '3.0.7'
 gem 'hpricot'

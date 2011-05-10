@@ -13,6 +13,12 @@ class ProjectName < ActiveRecord::Base
     def arranged
       before_depth(3).arrange(:order => 'text')
     end
+    
+    def leaves(project_names)
+      project_names.map do |project_name, children|
+        children.empty? ? project_name : leaves(children)
+      end.flatten.compact
+    end
   end
   
   def potential_ancestors

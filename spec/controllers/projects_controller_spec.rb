@@ -108,12 +108,4 @@ describe ProjectsController do
     response.should render_template('library')
     assigns[:project].should_not be_nil
   end
-  
-  # it "should autocomplete project's area" do
-  #   area = ('a'..'h').map(&:to_s).join
-  #   Factory(:project, :area => area)
-  #   get :autocomplete_project_area, :term => area[1,3]
-    
-  #   response.should be_success
-  # end
 end

@@ -2,9 +2,6 @@ class ProjectsController < ApplicationController
 
   before_filter :authenticate_user!
   
-  # TODO: update!
-  # autocomplete :project, :area, :column_name => 'area', :scopes => :by_area, :full => true
-  
   def index
     @project = Project.new
     @projects = Project.search_for(current_user, params[:page])
