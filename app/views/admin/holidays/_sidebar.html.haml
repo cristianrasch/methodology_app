@@ -1,0 +1,14 @@
+#sidebar
+  %ul
+    %li
+      %h2 Menú
+      %ul
+        - if controller.action_name == 'index'
+          %li
+            = link_to 'Nuevo', new_admin_holiday_path
+        - else
+          %li
+            = link_to 'Inicio', admin_holidays_path
+        %li
+          = link_to 'Volver', :back
+/ end #sidebar

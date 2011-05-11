@@ -3,8 +3,12 @@ require 'spec_helper'
 describe DateUtils do
 
   before do
-    @obj = Object.new
-    @obj.extend(DateUtils)
+    Klass = Class.new do
+      include DateUtils
+      attr_reader :date
+      date_writer_for :date      
+    end
+    @obj = Klass.new
   end
   
   it "should return a Date object based on the string passed in" do

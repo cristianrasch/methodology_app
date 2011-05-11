@@ -4,6 +4,8 @@
       %li.current_page_item.first
         = link_to Project.model_name.human.humanize.pluralize, projects_path
       %li
+        = link_to Holiday.model_name.human.humanize.pluralize, admin_holidays_path
+      %li
         = link_to 'Salir', destroy_user_session_path
       %li.current_page_item.first.right
         = link_to current_user.username, edit_account_path

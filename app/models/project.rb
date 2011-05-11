@@ -98,6 +98,7 @@ class Project < ActiveRecord::Base
   attr_accessible :description, :dev_id, :owner_id, :user_ids, :estimated_start_date, :estimated_end_date, 
                   :estimated_duration, :status, :updated_by, :user_tokens, :compl_perc, :klass, :indicator, 
                   :envisaged_end_date, :estimated_duration_unit, :project_name_id
+  date_writer_for :estimated_start_date, :estimated_end_date, :envisaged_end_date
   
   class << self
     def search(template, page = nil)
@@ -133,15 +134,15 @@ class Project < ActiveRecord::Base
     project_name.to_s 
   end
   
-  %w{estimated_start_date estimated_end_date started_on ended_on, envisaged_end_date}.each do |attr|
-    define_method("#{attr}=") do |date|
-      if date.is_a?(Date)
-        write_attribute(attr, date)
-      else
-        write_attribute(attr, (date.blank? ? nil : format_date(date)))
-      end
-    end
-  end
+  #%w{estimated_start_date estimated_end_date envisaged_end_date}.each do |attr|
+  #  define_method("#{attr}=") do |date|
+  #    if date.is_a?(Date)
+  #      write_attribute(attr, date)
+  #    else
+  #      write_attribute(attr, (date.blank? ? nil : format_date(date)))
+  #    end
+  #  end
+  #end
   
   def all_users
     users(true).to_a.push(dev, owner)

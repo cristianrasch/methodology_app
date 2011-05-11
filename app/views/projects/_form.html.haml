@@ -51,13 +51,13 @@
     = form.label :estimated_start_date
     %br/
     = form.text_field :estimated_start_date, :size => 27, 
-                      :value => project_date(@project.estimated_start_date)
+                      :value => date_default_value(@project.estimated_start_date)
     
   %p
     = form.label :estimated_end_date
     %br/
     = form.text_field :estimated_end_date, :size => 27, 
-                      :value => project_date(@project.estimated_end_date)
+                      :value => date_default_value(@project.estimated_end_date)
   
   %p
     = form.label :estimated_duration
@@ -75,4 +75,4 @@
     = form.label :envisaged_end_date
     %br/
     = form.text_field :envisaged_end_date, :size => 27, 
-                      :value => project_date(@project.envisaged_end_date)
+                      :value => date_default_value(@project.envisaged_end_date)

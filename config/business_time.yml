@@ -1,0 +1,7 @@
+business_time:
+  beginning_of_workday: 10:00 am
+  end_of_workday: 7:00 pm
+  holidays:
+    - Jan 01, 2010
+    # - July 4th, 2010
+    - December 25th, 2010

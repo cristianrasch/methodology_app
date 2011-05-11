@@ -11,6 +11,10 @@ require 'spec_helper'
 #   end
 # end
 describe ApplicationHelper do
+  it "should localize dates or return nil" do
+    helper.date_default_value(nil).should be_nil
+    helper.date_default_value(Date.civil(2008, 12, 23)).should == '23/12/2008'
+  end
 
   it "should display a not found message" do
     helper.not_found(Comment).should =~ /No se encontraron comentarios/

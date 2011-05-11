@@ -185,6 +185,7 @@ es-AR:
       comment: comentario
       task: tarea
       project_name: nombre de proyecto
+      holiday: feriado
     attributes:
       user:
         email: Correo electrónico
@@ -240,6 +241,9 @@ es-AR:
         ancestry_depth: Profundidad
         parent_id: Padre
         path: Camino (padre --> hijo)
+      holiday:
+        name: Nombre
+        date: Fecha
   lbls:
     created_at: Fecha de creación
     updated_at: Fecha de modificación

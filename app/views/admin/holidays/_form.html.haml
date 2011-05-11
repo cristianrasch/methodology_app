@@ -1,0 +1,19 @@
+= content_for :head do
+  = javascript_include_tag 'jquery-ui-1.8.12.custom.min', 'jquery.ui.datepicker-es'
+  = stylesheet_link_tag 'jquery-ui-1.8.12.custom'
+  :javascript
+    $(document).ready(function() {
+      $('#holiday_date').datepicker();
+    });
+
+= form.error_messages :header_message => nil, :message => nil
+
+%p
+  = form.label(:name)
+  %br/
+  = form.text_field(:name)
+
+%p
+  = form.label(:date)
+  %br/
+  = form.text_field(:date, :size => 27, :value => date_default_value(@holiday.date))

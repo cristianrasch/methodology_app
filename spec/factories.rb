@@ -42,3 +42,8 @@ end
 Factory.define :project_name do |pn|
   pn.sequence(:text) {|n| n.to_s}
 end
+
+Factory.define :holiday do |h|
+  h.sequence(:name) {|n| "Holiday ##{n}"}
+  h.date Date.tomorrow
+end

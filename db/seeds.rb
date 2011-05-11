@@ -11,6 +11,26 @@
 # import production users
 User.import
 
+# 2011 holidays
+Holiday.create!(:name => "Año Nuevo", :date => Date.civil(2011,1,1))
+Holiday.create!(:name => "Carnaval", :date => Date.civil(2011,3,7))
+Holiday.create!(:name => "Carnaval", :date => Date.civil(2011,3,8))
+Holiday.create!(:name => "Día nacional de la Memoria por la verdad y la Justicia", :date => Date.civil(2011,3,24))
+Holiday.create!(:name => "Feriado puente turístico", :date => Date.civil(2011,3,25))
+Holiday.create!(:name => "Día del Veterano y de los Caídos en la Guerra de Malvinas", :date => Date.civil(2011,4,2))
+Holiday.create!(:name => "Jueves Santo Festividad Cristiana", :date => Date.civil(2011,4,21))
+Holiday.create!(:name => "Viernes Santo Festividad Cristiana", :date => Date.civil(2011,4,22))
+Holiday.create!(:name => "Día del Trabajador", :date => Date.civil(2011,5,1))
+Holiday.create!(:name => "Primer Gobierno Patrio", :date => Date.civil(2011,5,25))
+Holiday.create!(:name => "Día de la Bandera", :date => Date.civil(2011,6,20))
+Holiday.create!(:name => "Día de la Independencia", :date => Date.civil(2011,7,9))
+Holiday.create!(:name => "Día del Libertador José de San Martín", :date => Date.civil(2011,8,22))
+Holiday.create!(:name => "Día del Respeto a la Diversidad Cultural", :date => Date.civil(2011,10,10))
+Holiday.create!(:name => "Día de la Soberanía Nacional", :date => Date.civil(2011,11,28))
+Holiday.create!(:name => "Inmaculada Concepción de María", :date => Date.civil(2011,12,8))
+Holiday.create!(:name => "Feriado puente turístico", :date => Date.civil(2011,12,9))
+Holiday.create!(:name => "Navidad", :date => Date.civil(2011,12,25))
+
 mpa = User.find_by_username('mpa')
 leg = Factory(:project, :description => 'Inscripc Simplificada Matriculados', :klass => Project::Klass::IMPR, 
               :dev => mpa)

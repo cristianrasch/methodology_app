@@ -1,0 +1,7 @@
+= content_for :title, "Nuevo #{Holiday.model_name.human}"
+= content_for :sidebar do
+  = render 'sidebar'
+
+= form_for @holiday, :url => admin_holidays_path do |f|
+  = render f
+  = f.submit 'Crear'

@@ -33,4 +33,8 @@ module ApplicationHelper
     end
     pluralize(model.send("orig_#{attr}"), singular)
   end
+  
+  def date_default_value(date)
+    date ? l(date) : nil
+  end
 end

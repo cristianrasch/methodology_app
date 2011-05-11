@@ -1,5 +1,10 @@
 MethodologyApp::Application.routes.draw do
 
+  namespace :admin do
+    post 'users/import'
+    resources :holidays
+  end
+
   resources :project_names
 
   get "projects_status/index"
@@ -8,7 +13,6 @@ MethodologyApp::Application.routes.draw do
 
   devise_for :users
   resource :account, :only => [:edit, :update]
-  match 'admin/users/import' => 'admin/users#import', :via => :post
   match 'users' => 'users#index'
 
   resources :projects, :shallow => true do
