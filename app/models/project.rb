@@ -47,7 +47,6 @@ class Project < ActiveRecord::Base
 
   include DateUtils
   include AsyncEmail
-  include Duration::Utils
   
   belongs_to :owner, :class_name => 'User'
   belongs_to :dev, :class_name => 'User', :foreign_key => :dev_id
@@ -88,7 +87,6 @@ class Project < ActiveRecord::Base
   scope :developed_by, lambda { |dev| where(:dev => dev) }
 
   before_save :set_default_envisaged_end_date
-  before_save :translate_estimated_duration_into_seconds
   after_save :notify_project_saved
   
   cattr_reader :per_page
@@ -134,16 +132,6 @@ class Project < ActiveRecord::Base
     project_name.to_s 
   end
   
-  #%w{estimated_start_date estimated_end_date envisaged_end_date}.each do |attr|
-  #  define_method("#{attr}=") do |date|
-  #    if date.is_a?(Date)
-  #      write_attribute(attr, date)
-  #    else
-  #      write_attribute(attr, (date.blank? ? nil : format_date(date)))
-  #    end
-  #  end
-  #end
-  
   def all_users
     users(true).to_a.push(dev, owner)
   end
@@ -174,13 +162,10 @@ class Project < ActiveRecord::Base
     elsif stat.to_i == Status::FINISHED
       self.compl_perc = 100
       self.ended_on = Date.today
+      # FIXME: should split into hours, days & weeks
       self.actual_duration = events.sum(:duration) + tasks.sum(:duration)
     end
     super
-  end
-  
-  def orig_estimated_duration
-    original_duration(self, :estimated_duration)
   end
   
   def status_str
@@ -222,9 +207,5 @@ class Project < ActiveRecord::Base
   
   def set_default_envisaged_end_date
     self.envisaged_end_date = estimated_end_date unless envisaged_end_date
-  end
-  
-  def translate_estimated_duration_into_seconds
-    self.estimated_duration = duration_in_seconds(self, :estimated_duration)
   end
 end

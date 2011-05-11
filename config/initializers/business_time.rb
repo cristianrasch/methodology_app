@@ -5,4 +5,4 @@ BusinessTime::Config.load("#{Rails.root}/config/business_time.yml")
 #  BusinessTime.Comfig.end_of_workday = "11:30 am"
 #  BusinessTime.config.holidays << Date.parse("August 4th, 2010")
 
-BusinessTime::Config.holidays += Holiday.this_year.map(&:date)
+BusinessTime::Config.holidays += Holiday.this_year.map(&:date) if Holiday.table_exists?

@@ -31,7 +31,7 @@ module ApplicationHelper
       when Duration::DAY then 'día'
       when Duration::WEEK then 'semana'
     end
-    pluralize(model.send("orig_#{attr}"), singular)
+    pluralize(model.send(attr), singular)
   end
   
   def date_default_value(date)

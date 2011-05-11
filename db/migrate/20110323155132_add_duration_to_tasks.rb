@@ -1,7 +1,7 @@
 class AddDurationToTasks < ActiveRecord::Migration
   def self.up
     change_table :tasks  do |t|
-      t.float :duration
+      t.integer :duration
     end
   end
 

@@ -62,7 +62,7 @@
   %p
     = form.label :estimated_duration
     %br/
-    = form.text_field :estimated_duration, :value => @project.orig_estimated_duration, :size => 4
+    = form.text_field :estimated_duration, :size => 4
     = duration_options_for(@project, :estimated_duration_unit)
 
 - unless @project.finished?

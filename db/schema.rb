@@ -53,7 +53,7 @@ ActiveRecord::Schema.define(:version => 20110511161454) do
     t.string   "attachment1"
     t.string   "attachment2"
     t.string   "attachment3"
-    t.float    "duration"
+    t.integer  "duration"
     t.integer  "project_id"
     t.integer  "author_id"
     t.datetime "created_at"
@@ -90,7 +90,7 @@ ActiveRecord::Schema.define(:version => 20110511161454) do
     t.date     "estimated_end_date"
     t.date     "started_on"
     t.date     "ended_on"
-    t.float    "estimated_duration"
+    t.integer  "estimated_duration"
     t.float    "actual_duration"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -131,7 +131,7 @@ ActiveRecord::Schema.define(:version => 20110511161454) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.datetime "finished_at"
-    t.float    "duration"
+    t.integer  "duration"
     t.integer  "status",        :limit => 1, :default => 1
     t.integer  "updated_by"
     t.integer  "duration_unit", :limit => 1, :default => 1

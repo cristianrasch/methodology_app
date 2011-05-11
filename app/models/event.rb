@@ -2,7 +2,6 @@ class Event < ActiveRecord::Base
 
   include Commentable
   include AsyncEmail
-  include Duration::Utils
 
   belongs_to :project
   belongs_to :author, :class_name => 'User'
@@ -18,7 +17,6 @@ class Event < ActiveRecord::Base
   
   1.upto(3) { |i| mount_uploader "attachment#{i}", FileUploader }
   
-  before_save :translate_duration_into_seconds
   after_save :notify_event_saved
 
   attr_accessible :stage, :status, :duration, :duration_unit
@@ -39,17 +37,9 @@ class Event < ActiveRecord::Base
     Conf.statuses[status].humanize
   end
   
-  def orig_duration
-    original_duration(self, :duration)
-  end
-  
   private
   
   def notify_event_saved
     send_async(EventNotifier, :event_saved, self)
-  end
-  
-  def translate_duration_into_seconds
-    self.duration = duration_in_seconds(self, :duration)
   end
 end

@@ -233,13 +233,4 @@ describe Project do
     project.envisaged_end_date.should_not be_nil
     project.envisaged_end_date.should == project.estimated_end_date
   end
-  
-  it "should be able to translate its estimated_duration back & forth" do
-    project = Factory(:project, :estimated_duration => 10, :estimated_duration_unit => Duration::HOUR)
-    project.estimated_duration.should == 10.hours
-    project.orig_estimated_duration == 10
-    project.update_attributes(:estimated_duration => 2, :estimated_duration_unit => Duration::DAY)
-    project.estimated_duration.should == 2.days
-    project.orig_estimated_duration == 2
-  end
 end

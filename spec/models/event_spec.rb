@@ -38,13 +38,4 @@ describe Event do
     str.should match(/#{Conf.stages.first.last}/i)
     str.should match(/#{Conf.statuses.first.last}/i)
   end
-  
-  it "should be able to translate its duration back & forth" do
-    event = Factory(:event, :duration => 10, :duration_unit => Duration::HOUR)
-    event.duration.should == 10.hours
-    event.orig_duration == 10
-    event.update_attributes(:duration => 2, :duration_unit => Duration::DAY)
-    event.duration.should == 2.days
-    event.orig_duration == 2
-  end
 end

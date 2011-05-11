@@ -54,8 +54,8 @@ describe ApplicationHelper do
     project = Factory(:project, :estimated_duration => 168, :estimated_duration_unit => Duration::HOUR)
     helper.duration_desc(project, :estimated_duration).should == '168 horas'
     project.estimated_duration_unit = Duration::DAY
-    helper.duration_desc(project, :estimated_duration).should == '7 días'
+    helper.duration_desc(project, :estimated_duration).should == '168 días'
     project.estimated_duration_unit = Duration::WEEK
-    helper.duration_desc(project, :estimated_duration).should == '1 semana'
+    helper.duration_desc(project, :estimated_duration).should == '168 semanas'
   end
 end

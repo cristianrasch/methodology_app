@@ -18,7 +18,7 @@
               %tr
                 %td Inicio
                 %td Fin
-                %td Horas
+                %td Duración
         %th Etapa
         %th Estado
         %th % Avance
@@ -38,7 +38,7 @@
               %tr
                 %td= l(project.estimated_start_date, :format => :tiny)
                 %td= l(project.estimated_end_date, :format => :tiny)
-                %td= project.estimated_duration
+                %td= duration_desc(project, :estimated_duration)
         %td= project.events.first ? project.events.first.stage_str : nil
         %td= project.events.first ? project.events.first.status_str : nil
         %td #{project.compl_perc} %
