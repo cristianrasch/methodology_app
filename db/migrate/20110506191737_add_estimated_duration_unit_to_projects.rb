@@ -1,10 +1,10 @@
 class AddEstimatedDurationUnitToProjects < ActiveRecord::Migration
   module Duration
-    HOUR = 1
+    DAY = 2
   end
   
   def self.up
-    add_column :projects, :estimated_duration_unit, :integer, :default => Duration::HOUR, :limit => 1
+    add_column :projects, :estimated_duration_unit, :integer, :default => Duration::DAY, :limit => 1
   end
 
   def self.down

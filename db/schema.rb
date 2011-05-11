@@ -58,7 +58,7 @@ ActiveRecord::Schema.define(:version => 20110511161454) do
     t.integer  "author_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "duration_unit", :limit => 1, :default => 1
+    t.integer  "duration_unit", :limit => 1, :default => 2
   end
 
   add_index "events", ["author_id"], :name => "index_events_on_author_id"
@@ -101,7 +101,7 @@ ActiveRecord::Schema.define(:version => 20110511161454) do
     t.integer  "compl_perc",              :limit => 1, :default => 0
     t.integer  "klass",                   :limit => 1, :default => 1
     t.date     "envisaged_end_date"
-    t.integer  "estimated_duration_unit", :limit => 1, :default => 1
+    t.integer  "estimated_duration_unit", :limit => 1, :default => 2
     t.integer  "project_name_id"
   end
 
@@ -134,7 +134,7 @@ ActiveRecord::Schema.define(:version => 20110511161454) do
     t.integer  "duration"
     t.integer  "status",        :limit => 1, :default => 1
     t.integer  "updated_by"
-    t.integer  "duration_unit", :limit => 1, :default => 1
+    t.integer  "duration_unit", :limit => 1, :default => 2
   end
 
   add_index "tasks", ["author_id"], :name => "index_tasks_on_author_id"
