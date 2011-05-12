@@ -80,14 +80,22 @@ describe ProjectsController do
       assigns[:project].should_not be_valid
     end
     
-    it "should update an existing project when valid params supplied" do
-      put :update, :id => Factory(:project), :project => {:description => '..'}
+    it "should update an existing project" do
+      lambda {
+        put :update, :id => Factory(:project), :project => {:description => '..'}
+      }.should change(ActionMailer::Base.deliveries, :length).by(1)
       
       response.should be_redirect
       assigns[:project].should_not be_nil
       response.should redirect_to(assigns[:project])
       assigns[:project].description.should == '..'
       flash[:notice].should == "#{Project.model_name.human.humanize} actualizado"
+    end
+    
+    it "should send an email when date is updated" do
+      lambda {
+        put :update, :id => Factory(:project), :project => {:envisaged_end_date => 3.months.from_now.to_date}
+      }.should change(ActionMailer::Base.deliveries, :length).by(1)
     end
   end
   

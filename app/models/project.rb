@@ -209,7 +209,9 @@ class Project < ActiveRecord::Base
   end
   
   def notify_project_saved
-    send_async(ProjectNotifier, :project_saved, self)
+    if created_at == updated_at || Project.column_names.grep(/_date$/).any? {|attr| send("#{attr}_changed?")}
+      send_async(ProjectNotifier, :project_saved, self)
+    end
   end
   
   def set_default_envisaged_end_date
