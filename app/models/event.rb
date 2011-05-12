@@ -2,6 +2,7 @@ class Event < ActiveRecord::Base
 
   include Commentable
   include AsyncEmail
+  include Duration
 
   belongs_to :project
   belongs_to :author, :class_name => 'User'
@@ -35,6 +36,10 @@ class Event < ActiveRecord::Base
 
   def status_str
     Conf.statuses[status].humanize
+  end
+  
+  def duration_in_days
+    in_days(self, :duration)
   end
   
   private

@@ -7,7 +7,7 @@ class CreateProjects < ActiveRecord::Migration
       t.date :started_on
       t.date :ended_on
       t.integer :estimated_duration
-      t.float :actual_duration
+      t.integer :actual_duration
 
       t.timestamps
     end

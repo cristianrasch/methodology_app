@@ -15,6 +15,7 @@ class Task < ActiveRecord::Base
   
   include Commentable
   include AsyncEmail
+  include Duration
 
   belongs_to :project
   belongs_to :author, :class_name => 'User'
@@ -59,6 +60,10 @@ class Task < ActiveRecord::Base
   def status_str
     arr = Status::SELECT.find {|arr| arr.last == status}
     arr.first if arr
+  end
+  
+  def duration_in_days
+    in_days(self, :duration)
   end
   
   private

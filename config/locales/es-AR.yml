@@ -214,7 +214,7 @@ es-AR:
       event:
         stage: Etapa
         status: Estado
-        duration: Horas insumidas
+        duration: Duración
         attachment1: Archivo 1
         attachment2: Archivo 2
         attachment3: Archivo 3
@@ -232,7 +232,7 @@ es-AR:
         attachment3: Archivo 3
         author_id: Autor
         owner_id: Resonsable
-        duration: Horas insumidas
+        duration: Duración
         finished_at: Fecha de finalización
         updated_by: Actualizada por
         status: Estado

@@ -47,11 +47,13 @@ class Project < ActiveRecord::Base
 
   include DateUtils
   include AsyncEmail
+  include Duration
   
   belongs_to :owner, :class_name => 'User'
   belongs_to :dev, :class_name => 'User', :foreign_key => :dev_id
   belongs_to :updater, :class_name => 'User', :foreign_key => :updated_by
   belongs_to :project_name
+  belongs_to :delayed_by_proj, :class_name => 'Project', :foreign_key => :delayed_by
   has_many :events, :dependent => :destroy, :order => 'created_at desc'
   has_many :tasks, :dependent => :destroy do
     def list(options={})
@@ -84,10 +86,13 @@ class Project < ActiveRecord::Base
   scope :not_finished, lambda { where(:estimated_end_date.lt => Date.today, :ended_on => nil) }
   scope :finished, lambda { where(:status => Project::Status::FINISHED) }
   scope :ordered, order(:started_on.desc)
-  scope :developed_by, lambda { |dev| where(:dev => dev) }
+  scope :developed_by, lambda { |dev_id| where(:dev_id => dev_id) }
+  scope :upcoming, lambda { where( :status => Project::Status::NEW) }
+  scope :on_course_by, lambda { |date| where(['? between estimated_start_date and estimated_end_date', date]) }
 
   before_save :set_default_envisaged_end_date
   after_save :notify_project_saved
+  after_save :update_schedule_if_necessary
   
   cattr_reader :per_page
   @@per_page = 10
@@ -95,7 +100,7 @@ class Project < ActiveRecord::Base
   attr_accessor :indicator
   attr_accessible :description, :dev_id, :owner_id, :user_ids, :estimated_start_date, :estimated_end_date, 
                   :estimated_duration, :status, :updated_by, :user_tokens, :compl_perc, :klass, :indicator, 
-                  :envisaged_end_date, :estimated_duration_unit, :project_name_id
+                  :envisaged_end_date, :estimated_duration_unit, :project_name_id, :delayed_by
   date_writer_for :estimated_start_date, :estimated_end_date, :envisaged_end_date
   
   class << self
@@ -119,7 +124,7 @@ class Project < ActiveRecord::Base
     end
     
     def search_for(user, page = nil)
-      projects = user.dev? ? developed_by(user) : scoped
+      projects = user.dev? ? developed_by(user.id) : scoped
       projects.on_course.ordered.page(page).per(Project.per_page)
     end
   end
@@ -162,8 +167,7 @@ class Project < ActiveRecord::Base
     elsif stat.to_i == Status::FINISHED
       self.compl_perc = 100
       self.ended_on = Date.today
-      # FIXME: should split into hours, days & weeks
-      self.actual_duration = events.sum(:duration) + tasks.sum(:duration)
+      self.actual_duration = events.map(&:duration_in_days).sum + tasks.map(&:duration_in_days).sum
     end
     super
   end
@@ -207,5 +211,17 @@ class Project < ActiveRecord::Base
   
   def set_default_envisaged_end_date
     self.envisaged_end_date = estimated_end_date unless envisaged_end_date
+  end
+  
+  def update_schedule_if_necessary
+    if estimated_start_date_changed?
+      delay = in_days(self, :estimated_duration)
+      affected_projects = Project.where(:id ^ id).upcoming.on_course_by(estimated_start_date).developed_by(dev_id)
+      affected_projects.each do |project|
+        project.update_attributes(:estimated_start_date => delay.business_days.after(project.estimated_start_date).to_date,
+                                  :estimated_end_date => delay.business_days.after(project.estimated_end_date).to_date,
+                                  :delayed_by => id)
+      end
+    end
   end
 end

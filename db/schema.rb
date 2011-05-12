@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110511161454) do
+ActiveRecord::Schema.define(:version => 20110512130826) do
 
   create_table "comments", :force => true do |t|
     t.text     "content"
@@ -91,7 +91,7 @@ ActiveRecord::Schema.define(:version => 20110511161454) do
     t.date     "started_on"
     t.date     "ended_on"
     t.integer  "estimated_duration"
-    t.float    "actual_duration"
+    t.integer  "actual_duration"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "dev_id"
@@ -103,8 +103,10 @@ ActiveRecord::Schema.define(:version => 20110511161454) do
     t.date     "envisaged_end_date"
     t.integer  "estimated_duration_unit", :limit => 1, :default => 2
     t.integer  "project_name_id"
+    t.integer  "delayed_by"
   end
 
+  add_index "projects", ["delayed_by"], :name => "index_projects_on_delayed_by"
   add_index "projects", ["dev_id"], :name => "index_projects_on_dev_id"
   add_index "projects", ["owner_id"], :name => "index_projects_on_owner_id"
   add_index "projects", ["project_name_id"], :name => "index_projects_on_project_name_id"
