@@ -10,13 +10,16 @@ class Project < ActiveRecord::Base
     
     SELECT = [['Nuevo', NEW], ['En desarrollo', IN_DEV], ['Detenido', STOPPED], 
               ['Cancelado', CANCELED], ['Terminado', FINISHED]]
-  end
-  arr = Status.constants.map {|const| const.to_s.downcase}
-  arr.pop
-  arr.each do |stat|
-    define_method("#{stat}?") {
-      status == "Project::Status::#{stat.upcase}".constantize
-    }
+
+    Project.class_eval do
+      arr = Project::Status.constants.map {|const| const.to_s.downcase}
+      arr.pop
+      arr.each do |stat|
+        define_method("#{stat}?") {
+          status == "Project::Status::#{stat.upcase}".constantize
+        }
+      end
+    end
   end
   
   class Klass
@@ -216,11 +219,20 @@ class Project < ActiveRecord::Base
   def update_schedule_if_necessary
     if estimated_start_date_changed?
       delay = in_days(self, :estimated_duration)
-      affected_projects = Project.where(:id ^ id).upcoming.on_course_by(estimated_start_date).developed_by(dev_id)
+      affected_projects = self.class.where(:id ^ id).upcoming.on_course_by(estimated_start_date).developed_by(dev_id)
       affected_projects.each do |project|
         project.update_attributes(:estimated_start_date => delay.business_days.after(project.estimated_start_date).to_date,
                                   :estimated_end_date => delay.business_days.after(project.estimated_end_date).to_date,
                                   :delayed_by => id)
+      end
+    end
+    
+    if envisaged_end_date_changed? && envisaged_end_date_was
+      delay = (envisaged_end_date - envisaged_end_date_was).to_i
+      change = delay > 0 ? envisaged_end_date_was.business_days_until(envisaged_end_date) : envisaged_end_date.business_days_until(envisaged_end_date_was)
+      self.class.where(:delayed_by => id).each do |project|
+        project.update_attributes(:estimated_start_date => change.business_days.send(delay > 0 ? :after : :before, project.estimated_start_date).to_date,
+                                  :estimated_end_date => change.business_days.send(delay > 0 ? :after : :before, project.estimated_end_date).to_date)
       end
     end
   end
