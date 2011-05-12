@@ -64,7 +64,7 @@ es-AR:
   time:
     formats:
       tiny: "%d/%m"
-      short: "%d de %b a las %H:%M hrs"
+      short: "%d de %B de %Y, %H:%M hs"
       default: "%a, %d de %b de %Y a las %H:%M:%S %Z"
       long: "%A, %d de %B de %Y a las %I:%M %p"
     am: "am"

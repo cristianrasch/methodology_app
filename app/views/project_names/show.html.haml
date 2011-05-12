@@ -3,6 +3,9 @@
   = render 'sidebar'
 
 %p
-  = ProjectName.human_attribute_name(:path)
+  %strong= ProjectName.human_attribute_name(:path)
   %br/
   = path_for(@project_name)
+
+= created_at(@project_name)
+= updated_at(@project_name)

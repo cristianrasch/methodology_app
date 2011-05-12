@@ -10,16 +10,6 @@ class Project < ActiveRecord::Base
     
     SELECT = [['Nuevo', NEW], ['En desarrollo', IN_DEV], ['Detenido', STOPPED], 
               ['Cancelado', CANCELED], ['Terminado', FINISHED]]
-
-    Project.class_eval do
-      arr = Project::Status.constants.map {|const| const.to_s.downcase}
-      arr.pop
-      arr.each do |stat|
-        define_method("#{stat}?") {
-          status == "Project::Status::#{stat.upcase}".constantize
-        }
-      end
-    end
   end
   
   class Klass

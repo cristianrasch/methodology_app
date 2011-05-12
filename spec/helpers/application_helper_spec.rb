@@ -11,6 +11,8 @@ require 'spec_helper'
 #   end
 # end
 describe ApplicationHelper do
+  before { I18n.locale = 'es-AR' }
+  
   it "should localize dates or return nil" do
     helper.date_default_value(nil).should be_nil
     helper.date_default_value(Date.civil(2008, 12, 23)).should == '23/12/2008'

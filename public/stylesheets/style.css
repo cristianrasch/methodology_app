@@ -34,7 +34,7 @@ h3 {
 
 p, ul, ol {
 	margin-top: 0;
-	line-height: 240%;
+	/*line-height: 240%;*/
 	text-align: justify;
 }
 
@@ -95,7 +95,7 @@ hr {
 }
 
 #header {
-	width: 1000px;
+	width: 1250px;
 	height: 60px;
 	margin: 0 auto;
 	background: #FFFFFF;
@@ -104,7 +104,6 @@ hr {
 /* Menu */
 
 #menu {
-	width: 950px;
 	height: 64px;
 }
 
@@ -199,7 +198,7 @@ hr {
 /* Page */
 
 #page {
-	width: 950px;
+	width: 1200px;
 	margin: 0 auto;
 	padding: 0px 25px;
 	background: #FFFFFF;
@@ -249,7 +248,7 @@ hr {
 
 #content {
 	float: right;
-	width: 640px;
+	width: 1000px;
 }
 
 /* Post */
@@ -307,7 +306,7 @@ hr {
 
 #sidebar {
 	float: left;
-	width: 260px;
+	width: 150px;
 	font-family: Arial, Helvetica, sans-serif;
 }
 
@@ -414,7 +413,7 @@ hr {
 /* Footer */
 
 #footer {
-	width: 1000px;
+	width: 1250px;
 	height: 95px;
 	margin: 0 auto;
 	padding: 0;

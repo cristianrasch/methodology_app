@@ -5,12 +5,12 @@
   = render 'sidebar'
   
 %p
-  = Event.human_attribute_name(:author_id)
+  %strong= Event.human_attribute_name(:author_id)
   %br/
   = @event.author.name
   
 %p
-  = Event.human_attribute_name(:duration)
+  %strong= Event.human_attribute_name(:duration)
   %br/
   = duration_desc(@event, :duration)
 

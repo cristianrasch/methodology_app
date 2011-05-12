@@ -4,18 +4,18 @@
   = render 'sidebar'
   
 %p
-  = Comment.human_attribute_name(:content)
+  %strong= Comment.human_attribute_name(:content)
   %br/
   = @comment
 
 %p
-  = Comment.human_attribute_name(:author_id)
+  %strong= Comment.human_attribute_name(:author_id)
   %br/
   = @comment.author.name
 
 - if @comment.attachment?  
   %p
-    = Comment.human_attribute_name(:attachment)
+    %strong= Comment.human_attribute_name(:attachment)
     %br/
     = link_to File.basename(@comment.attachment.to_s), @comment.attachment.url
     

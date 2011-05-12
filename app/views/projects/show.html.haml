@@ -6,71 +6,71 @@
   = render 'sidebar'
 
 %p
-  = label_tag Project.human_attribute_name('project_name_id')
+  %strong= label_tag(Project.human_attribute_name('project_name_id'))
   %br/
   = path_for(@project.project_name)
 
 %p
-  = label_tag Project.human_attribute_name('klass')
+  %strong= label_tag(Project.human_attribute_name('klass'))
   %br/
   = @project.klass_str
   
 %p
-  = label_tag Project.human_attribute_name('description')
+  %strong= label_tag(Project.human_attribute_name('description'))
   %br/
   = @project.description.humanize
 
 %p
-  = label_tag Project.human_attribute_name('dev_id')
+  %strong= label_tag(Project.human_attribute_name('dev_id'))
   %br/
   = @project.dev.name
   
 %p
-  = label_tag Project.human_attribute_name('owner_id')
+  %strong= label_tag(Project.human_attribute_name('owner_id'))
   %br/
   = @project.owner.name
   
 %p
-  = label_tag User.model_name.human.humanize.pluralize
+  %strong= label_tag(User.model_name.human.humanize.pluralize)
 %ul
   - @project.users.each do |user|
     %li= user.name
 
 %p
-  = label_tag Project.human_attribute_name('estimated_start_date')
+  %strong= label_tag(Project.human_attribute_name('estimated_start_date'))
   %br/
   = l @project.estimated_start_date
   
 %p
-  = label_tag Project.human_attribute_name('estimated_end_date')
+  %strong= label_tag(Project.human_attribute_name('estimated_end_date'))
   %br/
   = l @project.estimated_end_date
 
 %p
-  = label_tag Project.human_attribute_name('envisaged_end_date')
+  %strong= label_tag(Project.human_attribute_name('envisaged_end_date'))
   %br/
   = l @project.envisaged_end_date
 
 - if @project.started_on
   %p
-    = label_tag Project.human_attribute_name('started_on')
+    %strong= label_tag(Project.human_attribute_name('started_on'))
     %br/
     = l @project.started_on
 
 - if @project.ended_on
   %p
-    = label_tag Project.human_attribute_name('ended_on')
+    %strong= label_tag(Project.human_attribute_name('ended_on'))
     %br/
     = l @project.ended_on
   
 %p
-  = label_tag Project.human_attribute_name('estimated_duration')
+  %strong= label_tag(Project.human_attribute_name('estimated_duration'))
   %br/
   = duration_desc(@project, :estimated_duration)
   
 - if @project.actual_duration
   %p
-    = label_tag Project.human_attribute_name('actual_duration')
+    %strong= label_tag(Project.human_attribute_name('actual_duration'))
     %br/
     = distance_of_time_in_words(@project.actual_duration.days)
     
