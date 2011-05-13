@@ -1,5 +1,5 @@
 class ProjectsStatusController < ApplicationController
-  layout('widescreen')
+  layout 'widescreen'
   
   before_filter :authenticate_user!
   

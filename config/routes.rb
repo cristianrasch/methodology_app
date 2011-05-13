@@ -3,6 +3,7 @@ MethodologyApp::Application.routes.draw do
   namespace :admin do
     post 'users/import'
     resources :holidays
+    resources :reports, :only => [:index, :new]
   end
 
   resources :project_names

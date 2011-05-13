@@ -1,7 +1,6 @@
 Factory.define :user do |u|
   u.username { ActiveSupport::SecureRandom.hex(3) }
   u.email {|uu| "#{uu.username}@consejo.org.ar"}
-  # u.sequence(:email) {|n| "#{ActiveSupport::SecureRandom.hex(4)}#{n}@consejo.org.ar"}
   u.name { |uu| "User ##{uu.username}" }
   u.password ActiveSupport::SecureRandom.hex(3)
   u.org_unit 'Turismo'
@@ -14,7 +13,7 @@ Factory.define :project do |p|
   p.estimated_duration 80
   p.association :owner, :factory => :user
   p.association :dev, :factory => :user
-  p.project_name { ProjectName.any? ? ProjectName.first : Factory(:project_name) }
+  p.association :project_name
   3.times { p.after_build { |pp| pp.users << Factory(:user) } }
 end
 

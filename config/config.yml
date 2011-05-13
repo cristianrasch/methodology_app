@@ -16,3 +16,7 @@ common:
     2: statuses
     3: here
   notifications_from: desarrollo@consejo.org.ar
+  reports:
+    1:
+      title: Carga de trabajo por desarrollador
+      col_names: ['Desarrollador', 'HS comprometidas']

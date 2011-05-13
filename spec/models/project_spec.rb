@@ -82,11 +82,11 @@ describe Project do
   end
 
   it "should search for projects based on the supplied params" do
-    p1 = Factory(:project)
-    p3 = create_model(:project, :started_on => 1.week.ago.to_date)
+    p1 = create_model(:project, :project_name_id => Factory(:project_name, :text => '..').id)
+    p2 = create_model(:project, :started_on => 1.week.ago.to_date)
     dev = Factory(:user)
-    p4 = Factory(:project, :dev => dev)
-    p5 = create_model(:project, :status => Project::Status::CANCELED)
+    p3 = Factory(:project, :dev => dev)
+    p4 = create_model(:project, :status => Project::Status::CANCELED)
 
     Project.search(Project.new(:project_name_id => p1.project_name_id)).should have(1).record
     pr = Project.new

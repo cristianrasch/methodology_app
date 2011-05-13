@@ -44,11 +44,11 @@ def admin_login(user = nil, passwd = nil)
 end
 
 def find_dev(username = 'crr')
-  @dev ||= User.find_by_username(username) || Factory(:user, :username => username)
+  User.find_by_username(username) || Factory(:user, :username => username)
 end
 
 def find_boss(username = 'gar')
-  @boss ||= User.find_by_username(username) || Factory(:user, :username => username)
+  User.find_by_username(username) || Factory(:user, :username => username)
 end
 
 def build_model(model, attrs)

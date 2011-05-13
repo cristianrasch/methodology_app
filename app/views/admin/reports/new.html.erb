@@ -1,0 +1,24 @@
+<%= content_for :head do %>
+  <%= javascript_include_tag "https://www.google.com/jsapi" %>
+
+  <%= javascript_tag do %>
+    google.load("visualization", "1", {packages:["corechart"]});
+    google.setOnLoadCallback(drawChart);
+    function drawChart() {
+      var data = new google.visualization.DataTable();
+      data.addColumn('string', '<%= Conf.reports[@type]['col_names'].first %>');
+      data.addColumn('number', '<%= Conf.reports[@type]['col_names'].last %>');
+      data.addRows(<%= @data.length %>);
+      
+      <% @data.each_with_index do |arr, i| %>
+        data.setValue(<%= i %>, 0, '<%= arr.first %>');
+        data.setValue(<%= i %>, 1, <%= arr.last %>);
+      <% end %>
+
+      var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+      chart.draw(data, {width: 640, height: 480, title: '<%= Conf.reports[@type]['title'] %>'});
+    }
+  <% end %>
+<% end %>
+
+<div id="chart_div"></div>

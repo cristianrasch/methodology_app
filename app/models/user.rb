@@ -82,6 +82,10 @@ class User < ActiveRecord::Base
     end
   end
   
+  def to_s
+    name
+  end
+  
   private
   
   def format_name
