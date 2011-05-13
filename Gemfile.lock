@@ -53,7 +53,6 @@ GEM
       factory_girl (~> 1.3)
       railties (>= 3.0.0)
     ffaker (1.5.0)
-    gchartrb (0.8)
     haml (3.1.1)
     hpricot (0.8.4)
     i18n (0.5.0)
@@ -130,7 +129,6 @@ DEPENDENCIES
   devise
   factory_girl_rails
   ffaker
-  gchartrb
   haml
   hpricot
   jquery-rails (>= 0.2.6)
