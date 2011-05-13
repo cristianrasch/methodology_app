@@ -18,7 +18,7 @@
 - if @project.new?
   %p
     = form.label :project_name_id
-  %p
+    %br/
     = potential_project_names(ProjectName.arranged)
   
   %p
@@ -30,7 +30,7 @@
   %p
     = form.label :description
     %br/
-    = form.text_area :description, :cols => 30, :rows => 5
+    = form.text_area :description, :cols => 55, :rows => 5
   
   %p
     = form.label :dev_id
@@ -46,33 +46,41 @@
     = form.label :user_ids
     %br/
     = form.text_field :user_tokens, "data-pre" => @project.users.map(&:attributes).to_json
-  
-  %p
-    = form.label :estimated_start_date
-    %br/
-    = form.text_field :estimated_start_date, :size => 27, 
-                      :value => date_default_value(@project.estimated_start_date)
-    
-  %p
-    = form.label :estimated_end_date
-    %br/
-    = form.text_field :estimated_end_date, :size => 27, 
-                      :value => date_default_value(@project.estimated_end_date)
-  
-  %p
-    = form.label :estimated_duration
-    %br/
-    = form.text_field :estimated_duration, :size => 4
-    = duration_options_for(@project, :estimated_duration_unit)
+
+  %table.spaced{:border => 0, :cellspacing => 0, :cellpadding => 0, :width => "100%"}
+    %thead
+      %tr
+        %td{:colspan => 3}
+          %em Estimación
+    %tbody
+      %tr
+        %td
+          %strong= form.label :estimated_start_date
+        %td
+          %strong= form.label :estimated_end_date
+        %td
+          %strong= form.label :estimated_duration
+      %tr
+        %td
+          = form.text_field :estimated_start_date, :size => 27, 
+                            :value => date_default_value(@project.estimated_start_date)
+        %td
+          = form.text_field :estimated_end_date, :size => 27, 
+                            :value => date_default_value(@project.estimated_end_date)
+        %td
+          = form.text_field :estimated_duration, :size => 4
+          = duration_options_for(@project, :estimated_duration_unit)
 
 - unless @project.finished?
-  %p
-    = form.label :compl_perc
-    %br/
-    = form.select :compl_perc, options_for_select((0..10).map {|i| [i*10, i*10]}, @project.compl_perc)
-    
-  %p
-    = form.label :envisaged_end_date
-    %br/
-    = form.text_field :envisaged_end_date, :size => 27, 
-                      :value => date_default_value(@project.envisaged_end_date)
+  %table.spaced{:border => 0, :cellspacing => 0, :cellpadding => 0, :width => "100%"}
+    %tr
+      %td
+        %strong= form.label :compl_perc
+      %td
+        %strong= form.label :envisaged_end_date
+    %tr
+      %td
+        = form.select :compl_perc, options_for_select((0..10).map {|i| [i*10, i*10]}, @project.compl_perc)
+      %td
+        = form.text_field :envisaged_end_date, :size => 27, 
+                          :value => date_default_value(@project.envisaged_end_date)

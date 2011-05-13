@@ -1,9 +1,10 @@
 Factory.define :user do |u|
   u.username { ActiveSupport::SecureRandom.hex(3) }
-  u.sequence(:email) {|n| "#{ActiveSupport::SecureRandom.hex(4)}#{n}@consejo.org.ar"}
+  u.email {|uu| "#{uu.username}@consejo.org.ar"}
+  # u.sequence(:email) {|n| "#{ActiveSupport::SecureRandom.hex(4)}#{n}@consejo.org.ar"}
   u.name { |uu| "User ##{uu.username}" }
   u.password ActiveSupport::SecureRandom.hex(3)
-  u.org_unit 'turismo'
+  u.org_unit 'Turismo'
 end
 
 Factory.define :project do |p|
@@ -13,7 +14,7 @@ Factory.define :project do |p|
   p.estimated_duration 80
   p.association :owner, :factory => :user
   p.association :dev, :factory => :user
-  p.association :project_name
+  p.project_name { ProjectName.any? ? ProjectName.first : Factory(:project_name) }
   3.times { p.after_build { |pp| pp.users << Factory(:user) } }
 end
 
@@ -40,7 +41,7 @@ Factory.define :task do |t|
 end
 
 Factory.define :project_name do |pn|
-  pn.sequence(:text) {|n| n.to_s}
+  pn.sequence(:text) {|n| "Project ##{n}"}
 end
 
 Factory.define :holiday do |h|
