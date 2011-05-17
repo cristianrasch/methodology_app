@@ -14,7 +14,7 @@ gem 'mysql2', '< 0.3'
 gem 'net-ssh'
 gem 'delayed_job'
 gem "business_time"
-gem 'sequel-rails'
+gem 'sequel'
 gem 'ruby-informix'
 
 group :test, :development do

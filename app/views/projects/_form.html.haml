@@ -28,6 +28,11 @@
                   :include_blank => @project.new_record?
   
   %p
+    = form.label :requirement
+    %br/
+    = form.text_field :requirement, :size => 48
+  
+  %p
     = form.label :description
     %br/
     = form.text_area :description, :cols => 55, :rows => 5

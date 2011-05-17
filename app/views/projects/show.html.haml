@@ -14,11 +14,17 @@
   %strong= Project.human_attribute_name('klass')
   %br/
   = @project.klass_str
-  
+
 %p
-  %strong= Project.human_attribute_name('description')
+  %strong= Project.human_attribute_name('requirement')
   %br/
-  = @project.description.humanize
+  = @project.requirement.humanize
+  
+- if @project.description.present?
+  %p
+    %strong= Project.human_attribute_name('description')
+    %br/
+    = @project.description.humanize
 
 %p
   %strong= Project.human_attribute_name('dev_id')
@@ -32,9 +38,8 @@
   
 %p
   %strong= Project.human_attribute_name('user_ids')
-%ul
-  - @project.users.each do |user|
-    %li= user.name
+  %br/
+  = @project.users.map{|user| user.name}.join(' - ') 
 
 %table.spaced{:border => 0, :cellspacing => 0, :cellpadding => 0, :width => "100%"}
   %thead

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110512130826) do
+ActiveRecord::Schema.define(:version => 20110517155107) do
 
   create_table "comments", :force => true do |t|
     t.text     "content"
@@ -104,6 +104,7 @@ ActiveRecord::Schema.define(:version => 20110512130826) do
     t.integer  "estimated_duration_unit", :limit => 1, :default => 2
     t.integer  "project_name_id"
     t.integer  "delayed_by"
+    t.string   "requirement"
   end
 
   add_index "projects", ["delayed_by"], :name => "index_projects_on_delayed_by"

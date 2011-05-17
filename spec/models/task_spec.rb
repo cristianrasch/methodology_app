@@ -32,8 +32,10 @@ describe Task do
   it "should only set its status if no duration is provided" do
     task = Factory.build(:task, :status => Task::Status::ACCEPTED)
     task.status.should == Task::Status::ACCEPTED
-    task = Factory.build(:task, :status => Task::Status::ACCEPTED, :duration => 120)
+    task.finished_at.should be_nil
+    task = Factory.build(:task, :duration => 120)
     task.status.should == Task::Status::FINISHED
+    task.finished_at.should_not be_nil
   end
   
   it "should only allow its owner set its duration & status" do

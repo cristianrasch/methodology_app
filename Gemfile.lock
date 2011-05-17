@@ -112,11 +112,6 @@ GEM
     ruby_parser (2.0.6)
       sexp_processor (~> 3.0)
     sequel (3.23.0)
-    sequel-rails (0.1.8)
-      actionpack (~> 3.0.0)
-      activesupport (~> 3.0.0)
-      railties (~> 3.0.0)
-      sequel (~> 3.13)
     sexp_processor (3.0.5)
     thor (0.14.6)
     treetop (1.4.9)
@@ -148,4 +143,4 @@ DEPENDENCIES
   rspec-rails (~> 2.4)
   ruby-informix
   ruby_parser
-  sequel-rails
+  sequel

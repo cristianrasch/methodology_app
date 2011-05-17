@@ -66,7 +66,6 @@ class Project < ActiveRecord::Base
   end
   has_and_belongs_to_many :users
 
-  validates :description, :presence => true
   validates :compl_perc, :numericality => { :greater_than_or_equal_to => 0, 
                                             :message => I18n.t('errors.messages.blank') }
   validates :klass, :numericality => { :greater_than => 0, 
@@ -83,6 +82,7 @@ class Project < ActiveRecord::Base
   validate :dates_set
   validate :participating_users
   validate :devs_and_owners_email_address
+  validates :requirement, :presence => true
   
   scope :on_course, lambda { where(:started_on.lteq => Date.today, :ended_on => nil) }
   scope :pending, lambda { where(:estimated_start_date.gt => Date.today) }
@@ -104,7 +104,7 @@ class Project < ActiveRecord::Base
   attr_accessor :indicator
   attr_accessible :description, :dev_id, :owner_id, :user_ids, :estimated_start_date, :estimated_end_date, 
                   :estimated_duration, :status, :updated_by, :user_tokens, :compl_perc, :klass, :indicator, 
-                  :envisaged_end_date, :estimated_duration_unit, :project_name_id, :delayed_by
+                  :envisaged_end_date, :estimated_duration_unit, :project_name_id, :delayed_by, :requirement
   date_writer_for :estimated_start_date, :estimated_end_date, :envisaged_end_date
   
   class << self

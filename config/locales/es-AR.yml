@@ -212,6 +212,7 @@ es-AR:
         klass: Tipo
         envisaged_end_date: Fecha de finalización prevista
         project_name_id: Nombre de proyecto
+        requirement: Requerimiento
       event:
         stage: Etapa
         status: Estado

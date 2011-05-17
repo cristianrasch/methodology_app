@@ -12,25 +12,26 @@
 User.import
 
 # 2011 holidays
-Holiday.create!(:name => "Año Nuevo", :date => Date.civil(2011,1,1))
-Holiday.create!(:name => "Carnaval", :date => Date.civil(2011,3,7))
-Holiday.create!(:name => "Carnaval", :date => Date.civil(2011,3,8))
-Holiday.create!(:name => "Día nacional de la Memoria por la verdad y la Justicia", :date => Date.civil(2011,3,24))
-Holiday.create!(:name => "Feriado puente turístico", :date => Date.civil(2011,3,25))
-Holiday.create!(:name => "Día del Veterano y de los Caídos en la Guerra de Malvinas", :date => Date.civil(2011,4,2))
-Holiday.create!(:name => "Jueves Santo Festividad Cristiana", :date => Date.civil(2011,4,21))
-Holiday.create!(:name => "Viernes Santo Festividad Cristiana", :date => Date.civil(2011,4,22))
-Holiday.create!(:name => "Día del Trabajador", :date => Date.civil(2011,5,1))
-Holiday.create!(:name => "Primer Gobierno Patrio", :date => Date.civil(2011,5,25))
-Holiday.create!(:name => "Día de la Bandera", :date => Date.civil(2011,6,20))
-Holiday.create!(:name => "Día de la Independencia", :date => Date.civil(2011,7,9))
-Holiday.create!(:name => "Día del Libertador José de San Martín", :date => Date.civil(2011,8,22))
-Holiday.create!(:name => "Día del Respeto a la Diversidad Cultural", :date => Date.civil(2011,10,10))
-Holiday.create!(:name => "Día de la Soberanía Nacional", :date => Date.civil(2011,11,28))
-Holiday.create!(:name => "Inmaculada Concepción de María", :date => Date.civil(2011,12,8))
-Holiday.create!(:name => "Feriado puente turístico", :date => Date.civil(2011,12,9))
-Holiday.create!(:name => "Navidad", :date => Date.civil(2011,12,25))
+# Holiday.create!(:name => "Año Nuevo", :date => Date.civil(2011,1,1))
+# Holiday.create!(:name => "Carnaval", :date => Date.civil(2011,3,7))
+# Holiday.create!(:name => "Carnaval", :date => Date.civil(2011,3,8))
+# Holiday.create!(:name => "Día nacional de la Memoria por la verdad y la Justicia", :date => Date.civil(2011,3,24))
+# Holiday.create!(:name => "Feriado puente turístico", :date => Date.civil(2011,3,25))
+# Holiday.create!(:name => "Día del Veterano y de los Caídos en la Guerra de Malvinas", :date => Date.civil(2011,4,2))
+# Holiday.create!(:name => "Jueves Santo Festividad Cristiana", :date => Date.civil(2011,4,21))
+# Holiday.create!(:name => "Viernes Santo Festividad Cristiana", :date => Date.civil(2011,4,22))
+# Holiday.create!(:name => "Día del Trabajador", :date => Date.civil(2011,5,1))
+# Holiday.create!(:name => "Primer Gobierno Patrio", :date => Date.civil(2011,5,25))
+# Holiday.create!(:name => "Día de la Bandera", :date => Date.civil(2011,6,20))
+# Holiday.create!(:name => "Día de la Independencia", :date => Date.civil(2011,7,9))
+# Holiday.create!(:name => "Día del Libertador José de San Martín", :date => Date.civil(2011,8,22))
+# Holiday.create!(:name => "Día del Respeto a la Diversidad Cultural", :date => Date.civil(2011,10,10))
+# Holiday.create!(:name => "Día de la Soberanía Nacional", :date => Date.civil(2011,11,28))
+# Holiday.create!(:name => "Inmaculada Concepción de María", :date => Date.civil(2011,12,8))
+# Holiday.create!(:name => "Feriado puente turístico", :date => Date.civil(2011,12,9))
+# Holiday.create!(:name => "Navidad", :date => Date.civil(2011,12,25))
 
+# devs
 gbe = User.find_by_username('gbe')
 crr = User.find_by_username('crr')
 fol = User.find_by_username('fol')
@@ -39,15 +40,28 @@ ljg = User.find_by_username('ljg')
 gar = User.find_by_username('gar')
 mev = User.find_by_username('mev')
 
+# end-users
+est = User.find_by_username('est')
+eod = User.find_by_username('eod')
+nss = User.find_by_username('nss')
+crg = User.find_by_username('crg')
+sre = User.find_by_username('sre')
+
+[gbe,crr,fol,mpa,ljg,gar,mev,est,eod,nss,crg,sre].each {|user|
+  user.update_attribute(:email, "#{user.username}123@consejo.org.ar")
+}
+
+[gbe, crr, fol, mpa, ljg, gar, mev, est, eod, ]
+
 Factory(:project, :description => 'Query inscriptos comicios', :klass => Project::Klass::PROC, 
-        :dev => gbe, :owner => User.find_by_username('est'))
-Factory(:project, :description => 'Citi Compras', :dev => crr, :owner => User.find_by_username('eod'))
+        :dev => gbe, :owner => est)
+Factory(:project, :description => 'Citi Compras', :dev => crr, :owner => eod)
 Factory(:project, :description => 'Turnero Documentos - Agregar Feriado', :klass => Project::Klass::PROC, 
-        :dev => fol, :owner => User.find_by_username('nss'))
+        :dev => fol, :owner => nss)
 Factory(:project, :description => 'SUB Interfase bejerman integra. correc de registro',
-        :klass => Project::Klass::PROC, :dev => mpa, :owner => User.find_by_username('crg'))
+        :klass => Project::Klass::PROC, :dev => mpa, :owner => crg)
 Factory(:project, :description => 'Restaurar Backup base de datos Proezas',
-        :klass => Project::Klass::PROC, :dev => ljg, :owner => User.find_by_username('sre'))
+        :klass => Project::Klass::PROC, :dev => ljg, :owner => sre)
 # Factory(:project, :description => 'Inscripción web autoridades comicios 2011',
 #         :dev => gbe, :owner => mev)
 # Factory(:project, :description => 'Encuesta Nuevo Matric - nuevos campos', :klass => Project::Klass::IMPR, 

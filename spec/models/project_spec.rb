@@ -8,7 +8,6 @@ describe Project do
       project = Project.new
       project.should_not be_valid
   
-      project.should have(1).error_on(:description)
       project.should have(1).error_on(:estimated_start_date)
       project.should have(1).error_on(:estimated_end_date)
       project.should have(1).error_on(:estimated_duration)
@@ -16,6 +15,7 @@ describe Project do
       project.should have(1).error_on(:dev_id)
       project.should have(1).error_on(:owner_id)
       project.should have(1).error_on(:project_name_id)
+      project.should have(1).error_on(:requirement)
     end
     
     it "should validate dev's & owner's email addresses" do
