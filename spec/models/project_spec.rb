@@ -254,8 +254,7 @@ describe Project do
                  :estimated_duration => 1, :estimated_duration_unit => Duration::WEEK)
     
     project.reload
-    project.estimated_start_date.should == 5.business_days.after(1.week.from_now).to_date
-    project.estimated_end_date.should == 5.business_days.after(1.month.from_now).to_date
+    project.envisaged_end_date.should == 5.business_days.after(1.month.from_now).to_date
     project.delayed_by_proj.should == pr
   end
   
@@ -270,13 +269,11 @@ describe Project do
     pr.update_attribute(:envisaged_end_date, a_year_ago+3.weeks)
     project.reload
     
-    project.estimated_start_date.should == 10.business_days.after(a_year_ago).to_date
-    project.estimated_end_date.should == 10.business_days.after(a_year_ago+2.months).to_date
+    project.envisaged_end_date.should == 10.business_days.after(a_year_ago+2.months).to_date
     
     pr.update_attribute(:envisaged_end_date, a_year_ago+2.weeks)
     project.reload
     
-    project.estimated_start_date.should == 5.business_days.after(a_year_ago).to_date
-    project.estimated_end_date.should == 5.business_days.after(a_year_ago+2.months).to_date
+    project.envisaged_end_date.should == 5.business_days.after(a_year_ago+2.months).to_date
   end
 end

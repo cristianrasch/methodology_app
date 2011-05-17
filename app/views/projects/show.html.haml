@@ -1,6 +1,5 @@
 = content_for :title do 
-  = Project.model_name.human.humanize
-  = @project
+  #{Project.model_name.human.humanize} ##{@project.id}
   [#{@project.status_str} - &#37;#{@project.compl_perc}]
 = content_for :sidebar do
   = render 'sidebar'
@@ -8,18 +7,13 @@
 %p
   %strong= Project.human_attribute_name('project_name_id')
   %br/
-  = path_for(@project.project_name)
+  = @project
 
 %p
   %strong= Project.human_attribute_name('klass')
   %br/
   = @project.klass_str
 
-%p
-  %strong= Project.human_attribute_name('requirement')
-  %br/
-  = @project.requirement.humanize
-  
 - if @project.description.present?
   %p
     %strong= Project.human_attribute_name('description')

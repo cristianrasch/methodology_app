@@ -138,7 +138,7 @@ class Project < ActiveRecord::Base
   end
   
   def to_s
-    project_name.to_s 
+    "[#{project_name}] - #{requirement.humanize}" 
   end
   
   def all_users
@@ -219,25 +219,22 @@ class Project < ActiveRecord::Base
     self.envisaged_end_date = estimated_end_date unless envisaged_end_date
   end
   
-  # FIXME: corregir la envisaged_end_date
   def update_schedule_if_necessary
     if estimated_start_date_changed?
       delay = in_days(self, :estimated_duration)
       affected_projects = self.class.where(:id ^ id).upcoming.on_course_by(estimated_start_date).developed_by(dev_id)
-      affected_projects.each do |project|
-        project.update_attributes(:estimated_start_date => delay.business_days.after(project.estimated_start_date).to_date,
-                                  :estimated_end_date => delay.business_days.after(project.estimated_end_date).to_date,
+      affected_projects.each { |project|
+        project.update_attributes(:envisaged_end_date => delay.business_days.after(project.envisaged_end_date).to_date,
                                   :delayed_by => id)
-      end
+      }
     end
     
     if envisaged_end_date_changed? && envisaged_end_date_was
       delay = (envisaged_end_date - envisaged_end_date_was).to_i
       change = delay > 0 ? envisaged_end_date_was.business_days_until(envisaged_end_date) : envisaged_end_date.business_days_until(envisaged_end_date_was)
-      self.class.where(:delayed_by => id).each do |project|
-        project.update_attributes(:estimated_start_date => change.business_days.send(delay > 0 ? :after : :before, project.estimated_start_date).to_date,
-                                  :estimated_end_date => change.business_days.send(delay > 0 ? :after : :before, project.estimated_end_date).to_date)
-      end
+      self.class.where(:delayed_by => id).each { |project|
+        project.update_attribute(:envisaged_end_date, change.business_days.send(delay > 0 ? :after : :before, project.envisaged_end_date).to_date)
+      }
     end
   end
   

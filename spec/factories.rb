@@ -8,7 +8,7 @@ end
 
 Factory.define :project do |p|
   p.description Faker::Lorem.paragraph
-  p.requirement Faker::Lorem.paragraph
+  p.requirement Faker::Lorem.sentence
   p.estimated_start_date 2.months.ago.to_date
   p.estimated_end_date 3.months.from_now.to_date
   p.estimated_duration 80
