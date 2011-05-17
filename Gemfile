@@ -14,6 +14,8 @@ gem 'mysql2', '< 0.3'
 gem 'net-ssh'
 gem 'delayed_job'
 gem "business_time"
+gem 'sequel-rails'
+gem 'ruby-informix'
 
 group :test, :development do
   gem "rspec-rails", "~> 2.4"
@@ -21,8 +23,4 @@ group :test, :development do
   gem 'ffaker'
 end
 
-if RUBY_VERSION =~ /1.9/
-  gem 'cover_me', '>= 1.0.0.rc6', :group => :test
-else
-  gem 'rcov', :group => :test
-end
+gem 'rcov', :group => :test

@@ -20,3 +20,7 @@ common:
     1:
       title: Carga de trabajo por desarrollador
       col_names: ['Desarrollador', 'HS comprometidas']
+  ifx:
+    db: ifx db
+    user: ifx user
+    passwd: ifx passwd
