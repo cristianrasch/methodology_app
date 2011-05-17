@@ -161,6 +161,7 @@ es-AR:
         accepted: "debe ser aceptado"
         even: "debe ser un número par"
         odd: "debe ser un número non"
+        invalid_email_address: "tiene una dirección de correo inválida"
 
   activerecord:
     errors:

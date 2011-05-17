@@ -82,6 +82,7 @@ class Project < ActiveRecord::Base
   validates :estimated_duration, :numericality => { :greater_than => 0 }
   validate :dates_set
   validate :participating_users
+  validate :devs_and_owners_email_address
   
   scope :on_course, lambda { where(:started_on.lteq => Date.today, :ended_on => nil) }
   scope :pending, lambda { where(:estimated_start_date.gt => Date.today) }
@@ -218,6 +219,7 @@ class Project < ActiveRecord::Base
     self.envisaged_end_date = estimated_end_date unless envisaged_end_date
   end
   
+  # FIXME: corregir la envisaged_end_date
   def update_schedule_if_necessary
     if estimated_start_date_changed?
       delay = in_days(self, :estimated_duration)
@@ -237,5 +239,10 @@ class Project < ActiveRecord::Base
                                   :estimated_end_date => change.business_days.send(delay > 0 ? :after : :before, project.estimated_end_date).to_date)
       end
     end
+  end
+  
+  def devs_and_owners_email_address
+    errors.add(:dev_id, I18n.t('errors.messages.invalid_email_address')) if dev && dev.email.nil?
+    errors.add(:owner_id, I18n.t('errors.messages.invalid_email_address')) if owner && owner.email.nil?
   end
 end
