@@ -1,5 +1,4 @@
 class ProjectName < ActiveRecord::Base
-  
   validates :text, :presence => true, :uniqueness => { :scope => :ancestry }
   validate :tree_depth
   

@@ -1,0 +1,20 @@
+#sidebar
+  %ul
+    %li
+      %h2 Menú
+      %ul
+        - if controller.action_name == 'index'
+          %li
+            = link_to 'Nueva', new_org_unit_path
+        - else
+          %li
+            = link_to 'Inicio', org_units_path
+        - if controller.action_name == 'show'
+          %li
+            = link_to 'Editar', edit_org_unit_path(@project_name)
+          %li
+            = link_to 'Eliminar', @org_unit, :method => :delete, 
+                      :confirm => "¿Está seguro que desea eliminar el #{OrgUnit.model_name.human}?"
+        %li
+          = link_to 'Volver', :back
+/ end #sidebar

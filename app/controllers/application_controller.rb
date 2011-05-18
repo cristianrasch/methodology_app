@@ -12,6 +12,10 @@ class ApplicationController < ActionController::Base
     end
   end
   
+  def ensure_boss_logged_in
+    render(:text => 'Acceso denegado.', :status => :unauthorized) and return false unless current_user.boss?
+  end
+  
   def after_sign_out_path_for(resource)
     new_user_session_path
   end

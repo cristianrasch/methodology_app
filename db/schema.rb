@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110517155107) do
+ActiveRecord::Schema.define(:version => 20110517202515) do
 
   create_table "comments", :force => true do |t|
     t.text     "content"
@@ -73,6 +73,15 @@ ActiveRecord::Schema.define(:version => 20110517155107) do
 
   add_index "holidays", ["date"], :name => "index_holidays_on_date", :unique => true
 
+  create_table "org_units", :force => true do |t|
+    t.string   "text"
+    t.integer  "parent_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "org_units", ["parent_id", "text"], :name => "index_org_units_on_parent_id_and_text"
+
   create_table "project_names", :force => true do |t|
     t.string   "text"
     t.datetime "created_at"
@@ -81,8 +90,7 @@ ActiveRecord::Schema.define(:version => 20110517155107) do
     t.integer  "ancestry_depth", :default => 0
   end
 
-  add_index "project_names", ["ancestry"], :name => "index_project_names_on_ancestry"
-  add_index "project_names", ["text"], :name => "index_project_names_on_text", :unique => true
+  add_index "project_names", ["ancestry", "text"], :name => "index_project_names_on_ancestry_and_text"
 
   create_table "projects", :force => true do |t|
     t.text     "description"

@@ -48,3 +48,7 @@ Factory.define :holiday do |h|
   h.sequence(:name) {|n| "Holiday ##{n}"}
   h.date Date.tomorrow
 end
+
+Factory.define :org_unit do |ou|
+  ou.sequence(:text) {|n| "Org unit ##{n}"}
+end

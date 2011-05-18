@@ -46,10 +46,4 @@ class ProjectNamesController < ApplicationController
     ProjectName.destroy(params[:id])
     redirect_to(project_names_path, :notice => "#{ProjectName.model_name.human.humanize} eliminado")
   end
-  
-  private
-  
-  def ensure_boss_logged_in
-    render(:text => 'Acceso denegado.', :status => :unauthorized) and return false unless current_user.boss?
-  end
 end

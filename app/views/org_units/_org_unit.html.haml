@@ -1,0 +1,5 @@
+%li 
+  = link_to(org_unit.text, org_unit)
+  - if org_unit.has_children?
+    %ul
+      = render(:partial => 'child', :collection => org_unit.children)

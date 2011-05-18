@@ -1,5 +1,6 @@
 MethodologyApp::Application.routes.draw do
-
+  resources :org_units
+  
   namespace :admin do
     post 'users/import'
     resources :holidays

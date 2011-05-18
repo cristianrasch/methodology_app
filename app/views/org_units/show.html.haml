@@ -1,0 +1,19 @@
+= content_for :title, @org_unit.text
+= content_for :sidebar do
+  = render 'sidebar'
+
+- if @org_unit.parent
+  %p
+    %strong= OrgUnit.human_attribute_name(:parent_id)
+    %br/
+    = link_to(@org_unit.parent.text, @org_unit.parent)
+
+- if @org_unit.has_children?
+  %p
+    %strong= OrgUnit.human_attribute_name(:children)
+  %div.ancestors
+    %ul
+    = render(:partial => 'child', :collection => @org_unit.children)
+
+= created_at(@org_unit)
+= updated_at(@org_unit)

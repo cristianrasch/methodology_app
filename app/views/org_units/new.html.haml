@@ -1,0 +1,7 @@
+= content_for :title, "Nueva #{OrgUnit.model_name.human}"
+= content_for :sidebar do
+  = render 'sidebar'
+
+= form_for @org_unit do |f|
+  = render f
+  = f.submit 'Crear'

@@ -1,0 +1,9 @@
+= content_for :title, OrgUnit.model_name.human.pluralize.humanize
+= content_for :sidebar do
+  = render 'sidebar'
+  
+- if @org_units.empty?
+  = not_found(OrgUnit)
+- else
+  %ul
+    = render 'list', :list => @org_units

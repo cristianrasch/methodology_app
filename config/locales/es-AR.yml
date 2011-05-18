@@ -187,6 +187,7 @@ es-AR:
       task: tarea
       project_name: nombre de proyecto
       holiday: feriado
+      org_unit: área
     attributes:
       user:
         email: Correo electrónico
@@ -246,6 +247,10 @@ es-AR:
       holiday:
         name: Nombre
         date: Fecha
+      org_unit:
+        text: Nombre
+        parent_id: Padre
+        children: Sub-áreas
   lbls:
     created_at: Fecha de creación
     updated_at: Fecha de modificación

@@ -1,0 +1,11 @@
+= form.error_messages :header_message => nil, :message => nil
+
+%p
+  = form.label :text
+  %br/
+  = form.text_field :text
+
+%p
+  = form.label :parent_id
+  %br/
+  = form.collection_select :parent_id, parents_for(@org_unit), :id, :text, :include_blank => true
