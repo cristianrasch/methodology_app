@@ -29,8 +29,8 @@
   %p
     = form.label :klass
     %br/
-    = form.select :klass, options_for_select(Project::Klass::SELECT, @project.new_record? ? nil : @project.klass), 
-                  :include_blank => @project.new_record?
+    = form.select :klass, options_for_select(Project::Klass::SELECT, controller.action_name == 'new' ? nil : @project.klass), 
+                  :include_blank => controller.action_name == 'new'
   
   %p
     = form.label :requirement

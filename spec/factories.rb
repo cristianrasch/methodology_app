@@ -29,7 +29,7 @@ Factory.define :task do |t|
 end
 
 Factory.define :project_name do |pn|
-  pn.sequence(:text) {|n| "Project ##{n}"}
+  pn.sequence(:text) {|n| "ProjectName ##{n}"}
 end
 
 Factory.define :holiday do |h|

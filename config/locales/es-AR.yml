@@ -181,7 +181,7 @@ es-AR:
         
     models:
       user: usuario
-      project: proyecto
+      project: requerimiento
       event: evento
       comment: comentario
       task: tarea
@@ -213,7 +213,7 @@ es-AR:
         klass: Tipo
         envisaged_end_date: Fecha de finalización prevista
         project_name_id: Nombre de proyecto
-        requirement: Requerimiento
+        requirement: Objetivo
         org_unit_id: Àrea solicitante
       event:
         stage: Etapa
