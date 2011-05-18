@@ -22,6 +22,11 @@
     = potential_project_names(ProjectName.arranged)
   
   %p
+    = form.label :org_unit_id
+    %br/
+    = form.collection_select :org_unit_id, OrgUnit.not_roots.with_parent, :id, :to_s, :include_blank => true
+  
+  %p
     = form.label :klass
     %br/
     = form.select :klass, options_for_select(Project::Klass::SELECT, @project.new_record? ? nil : @project.klass), 
@@ -37,22 +42,24 @@
     %br/
     = form.text_area :description, :cols => 55, :rows => 5
   
-  %p
-    = form.label :dev_id
-    %br/
-    = form.collection_select :dev_id, User.devs, :id, :name, :include_blank => true
-  
-  %p
-    = form.label :owner_id
-    %br/
-    = form.collection_select :owner_id, User.nondevs, :id, :name, :include_blank => true
+  %table.bottom_spaced{:border => 0, :cellspacing => 0, :cellpadding => 0, :width => "100%"}
+    %tr
+      %td
+        %strong= form.label :dev_id
+      %td
+        %strong= form.label :owner_id
+    %tr
+      %td
+        = form.collection_select :dev_id, User.devs, :id, :name, :include_blank => true
+      %td
+        = form.collection_select :owner_id, User.nondevs, :id, :name, :include_blank => true
   
   %p
     = form.label :user_ids
     %br/
     = form.text_field :user_tokens, "data-pre" => @project.users.map(&:attributes).to_json
 
-  %table.spaced{:border => 0, :cellspacing => 0, :cellpadding => 0, :width => "100%"}
+  %table.bottom_spaced{:border => 0, :cellspacing => 0, :cellpadding => 0, :width => "100%"}
     %thead
       %tr
         %td{:colspan => 3}
@@ -77,7 +84,7 @@
           = duration_options_for(@project, :estimated_duration_unit)
 
 - unless @project.finished?
-  %table.spaced{:border => 0, :cellspacing => 0, :cellpadding => 0, :width => "100%"}
+  %table.bottom_spaced{:border => 0, :cellspacing => 0, :cellpadding => 0, :width => "100%"}
     %tr
       %td
         %strong= form.label :compl_perc

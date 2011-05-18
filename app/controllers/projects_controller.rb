@@ -22,7 +22,7 @@ class ProjectsController < ApplicationController
   end
   
   def show
-    @project = Project.find(params[:id], :include => [:dev, :users, :project_name])
+    @project = Project.find(params[:id], :include => [:dev, :users, :project_name, {:org_unit => :parent}])
   end
 
   def edit
@@ -47,5 +47,4 @@ class ProjectsController < ApplicationController
   def library
     @project = Project.find(params[:id], :include => :events)
   end
-
 end

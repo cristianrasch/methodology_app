@@ -11,7 +11,7 @@
 - if @org_unit.has_children?
   %p
     %strong= OrgUnit.human_attribute_name(:children)
-  %div.ancestors
+  %div.bottom_spaced
     %ul
     = render(:partial => 'child', :collection => @org_unit.children)
 

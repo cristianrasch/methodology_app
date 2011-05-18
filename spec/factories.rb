@@ -6,18 +6,6 @@ Factory.define :user do |u|
   u.org_unit 'Turismo'
 end
 
-Factory.define :project do |p|
-  p.description Faker::Lorem.paragraph
-  p.requirement Faker::Lorem.sentence
-  p.estimated_start_date 2.months.ago.to_date
-  p.estimated_end_date 3.months.from_now.to_date
-  p.estimated_duration 80
-  p.association :owner, :factory => :user
-  p.association :dev, :factory => :user
-  p.association :project_name
-  3.times { p.after_build { |pp| pp.users << Factory(:user) } }
-end
-
 Factory.define :event do |e|
   e.stage Conf.stages.first.first
   e.status Conf.statuses.first.first
@@ -51,4 +39,17 @@ end
 
 Factory.define :org_unit do |ou|
   ou.sequence(:text) {|n| "Org unit ##{n}"}
+end
+
+Factory.define :project do |p|
+  p.description Faker::Lorem.paragraph
+  p.requirement Faker::Lorem.sentence
+  p.estimated_start_date 2.months.ago.to_date
+  p.estimated_end_date 3.months.from_now.to_date
+  p.estimated_duration 80
+  p.association :owner, :factory => :user
+  p.association :dev, :factory => :user
+  p.association :project_name
+  3.times { p.after_build { |pp| pp.users << Factory(:user) } }
+  p.association :org_unit
 end

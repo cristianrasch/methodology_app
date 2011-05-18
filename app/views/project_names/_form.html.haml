@@ -10,4 +10,4 @@
     = form.label :parent_id
   = form.radio_button :parent_id, "", :checked => @project_name.new_record?
   Ninguno
-  %div.ancestors= potential_ancestors(@project_names)
+  %div.bottom_spaced= potential_ancestors(@project_names)

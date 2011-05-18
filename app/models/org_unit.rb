@@ -9,8 +9,8 @@ class OrgUnit < ActiveRecord::Base
   scope :excluding, lambda {|org_unit| where(:id ^ org_unit) }
   scope :ordered, order(:text)
   scope :with_children, includes(:children)
-  
-  before_save :humanize_text
+  scope :not_roots, where('not exists (select 1 from org_units ou where ou.parent_id = org_units.id)')
+  scope :with_parent, includes(:parent)
   
   attr_accessible :text, :parent_id
   
@@ -18,9 +18,7 @@ class OrgUnit < ActiveRecord::Base
     ! children.empty?
   end
   
-  private
-  
-  def humanize_text
-    self.text = text.humanize
+  def to_s
+    parent ? "#{parent.text} -> #{text}" : text
   end
 end

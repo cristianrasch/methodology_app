@@ -40,7 +40,8 @@ describe ProjectsController do
       attrs = Factory.attributes_for(:project, :dev_id => @current_user.id,
                                     :owner_id => Factory(:user).id,  
                                     :user_ids => [Factory(:user).id],
-                                    :project_name_id => Factory(:project_name).id)
+                                    :project_name_id => Factory(:project_name).id,
+                                    :org_unit_id => Factory(:org_unit).id)
       lambda {
         post :create, :project => attrs
       }.should change(Project, :count).by(1)

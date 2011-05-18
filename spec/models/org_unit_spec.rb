@@ -24,10 +24,6 @@ describe OrgUnit do
     end
   end
   
-  it "should downcase its text attr before being saved" do
-    Factory(:org_unit, :text => 'sISTEMAS').text.should == 'Sistemas'
-  end
-  
   it "should be able to tell whether it has children or not" do
     parent = Factory(:org_unit)
     parent.should_not have_children

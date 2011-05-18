@@ -442,10 +442,6 @@ div.nested_project_names {
   margin-left: 20px;
 }
 
-div.ancestors {
-  margin-bottom: 15px;
-}
-
-table.spaced {
+.bottom_spaced {
   margin-bottom: 15px;
 }

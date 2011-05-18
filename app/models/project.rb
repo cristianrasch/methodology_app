@@ -57,6 +57,7 @@ class Project < ActiveRecord::Base
   belongs_to :updater, :class_name => 'User', :foreign_key => :updated_by
   belongs_to :project_name
   belongs_to :delayed_by_proj, :class_name => 'Project', :foreign_key => :delayed_by
+  belongs_to :org_unit
   has_many :events, :dependent => :destroy, :order => 'created_at desc'
   has_many :tasks, :dependent => :destroy do
     def list(options={})
@@ -76,6 +77,8 @@ class Project < ActiveRecord::Base
                                           :message => I18n.t('errors.messages.blank') }
   validates :project_name_id, :numericality => { :greater_than => 0, 
                                                  :message => I18n.t('errors.messages.blank') }
+  validates :org_unit_id, :numericality => { :greater_than => 0, 
+                                             :message => I18n.t('errors.messages.blank') }
   validates :estimated_start_date, :presence => true
   validates :estimated_end_date, :presence => true
   validates :estimated_duration, :numericality => { :greater_than => 0 }
@@ -104,7 +107,8 @@ class Project < ActiveRecord::Base
   attr_accessor :indicator
   attr_accessible :description, :dev_id, :owner_id, :user_ids, :estimated_start_date, :estimated_end_date, 
                   :estimated_duration, :status, :updated_by, :user_tokens, :compl_perc, :klass, :indicator, 
-                  :envisaged_end_date, :estimated_duration_unit, :project_name_id, :delayed_by, :requirement
+                  :envisaged_end_date, :estimated_duration_unit, :project_name_id, :delayed_by, :requirement, 
+                  :org_unit_id
   date_writer_for :estimated_start_date, :estimated_end_date, :envisaged_end_date
   
   class << self
