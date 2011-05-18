@@ -1,7 +1,9 @@
 require 'bundler/capistrano'
 require "delayed/recipes"
 
-default_run_options[:pty] = true
+# default_run_options[:pty] = true
+default_environment['LD_LIBRARY_PATH'] = '/opt/IBM/informix/lib:/opt/IBM/informix/lib/esql:/opt/IBM/informix/lib/cli:/usr/lib/sqlapi' 
+default_environment['INFORMIXSERVER'] = 'cpcecf_desar'
 
 set :application, 'methodology_app'
 set :rails_env, "production" #added for delayed job 
@@ -32,17 +34,7 @@ task :symlink_config_local_yml, :roles => :app do
 end
 after 'deploy:update_code', 'symlink_config_local_yml'
 
-# Delayed Job
-namespace(:delayed_job) do
-  desc 'Set env vars'
-  task :set_env, :roles => :app do
-    run "export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/opt/IBM/informix/lib:/opt/IBM/informix/lib/esql:/opt/IBM/informix/lib/cli:/usr/lib/sqlapi"
-    run "export INFORMIXSERVER=cpcecf_desar"
-  end
-end
-before "deploy:stop", "delayed_job:set_env"
-after  "deploy:start", "delayed_job:set_env"
-  
+# Delayed Job  
 before "deploy:restart", "delayed_job:stop"
 after  "deploy:restart", "delayed_job:start"
 
