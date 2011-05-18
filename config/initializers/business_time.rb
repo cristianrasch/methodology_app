@@ -7,16 +7,16 @@ BusinessTime::Config.load("#{Rails.root}/config/business_time.yml")
 
 # BusinessTime::Config.holidays += Holiday.this_year.map(&:date) if Holiday.table_exists?
 
-# Sequel.quote_identifiers = false
-# db = Sequel.informix(Conf.ifx['db'], :user => Conf.ifx['user'], :password => Conf.ifx['passwd'])
-# BusinessTime::Config.holidays += db[:feriados].filter(['year(fecha) = ?', Date.today.year]).all.map { |holiday| holiday[:fecha] }
+Sequel.quote_identifiers = false
+db = Sequel.informix(Conf.ifx['db'], :user => Conf.ifx['user'], :password => Conf.ifx['passwd'])
+BusinessTime::Config.holidays += db[:feriados].filter(['year(fecha) = ?', Date.today.year]).all.map { |holiday| holiday[:fecha] }
 
-require 'informix'
+# require 'informix'
 
-arr = Informix.connect(Conf.ifx['db'], Conf.ifx['user'], Conf.ifx['passwd']) do |db|
-  db.cursor('select fecha from feriados where year(fecha) = year(today)') do |cur|
-    cur.open
-    cur.fetch_all
-  end
-end
-BusinessTime::Config.holidays += arr.flatten
+# arr = Informix.connect(Conf.ifx['db'], Conf.ifx['user'], Conf.ifx['passwd']) do |db|
+#   db.cursor('select fecha from feriados where year(fecha) = year(today)') do |cur|
+#     cur.open
+#     cur.fetch_all
+#   end
+# end
+# BusinessTime::Config.holidays += arr.flatten
