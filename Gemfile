@@ -14,8 +14,8 @@ gem 'mysql2', '< 0.3'
 gem 'net-ssh'
 gem 'delayed_job'
 gem "business_time"
-gem 'sequel'
 gem 'ruby-informix'
+gem 'sequel'
 
 group :test, :development do
   gem "rspec-rails", "~> 2.4"
