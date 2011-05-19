@@ -92,7 +92,7 @@ class Project < ActiveRecord::Base
   scope :not_started, lambda { where(:estimated_start_date.lt => Date.today, :status => Project::Status::NEW) }
   scope :not_finished, lambda { where(:estimated_end_date.lt => Date.today, :ended_on => nil) }
   scope :finished, lambda { where(:status => Project::Status::FINISHED) }
-  scope :ordered, order(:started_on.desc)
+  scope :ordered, order(:id.desc)
   scope :developed_by, lambda { |dev_id| where(:dev_id => dev_id) }
   scope :upcoming, lambda { where( :status => Project::Status::NEW) }
   scope :on_course_by, lambda { |date| where(['? between estimated_start_date and estimated_end_date', date]) }
@@ -112,7 +112,7 @@ class Project < ActiveRecord::Base
   date_writer_for :estimated_start_date, :estimated_end_date, :envisaged_end_date
   
   class << self
-    def search(template, page = nil)
+    def search(template, options = {})
       projects = scoped
       
       [:dev_id, :owner_id, :project_name_id].each { |col|
@@ -128,7 +128,13 @@ class Project < ActiveRecord::Base
         arr.each { |ind| projects = projects.send(ind) if template.indicator.to_i == "Project::Indicator::#{ind.upcase}".constantize }
       end
     
-      projects.ordered.page(page).per(per_page)
+      if options[:order]
+        projects = projects.order(options[:order])
+      else
+        projects = projects.ordered
+      end
+      
+      projects.page(options[:page]).per(per_page)
     end
     
     def search_for(user, page = nil)

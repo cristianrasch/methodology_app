@@ -437,3 +437,17 @@ hr {
 .hidden {
   display: none;
 }
+
+.pretty th .current {
+  padding-right: 12px;
+  background-repeat: no-repeat;
+  background-position: right center;
+}
+
+.pretty th .asc {
+  background-image: url(/methodology_app/images/up.png);
+}
+
+.pretty th .desc {
+  background-image: url(/methodology_app/images/down.png);
+}

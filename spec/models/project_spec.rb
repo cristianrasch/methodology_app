@@ -94,17 +94,16 @@ describe Project do
     project.tasks.list(:show_all => true).should have(5).records
   end
 
-  it "should search for projects based on the supplied params" do
+  it "should search for projects and order them based on the supplied params" do
     p1 = create_model(:project, :project_name_id => Factory(:project_name, :text => '..').id)
     p2 = create_model(:project, :started_on => 1.week.ago.to_date)
     dev = Factory(:user)
     p3 = Factory(:project, :dev => dev)
-    p4 = create_model(:project, :status => Project::Status::CANCELED)
 
     Project.search(Project.new(:project_name_id => p1.project_name_id)).should have(1).record
     pr = Project.new
     pr.started_on = 8.days.ago.to_date
-    Project.search(pr).should have(1).record
+    Project.search(pr, :order => 'created_at desc').should have(1).record
     Project.search(Project.new(:dev_id => dev.id)).should have(1).record
   end
 

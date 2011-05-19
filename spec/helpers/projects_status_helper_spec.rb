@@ -20,4 +20,23 @@ describe ProjectsStatusHelper do
     helper.indicator_class_for(Factory(:project, :started_on => Date.yesterday, 
                                        :status => Project::Status::FINISHED)).should == 'blue'
   end
+  
+  it "should return a sortable column link" do
+    @column, @direction, title = 'id', 'asc', 'title'
+    
+    ProjectsStatusHelper.class_eval do
+      def sort_column
+        @column
+      end
+      
+      def sort_direction
+        @direction
+      end
+    end
+    
+    link = helper.sortable(@column, title)
+    link.should include(title)
+    link.should include("sort=#{@column}")
+    link.should include('direction=desc')
+  end
 end

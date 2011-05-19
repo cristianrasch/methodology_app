@@ -1,11 +1,11 @@
 - if list.empty?
   %p= not_found(Project)
 - else
-  %table{:border => 0, :cellpadding => 2, :cellspacing => 2, :width => '100%'}
+  %table.pretty{:border => 0, :cellpadding => 2, :cellspacing => 2, :width => '100%'}
     %thead
       %tr
-        %th N°
-        %th Fecha
+        %th= sortable('id', 'N°')
+        %th= sortable('created_at', 'Fecha')
         %th Projecto
         %th Objetivo
         %th Tipo
@@ -16,13 +16,13 @@
               %tr
                 %th{:colspan => 3}= 'Estimación'
               %tr
-                %td Inicio
-                %td Fin
+                %td= sortable('estimated_start_date', 'Inicio')
+                %td= sortable('estimated_end_date', 'Fin')
                 %td Duración
         %th Etapa
         %th Estado
         %th % Avance
-        %th Fin previsto
+        %th= sortable('envisaged_end_date', 'Fin previsto')
     %tbody
     - list.each do |project|
       %tr

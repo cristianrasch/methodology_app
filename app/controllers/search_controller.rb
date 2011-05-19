@@ -6,7 +6,7 @@ class SearchController < ApplicationController
   
   def projects
     @project = build_model(Project, params[:project])
-    @projects = Project.search(@project, params[:page])
+    @projects = Project.search(@project, params)
     render 'projects/index'
   end
 
