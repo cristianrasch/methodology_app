@@ -1,38 +1,40 @@
 MethodologyApp::Application.routes.draw do
-  resources :org_units
+  scope ENV['RAILS_RELATIVE_URL_ROOT'] || '/' do
+    resources :org_units
+    
+    namespace :admin do
+      post 'users/import'
+      resources :holidays
+      resources :reports, :only => [:index, :new]
+    end
   
-  namespace :admin do
-    post 'users/import'
-    resources :holidays
-    resources :reports, :only => [:index, :new]
-  end
-
-  resources :project_names
-
-  get "projects_status/index"
-
-  get "home/index"
-
-  devise_for :users
-  resource :account, :only => [:edit, :update]
-  match 'users' => 'users#index'
-
-  resources :projects, :shallow => true do
-    member do
-      get 'library'
+    resources :project_names
+  
+    get "projects_status/index"
+  
+    get "home/index"
+  
+    devise_for :users
+    resource :account, :only => [:edit, :update]
+    match 'users' => 'users#index'
+  
+    resources :projects, :shallow => true do
+      member do
+        get 'library'
+      end
+      
+      resources :events do
+        resources :comments
+      end
+      resources :tasks do
+        resources :comments
+      end
     end
     
-    resources :events do
-      resources :comments
-    end
-    resources :tasks do
-      resources :comments
-    end
-  end
+    get 'search/projects'
   
-  get 'search/projects'
-
-  root :to => "projects#index"
+    root :to => "projects#index"
+  end
   
   # The priority is based upon order of creation:
   # first created -> highest priority.
