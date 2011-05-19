@@ -4,7 +4,6 @@ require "delayed/recipes"
 default_run_options[:pty] = true
 default_environment['LD_LIBRARY_PATH'] = '/opt/IBM/informix/lib:/opt/IBM/informix/lib/esql:/opt/IBM/informix/lib/cli:/usr/lib/sqlapi' 
 default_environment['INFORMIXSERVER'] = 'cpcecf_desar'
-default_environment['RAILS_RELATIVE_URL_ROOT'] = '/methodology_app'
 
 set :application, 'methodology_app'
 set :rails_env, "production" #added for delayed job 
@@ -39,7 +38,7 @@ desc "Symlink the public/images directory
       to nginx's html directory."
 task :symlink_images_dir, :roles => :app do
   sudo "ln -nsf #{current_path}/public/images
-       /opt/nginx/html/images"
+       /opt/nginx/html/#{application}/images"
 end
 after 'deploy:update_code', 'symlink_images_dir'
 
