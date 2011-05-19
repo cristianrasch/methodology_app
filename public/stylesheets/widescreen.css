@@ -116,7 +116,7 @@ hr {
 
 #menu li {
 	display: block;
-	background: url(/images/img02.jpg) repeat-y left top;
+	background: url(/methodology_app/images/img02.jpg) repeat-y left top;
 	float: left;
 }
 
@@ -215,7 +215,7 @@ hr {
 	height: 415px;
 	margin: 0 auto;
 	padding-top: 25px;
-	background: #FFFFFF url(/images/img01.jpg) no-repeat center 25px;
+	background: #FFFFFF url(/methodology_app/images/img01.jpg) no-repeat center 25px;
 }
 
 #logo h1, #logo p {
@@ -272,7 +272,7 @@ hr {
 
 .post .meta {
 	padding: 2px 30px 2px 16px;
-	background: url(/images/img08.jpg) no-repeat left 10px;
+	background: url(/methodology_app/images/img08.jpg) no-repeat left 10px;
 	border-bottom: 1px #BDBDBB dotted;
 	font-family: Arial, Helvetica, sans-serif;
 	font-weight: normal;
@@ -329,7 +329,7 @@ hr {
 #sidebar li li {
 	margin: 0 0 0 5px;
 	padding-left: 15px;
-	background: url(/images/img09.jpg) no-repeat left 16px;
+	background: url(/methodology_app/images/img09.jpg) no-repeat left 16px;
 }
 
 #sidebar p {
@@ -417,7 +417,7 @@ hr {
 	height: 95px;
 	margin: 0 auto;
 	padding: 0;
-	background: url(/images/img05.jpg) no-repeat left top;
+	background: url(/methodology_app/images/img05.jpg) no-repeat left top;
 }
 
 #footer p {
