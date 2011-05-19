@@ -4,3 +4,8 @@
 $(document).ready(function () {
 	$('input[type!="hidden"]').first().focus();
 });
+
+function addDaysTo(date, nbrDays) {
+  date.setDate(date.getDate()+nbrDays);
+  return date;
+}

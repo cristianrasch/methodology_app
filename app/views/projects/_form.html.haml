@@ -11,6 +11,10 @@
         prePopulate: $("#project_user_tokens").data("pre"),
         theme: "facebook"
       });
+      
+      $('#project_estimated_start_date').change(function() {
+        $('#project_estimated_end_date').datepicker('setDate', addDaysTo($(this).datepicker('getDate'), 1))
+      });
     });
 
 = form.error_messages :header_message => nil, :message => nil
