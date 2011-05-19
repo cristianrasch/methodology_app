@@ -21,9 +21,10 @@ class ProjectName < ActiveRecord::Base
   end
   
   def potential_ancestors
-    if new_record? or ancestry_depth < 2
-      ances = self.class.before_depth(2)
-      ances = ances.where(:id ^ id) if persisted? and ancestry_depth < 2
+    if new_record?
+      ances = self.class.roots
+    elsif ancestry_depth < 2
+      ances = self.class.before_depth(2).where(:id ^ id)
     else
       ances = ancestors
     end

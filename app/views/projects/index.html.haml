@@ -1,5 +1,5 @@
 = content_for :title do 
-  Listando #{Project.model_name.human.pluralize}
+  #{Project.model_name.human.pluralize} en curso
   = link_to_function image_tag('search.png', :border => 0), "toggle_search_form();"
 
 = render 'shared/email_verif_alert'

@@ -5,7 +5,9 @@
   %br/
   = form.text_field :text
 
-- unless @project_names.empty?  
+- if params[:parent_id]
+  = form.hidden_field :parent_id if params[:parent_id]
+- else
   %p
     = form.label :parent_id
   = form.radio_button :parent_id, "", :checked => @project_name.new_record?

@@ -1,1 +1,4 @@
-%li= link_to project_name.text, project_name
+%li
+  = link_to_unless project_name.ancestry_depth == 2, project_name.text, 
+                   new_project_name_path(:parent_id => project_name)
+  = link_to image_tag('info.png'), project_name

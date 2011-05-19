@@ -17,10 +17,10 @@ describe ProjectNamesHelper do
       2.times { @roots << Factory(:project_name) }
       @child = Factory(:project_name, :parent => @roots.first)
       @another_child = Factory(:project_name, :parent => @child)
+      @project_name = Factory(:project_name)
     end
     
     it "should display potential ancestors radio buttons" do
-      @project_name = ProjectName.new
       html = helper.potential_ancestors(@project_name.potential_ancestors)
       (@roots.clone << @child).each { |project_name|
         html.should include(project_name.text)

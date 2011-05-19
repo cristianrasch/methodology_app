@@ -19,13 +19,24 @@ describe ProjectNamesController do
     assigns[:project_names].should_not be_nil
   end
 
-  it "should display a new ProjectName form" do
-    get :new
+  context "new action" do
+    it "should display a new ProjectName form" do
+      get :new
+      
+      response.should be_success
+      response.should render_template('new')
+      assigns[:project_name].should_not be_nil
+      assigns[:project_names].should_not be_nil
+    end
     
-    response.should be_success
-    response.should render_template('new')
-    assigns[:project_name].should_not be_nil
-    assigns[:project_names].should_not be_nil
+    it "should not load root project names when a parent_id is specified" do
+      get :new, :parent_id => Factory(:project_name)
+      
+      response.should be_success
+      response.should render_template('new')
+      assigns[:project_name].should_not be_nil
+      assigns[:project_names].should be_nil
+    end
   end
 
   context "create action" do

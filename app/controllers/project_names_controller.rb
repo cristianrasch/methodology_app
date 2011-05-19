@@ -7,8 +7,8 @@ class ProjectNamesController < ApplicationController
   end
   
   def new
-    @project_name = ProjectName.new
-    @project_names = @project_name.potential_ancestors
+    @project_name = ProjectName.new(:parent_id => params[:parent_id])
+    @project_names = @project_name.potential_ancestors unless params[:parent_id]
   end
   
   def create

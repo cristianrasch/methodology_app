@@ -43,7 +43,7 @@ describe ProjectName do
     it "should return potential ancestors for a new record" do
       ancestors = ProjectName.new.potential_ancestors
       ancestors.should have(2).records
-      ancestors[@roots.first].should have(1).record
+      @roots.each {|root| ancestors.should include(root)}
     end
     
     it "should return potential ancestors for a persisted record which depth is less than 2" do
