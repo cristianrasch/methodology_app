@@ -2,7 +2,7 @@
 = content_for :sidebar do
   = render 'sidebar'
 
-= form_for @project do |f|
+= form_for @project, :html => {:id => 'project_form'} do |f|
   = render f
   - if @project.dev == current_user
     %p

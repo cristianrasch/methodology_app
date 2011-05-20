@@ -1,5 +1,5 @@
 = content_for :head do
-  = javascript_include_tag 'jquery-ui-1.8.12.custom.min', 'jquery.ui.datepicker-es', 'jquery.tokeninput'
+  = javascript_include_tag 'jquery-ui-1.8.12.custom.min', 'jquery.ui.datepicker-es', 'jquery.tokeninput', 'jquery.chained'
   = stylesheet_link_tag 'jquery-ui-1.8.12.custom', 'token-input-facebook'
   :javascript
     $(document).ready(function() {
@@ -15,15 +15,53 @@
       $('#project_estimated_start_date').change(function() {
         $('#project_estimated_end_date').datepicker('setDate', addDaysTo($(this).datepicker('getDate'), 1))
       });
+      
+      $("#project_name_id1").chained("#project_name_id0");
+      $("#project_name_id2").chainedTo("#project_name_id1");
+      
+      arr = [#{@project.project_name_id ? @project.project_name.path_ids.join(',') : ''}]
+      if(arr.length > 0)
+        selectDefaultValue($("#project_name_id0"), arr[0]);
+      if(arr.length > 1)
+        selectDefaultValue($("#project_name_id1"), arr[1]);
+      if(arr.length > 2)
+        selectDefaultValue($("#project_name_id2"), arr[2]);
+        
+      $('form#project_form').submit(function(e){
+           e.preventDefault(); //Prevent the normal submission action
+           validate_project_name(this);
+      });
     });
+    
+    function validate_project_name(form) {
+      if($("#project_name_id2").attr('disabled'))
+        if($("#project_name_id1").attr('disabled'))
+          value = $("#project_name_id0").val();
+        else
+          value = $("#project_name_id1").val();
+      else
+        value = $("#project_name_id2").val();
+        
+      if(value.length == 0)
+        alert("Debe seleccionar un nombre de proyecto");
+      else {
+        $("#project_project_name_id").val(value);
+        form.submit();
+      }
+    }
+    
 
 = form.error_messages :header_message => nil, :message => nil
 
 - if @project.new?
+  = form.hidden_field :project_name_id
+  
   %p
     = form.label :project_name_id
     %br/
-    = potential_project_names(ProjectName.arranged)
+    = select_tag :project_name_id0, options_for_select(ProjectName.at_depth(0).map{|pn| [pn.text, pn.id]}), :include_blank => true
+    = select_tag :project_name_id1, options_for_select(ProjectName.at_depth(1).map{|pn| [pn.text, pn.id, {:class => pn.parent_id}]}), :include_blank => true
+    = select_tag :project_name_id2, options_for_select(ProjectName.at_depth(2).map{|pn| [pn.text, pn.id, {:class => pn.parent_id}]}), :include_blank => true
   
   %p
     = form.label :org_unit_id
