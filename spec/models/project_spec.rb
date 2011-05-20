@@ -11,7 +11,6 @@ describe Project do
       project.should have(1).error_on(:estimated_start_date)
       project.should have(1).error_on(:estimated_end_date)
       project.should have(1).error_on(:estimated_duration)
-      project.should have(1).error_on(:user_ids)
       project.should have(1).error_on(:dev_id)
       project.should have(1).error_on(:owner_id)
       project.should have(1).error_on(:project_name_id)

@@ -29,7 +29,7 @@
         %td= project.id
         %td= l(project.created_at, :format => :tiny)
         %td= link_to(project, project)
-        %td= truncate(project.description.humanize, :length => 25)
+        %td= truncate(project.requirement.humanize, :length => 25)
         %td= project.klass_str.first.upcase
         %td= project.dev.name
         %td

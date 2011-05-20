@@ -73,7 +73,6 @@ class Project < ActiveRecord::Base
   validates :estimated_end_date, :presence => true
   validates :estimated_duration, :numericality => { :greater_than => 0 }
   validate :dates_set
-  validate :participating_users
   validate :devs_and_owners_email_address
   validates :requirement, :presence => true
   
@@ -215,10 +214,6 @@ class Project < ActiveRecord::Base
       errors.add(:estimated_end_date)
     end
     errors.add(:envisaged_end_date) if envisaged_end_date && started_on && envisaged_end_date < started_on 
-  end
-  
-  def participating_users
-    errors.add(:user_ids, I18n.t('errors.messages.empty')) if user_ids.empty?
   end
   
   def notify_project_saved
