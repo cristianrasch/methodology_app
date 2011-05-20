@@ -9,7 +9,7 @@
 #   Mayor.create(:name => 'Daley', :city => cities.first)
 
 # production users import
-# User.import
+User.import
 
 # org units
 OrgUnit.create!(:text => 'Presidencia')
@@ -95,7 +95,7 @@ gem = User.find_by_username('gem')
   end
 }
 
-pr = Project.create!(:req_nrb => 291,
+pr = Project.create!(:req_nbr => 291,
                      :project_name_id => ProjectName.find_or_create_by_text('Administración').id,
                      :org_unit_id => OrgUnit.find_by_text('Administración').id,
                      :requirement => 'SUB Interfase bejerman integra. correc de registro',
@@ -105,7 +105,7 @@ pr = Project.create!(:req_nrb => 291,
 pr.update_attributes(:status => Project::Status::IN_DEV, :updated_by => mpa.id)
 pr.update_attributes(:status => Project::Status::FINISHED, :updated_by => mpa.id)
 
-pr = Project.create!(:req_nrb => 290,
+pr = Project.create!(:req_nbr => 290,
                      :project_name_id => ProjectName.find_or_create_by_text('Legalizaciones').id,
                      :org_unit_id => OrgUnit.find_by_text('Legalizaciones').id,
                      :requirement => 'Query inscriptos comicios',
@@ -115,7 +115,7 @@ pr = Project.create!(:req_nrb => 290,
                      :estimated_duration => 2, :estimated_duration_unit => Duration::HOUR)
 pr.update_attributes(:status => Project::Status::IN_DEV, :updated_by => gbe.id)
 
-pr = Project.create!(:req_nrb => 289,
+pr = Project.create!(:req_nbr => 289,
                      :project_name_id => ProjectName.find_or_create_by_text('Gcia Administración').id,
                      :org_unit_id => OrgUnit.find_by_text('Administración').id,
                      :requirement => 'Citi Compras ',
@@ -125,7 +125,7 @@ pr = Project.create!(:req_nrb => 289,
                      :estimated_duration => 2, :estimated_duration_unit => Duration::WEEK)
 pr.update_attributes(:status => Project::Status::IN_DEV, :updated_by => crr.id)
 
-pr = Project.create!(:req_nrb => 288,
+pr = Project.create!(:req_nbr => 288,
                      :project_name_id => ProjectName.find_or_create_by_text('Gcia Coordinadora').id,
                      :org_unit_id => OrgUnit.find_by_text('Administración').id,
                      :requirement => 'Turnero Documentos - Agregar Feriado',
@@ -136,7 +136,7 @@ pr = Project.create!(:req_nrb => 288,
 pr.update_attributes(:status => Project::Status::IN_DEV, :updated_by => fol.id)
 pr.update_attributes(:status => Project::Status::FINISHED, :updated_by => fol.id)
 
-pr = Project.create!(:req_nrb => 287,
+pr = Project.create!(:req_nbr => 287,
                      :project_name_id => ProjectName.find_or_create_by_text('Gcia Técnica').id,
                      :org_unit_id => OrgUnit.find_by_text('Técnica').id,
                      :requirement => 'Video en internet - Presunciones de la Seg Social',
@@ -146,7 +146,7 @@ pr = Project.create!(:req_nrb => 287,
                      :estimated_duration => 2, :estimated_duration_unit => Duration::DAY)
 pr.update_attributes(:status => Project::Status::IN_DEV, :updated_by => gbe.id)
 
-pr = Project.create!(:req_nrb => 280,
+pr = Project.create!(:req_nbr => 280,
                      :project_name_id => ProjectName.find_or_create_by_text('Desarrollo profesional').id,
                      :org_unit_id => OrgUnit.find_by_text('Desarrollo Profesional').id,
                      :requirement => 'Encuesta Nuevo Matric - nuevos campos',
@@ -156,7 +156,7 @@ pr = Project.create!(:req_nrb => 280,
                      :estimated_duration => 6, :estimated_duration_unit => Duration::DAY)
 pr.update_attributes(:status => Project::Status::IN_DEV, :updated_by => fol.id)
 
-pr = Project.create!(:req_nrb => 274,
+pr = Project.create!(:req_nbr => 274,
                      :project_name_id => ProjectName.find_or_create_by_text('EEC').id,
                      :org_unit_id => OrgUnit.find_by_text('Escuela de Educación Continuada').id,
                      :requirement => 'Plataforma materiales EEC',
@@ -195,4 +195,3 @@ pr.update_attributes(:status => Project::Status::IN_DEV, :updated_by => pap.id)
 #   }
 #   Factory(:comment, :commentable => project.tasks.first)
 # end
-
