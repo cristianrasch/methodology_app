@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110518154007) do
+ActiveRecord::Schema.define(:version => 20110520213639) do
 
   create_table "comments", :force => true do |t|
     t.text     "content"
@@ -114,6 +114,7 @@ ActiveRecord::Schema.define(:version => 20110518154007) do
     t.integer  "delayed_by"
     t.string   "requirement"
     t.integer  "org_unit_id"
+    t.integer  "req_nbr"
   end
 
   add_index "projects", ["delayed_by"], :name => "index_projects_on_delayed_by"
@@ -121,6 +122,7 @@ ActiveRecord::Schema.define(:version => 20110518154007) do
   add_index "projects", ["org_unit_id"], :name => "index_projects_on_org_unit_id"
   add_index "projects", ["owner_id"], :name => "index_projects_on_owner_id"
   add_index "projects", ["project_name_id"], :name => "index_projects_on_project_name_id"
+  add_index "projects", ["req_nbr"], :name => "index_projects_on_req_nbr"
   add_index "projects", ["started_on", "ended_on"], :name => "index_projects_on_started_on_and_ended_on"
   add_index "projects", ["status"], :name => "index_projects_on_status"
   add_index "projects", ["updated_by"], :name => "index_projects_on_updated_by"

@@ -12,62 +12,62 @@
 # User.import
 
 # org units
-# # OrgUnit.create!(:text => 'Presidencia')
-# # OrgUnit.create!(:text => 'Coordinación Servicios Profesionales')
-# srvs_prof = OrgUnit.create!(:text => 'Servicios Profesionales')
-# # OrgUnit.create!(:text => 'Turismo', :parent_id => srvs_prof.id)
-# # OrgUnit.create!(:text => 'Inscripciones y Publicaciones', :parent_id => srvs_prof.id)
-# OrgUnit.create!(:text => 'Subsidios, Seguro de Vida y Convenios', :parent_id => srvs_prof.id)
-# OrgUnit.create!(:text => 'Administración de Productos', :parent_id => srvs_prof.id)
-# OrgUnit.create!(:text => 'Marketing')
-# OrgUnit.create!(:text => 'Consejito')
-# OrgUnit.create!(:text => 'EDICON')
-# matric = OrgUnit.create!(:text => 'Legalizaciones, Matrículas y Control')
-# OrgUnit.create!(:text => 'Legalizaciones', :parent_id => matric.id)
-# OrgUnit.create!(:text => 'Matrículas', :parent_id => matric.id)
-# OrgUnit.create!(:text => 'Vigilancia Profesional', :parent_id => matric.id)
-# salud = OrgUnit.create!(:text => 'Consejo Salud')
-# OrgUnit.create!(:text => 'Sistema SIMECO', :parent_id => salud.id)
-# OrgUnit.create!(:text => 'SAP', :parent_id => salud.id)
-# OrgUnit.create!(:text => 'Centro Médico', :parent_id => salud.id)
-# OrgUnit.create!(:text => 'Coordinación Temas Académicos')
-# tecnica = OrgUnit.create!(:text => 'Técnica')
-# OrgUnit.create!(:text => 'Asesores', :parent_id => tecnica.id)
-# OrgUnit.create!(:text => 'Comisiones', :parent_id => tecnica.id)
-# OrgUnit.create!(:text => 'Congresos y Eventos', :parent_id => tecnica.id)
-# OrgUnit.create!(:text => 'Administración de RCyT', :parent_id => tecnica.id)
-# OrgUnit.create!(:text => 'Sindicatura Concursal', :parent_id => tecnica.id)
-# OrgUnit.create!(:text => 'Escuela de Educación Continuada')
-# OrgUnit.create!(:text => 'Instituto de Ciencias Económicas')
-# OrgUnit.create!(:text => 'Centro de Información Bibliográfica')
-# OrgUnit.create!(:text => 'Centro de Mediación')
-# admin = OrgUnit.create!(:text => 'Administración')
-# OrgUnit.create!(:text => 'Contaduría', :parent_id => admin.id)
-# OrgUnit.create!(:text => 'Tesorería', :parent_id => admin.id)
-# OrgUnit.create!(:text => 'Correspondencia', :parent_id => admin.id)
-# OrgUnit.create!(:text => 'Compras', :parent_id => admin.id)
-# OrgUnit.create!(:text => 'Mesa de Entradas', :parent_id => admin.id)
-# rrhh = OrgUnit.create!(:text => 'RRHH y Servicios')
-# OrgUnit.create!(:text => 'Administración de RRHH', :parent_id => rrhh.id)
-# OrgUnit.create!(:text => 'Vigilancia', :parent_id => rrhh.id)
-# OrgUnit.create!(:text => 'Servicios Generales', :parent_id => rrhh.id)
-# OrgUnit.create!(:text => 'Servicio de empleo', :parent_id => rrhh.id)
-# OrgUnit.create!(:text => 'Orientación Laboral', :parent_id => rrhh.id)
-# it = OrgUnit.create!(:text => 'Sistemas')
-# OrgUnit.create!(:text => 'Desarrollo', :parent_id => it.id)
-# OrgUnit.create!(:text => 'Base de Datos', :parent_id => it.id)
-# OrgUnit.create!(:text => 'Redes e Internet', :parent_id => it.id)
-# OrgUnit.create!(:text => 'Trivia', :parent_id => it.id)
-# OrgUnit.create!(:text => 'Auditoria y Control de Gestión')
-# OrgUnit.create!(:text => 'Relaciones Públicas')
-# rel = OrgUnit.create!(:text => 'Relaciones Institucionales')
-# OrgUnit.create!(:text => 'Sec. de Mesa y Consejo Directivo', :parent_id => rel.id)
-# OrgUnit.create!(:text => 'Desarrollo Profesional', :parent_id => rel.id)
-# OrgUnit.create!(:text => 'Seguridad Informática')
-# OrgUnit.create!(:text => 'Asuntos Legales')
-# OrgUnit.create!(:text => 'Tribunal Arbitral')
-# OrgUnit.create!(:text => 'Organización y Métodos')
-# OrgUnit.create!(:text => 'Gestión de la Calidad')
+OrgUnit.create!(:text => 'Presidencia')
+OrgUnit.create!(:text => 'Coordinación Servicios Profesionales')
+srvs_prof = OrgUnit.create!(:text => 'Servicios Profesionales')
+OrgUnit.create!(:text => 'Turismo', :parent_id => srvs_prof.id)
+OrgUnit.create!(:text => 'Inscripciones y Publicaciones', :parent_id => srvs_prof.id)
+OrgUnit.create!(:text => 'Subsidios, Seguro de Vida y Convenios', :parent_id => srvs_prof.id)
+OrgUnit.create!(:text => 'Administración de Productos', :parent_id => srvs_prof.id)
+OrgUnit.create!(:text => 'Marketing')
+OrgUnit.create!(:text => 'Consejito')
+OrgUnit.create!(:text => 'EDICON')
+matric = OrgUnit.create!(:text => 'Legalizaciones, Matrículas y Control')
+OrgUnit.create!(:text => 'Legalizaciones', :parent_id => matric.id)
+OrgUnit.create!(:text => 'Matrículas', :parent_id => matric.id)
+OrgUnit.create!(:text => 'Vigilancia Profesional', :parent_id => matric.id)
+salud = OrgUnit.create!(:text => 'Consejo Salud')
+OrgUnit.create!(:text => 'Sistema SIMECO', :parent_id => salud.id)
+OrgUnit.create!(:text => 'SAP', :parent_id => salud.id)
+OrgUnit.create!(:text => 'Centro Médico', :parent_id => salud.id)
+OrgUnit.create!(:text => 'Coordinación Temas Académicos')
+tecnica = OrgUnit.create!(:text => 'Técnica')
+OrgUnit.create!(:text => 'Asesores', :parent_id => tecnica.id)
+OrgUnit.create!(:text => 'Comisiones', :parent_id => tecnica.id)
+OrgUnit.create!(:text => 'Congresos y Eventos', :parent_id => tecnica.id)
+OrgUnit.create!(:text => 'Administración de RCyT', :parent_id => tecnica.id)
+OrgUnit.create!(:text => 'Sindicatura Concursal', :parent_id => tecnica.id)
+OrgUnit.create!(:text => 'Escuela de Educación Continuada')
+OrgUnit.create!(:text => 'Instituto de Ciencias Económicas')
+OrgUnit.create!(:text => 'Centro de Información Bibliográfica')
+OrgUnit.create!(:text => 'Centro de Mediación')
+admin = OrgUnit.create!(:text => 'Administración')
+OrgUnit.create!(:text => 'Contaduría', :parent_id => admin.id)
+OrgUnit.create!(:text => 'Tesorería', :parent_id => admin.id)
+OrgUnit.create!(:text => 'Correspondencia', :parent_id => admin.id)
+OrgUnit.create!(:text => 'Compras', :parent_id => admin.id)
+OrgUnit.create!(:text => 'Mesa de Entradas', :parent_id => admin.id)
+rrhh = OrgUnit.create!(:text => 'RRHH y Servicios')
+OrgUnit.create!(:text => 'Administración de RRHH', :parent_id => rrhh.id)
+OrgUnit.create!(:text => 'Vigilancia', :parent_id => rrhh.id)
+OrgUnit.create!(:text => 'Servicios Generales', :parent_id => rrhh.id)
+OrgUnit.create!(:text => 'Servicio de empleo', :parent_id => rrhh.id)
+OrgUnit.create!(:text => 'Orientación Laboral', :parent_id => rrhh.id)
+it = OrgUnit.create!(:text => 'Sistemas')
+OrgUnit.create!(:text => 'Desarrollo', :parent_id => it.id)
+OrgUnit.create!(:text => 'Base de Datos', :parent_id => it.id)
+OrgUnit.create!(:text => 'Redes e Internet', :parent_id => it.id)
+OrgUnit.create!(:text => 'Trivia', :parent_id => it.id)
+OrgUnit.create!(:text => 'Auditoria y Control de Gestión')
+OrgUnit.create!(:text => 'Relaciones Públicas')
+rel = OrgUnit.create!(:text => 'Relaciones Institucionales')
+OrgUnit.create!(:text => 'Sec. de Mesa y Consejo Directivo', :parent_id => rel.id)
+OrgUnit.create!(:text => 'Desarrollo Profesional', :parent_id => rel.id)
+OrgUnit.create!(:text => 'Seguridad Informática')
+OrgUnit.create!(:text => 'Asuntos Legales')
+OrgUnit.create!(:text => 'Tribunal Arbitral')
+OrgUnit.create!(:text => 'Organización y Métodos')
+OrgUnit.create!(:text => 'Gestión de la Calidad')
 
 # devs
 mpa = User.find_by_username('mpa')
@@ -95,7 +95,8 @@ gem = User.find_by_username('gem')
   end
 }
 
-pr = Project.create!(:project_name_id => ProjectName.find_or_create_by_text('Administración').id,
+pr = Project.create!(:req_nrb => 291,
+                     :project_name_id => ProjectName.find_or_create_by_text('Administración').id,
                      :org_unit_id => OrgUnit.find_by_text('Administración').id,
                      :requirement => 'SUB Interfase bejerman integra. correc de registro',
                      :klass => Project::Klass::PROC, :dev_id => mpa.id, :owner_id => crg.id,
@@ -104,7 +105,8 @@ pr = Project.create!(:project_name_id => ProjectName.find_or_create_by_text('Adm
 pr.update_attributes(:status => Project::Status::IN_DEV, :updated_by => mpa.id)
 pr.update_attributes(:status => Project::Status::FINISHED, :updated_by => mpa.id)
 
-pr = Project.create!(:project_name_id => ProjectName.find_or_create_by_text('Legalizaciones').id,
+pr = Project.create!(:req_nrb => 290,
+                     :project_name_id => ProjectName.find_or_create_by_text('Legalizaciones').id,
                      :org_unit_id => OrgUnit.find_by_text('Legalizaciones').id,
                      :requirement => 'Query inscriptos comicios',
                      :klass => Project::Klass::PROC, :dev_id => gbe.id, :owner_id => est.id,
@@ -113,7 +115,8 @@ pr = Project.create!(:project_name_id => ProjectName.find_or_create_by_text('Leg
                      :estimated_duration => 2, :estimated_duration_unit => Duration::HOUR)
 pr.update_attributes(:status => Project::Status::IN_DEV, :updated_by => gbe.id)
 
-pr = Project.create!(:project_name_id => ProjectName.find_or_create_by_text('Gcia Administración').id,
+pr = Project.create!(:req_nrb => 289,
+                     :project_name_id => ProjectName.find_or_create_by_text('Gcia Administración').id,
                      :org_unit_id => OrgUnit.find_by_text('Administración').id,
                      :requirement => 'Citi Compras ',
                      :klass => Project::Klass::DEV, :dev_id => crr.id, :owner_id => est.id,
@@ -122,7 +125,8 @@ pr = Project.create!(:project_name_id => ProjectName.find_or_create_by_text('Gci
                      :estimated_duration => 2, :estimated_duration_unit => Duration::WEEK)
 pr.update_attributes(:status => Project::Status::IN_DEV, :updated_by => crr.id)
 
-pr = Project.create!(:project_name_id => ProjectName.find_or_create_by_text('Gcia Coordinadora').id,
+pr = Project.create!(:req_nrb => 288,
+                     :project_name_id => ProjectName.find_or_create_by_text('Gcia Coordinadora').id,
                      :org_unit_id => OrgUnit.find_by_text('Administración').id,
                      :requirement => 'Turnero Documentos - Agregar Feriado',
                      :klass => Project::Klass::PROC, :dev_id => fol.id, :owner_id => nss.id,
@@ -132,7 +136,8 @@ pr = Project.create!(:project_name_id => ProjectName.find_or_create_by_text('Gci
 pr.update_attributes(:status => Project::Status::IN_DEV, :updated_by => fol.id)
 pr.update_attributes(:status => Project::Status::FINISHED, :updated_by => fol.id)
 
-pr = Project.create!(:project_name_id => ProjectName.find_or_create_by_text('Gcia Técnica').id,
+pr = Project.create!(:req_nrb => 287,
+                     :project_name_id => ProjectName.find_or_create_by_text('Gcia Técnica').id,
                      :org_unit_id => OrgUnit.find_by_text('Técnica').id,
                      :requirement => 'Video en internet - Presunciones de la Seg Social',
                      :klass => Project::Klass::DEV, :dev_id => gbe.id, :owner_id => tks.id,
@@ -141,7 +146,8 @@ pr = Project.create!(:project_name_id => ProjectName.find_or_create_by_text('Gci
                      :estimated_duration => 2, :estimated_duration_unit => Duration::DAY)
 pr.update_attributes(:status => Project::Status::IN_DEV, :updated_by => gbe.id)
 
-pr = Project.create!(:project_name_id => ProjectName.find_or_create_by_text('Desarrollo profesional').id,
+pr = Project.create!(:req_nrb => 280,
+                     :project_name_id => ProjectName.find_or_create_by_text('Desarrollo profesional').id,
                      :org_unit_id => OrgUnit.find_by_text('Desarrollo Profesional').id,
                      :requirement => 'Encuesta Nuevo Matric - nuevos campos',
                      :klass => Project::Klass::IMPR, :dev_id => fol.id, :owner_id => gig.id,
@@ -150,13 +156,14 @@ pr = Project.create!(:project_name_id => ProjectName.find_or_create_by_text('Des
                      :estimated_duration => 6, :estimated_duration_unit => Duration::DAY)
 pr.update_attributes(:status => Project::Status::IN_DEV, :updated_by => fol.id)
 
-pr = Project.create!(:project_name_id => ProjectName.find_or_create_by_text('EEC').id,
-                :org_unit_id => OrgUnit.find_by_text('Escuela de Educación Continuada').id,
-                :requirement => 'Plataforma materiales EEC',
-                :klass => Project::Klass::DEV, :dev_id => pap.id, :owner_id => gem.id,
-                :created_at => Date.civil(2011,4,27).to_time,
-                :estimated_start_date => Date.civil(2011,5,2), :estimated_end_date => 2.months.from_now.to_date,
-                :estimated_duration => 4, :estimated_duration_unit => Duration::WEEK)
+pr = Project.create!(:req_nrb => 274,
+                     :project_name_id => ProjectName.find_or_create_by_text('EEC').id,
+                     :org_unit_id => OrgUnit.find_by_text('Escuela de Educación Continuada').id,
+                     :requirement => 'Plataforma materiales EEC',
+                     :klass => Project::Klass::DEV, :dev_id => pap.id, :owner_id => gem.id,
+                     :created_at => Date.civil(2011,4,27).to_time,
+                     :estimated_start_date => Date.civil(2011,5,2), :estimated_end_date => 2.months.from_now.to_date,
+                     :estimated_duration => 4, :estimated_duration_unit => Duration::WEEK)
 pr.update_attributes(:status => Project::Status::IN_DEV, :updated_by => pap.id)
 
 # On course projects

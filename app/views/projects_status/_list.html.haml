@@ -26,7 +26,7 @@
     %tbody
     - list.each do |project|
       %tr
-        %td= project.id
+        %td= project.req_nbr
         %td= l(project.created_at, :format => :tiny)
         %td= link_to(project, project)
         %td= truncate(project.requirement.humanize, :length => 25)

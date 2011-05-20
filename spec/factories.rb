@@ -42,6 +42,7 @@ Factory.define :org_unit do |ou|
 end
 
 Factory.define :project do |p|
+  p.sequence(:req_nbr) {|n| n }
   p.description Faker::Lorem.paragraph
   p.requirement Faker::Lorem.sentence
   p.estimated_start_date 2.months.ago.to_date

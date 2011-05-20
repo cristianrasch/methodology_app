@@ -1,5 +1,5 @@
 = content_for :title do 
-  #{Project.model_name.human.humanize} ##{@project.id}
+  #{Project.model_name.human.humanize} ##{@project.req_nbr}
   [#{@project.status_str} - &#37;#{@project.compl_perc}]
 = content_for :sidebar do
   = render 'sidebar'

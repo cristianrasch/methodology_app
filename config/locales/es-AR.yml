@@ -215,6 +215,7 @@ es-AR:
         project_name_id: Nombre de proyecto
         requirement: Objetivo
         org_unit_id: Àrea solicitante
+        req_nbr: Nro de requerimiento
       event:
         stage: Etapa
         status: Estado

@@ -57,6 +57,9 @@ class Project < ActiveRecord::Base
   end
   has_and_belongs_to_many :users
 
+  validates :req_nbr, :numericality => { :greater_than => 0, 
+                                         :message => I18n.t('errors.messages.blank') },
+                      :uniqueness => { :allow_nil => true }
   validates :compl_perc, :numericality => { :greater_than_or_equal_to => 0, 
                                             :message => I18n.t('errors.messages.blank') }
   validates :klass, :numericality => { :greater_than => 0, 
@@ -97,7 +100,7 @@ class Project < ActiveRecord::Base
   attr_accessible :description, :dev_id, :owner_id, :user_ids, :estimated_start_date, :estimated_end_date, 
                   :estimated_duration, :status, :updated_by, :user_tokens, :compl_perc, :klass, :indicator, 
                   :envisaged_end_date, :estimated_duration_unit, :project_name_id, :delayed_by, :requirement, 
-                  :org_unit_id
+                  :org_unit_id, :req_nbr
   date_writer_for :estimated_start_date, :estimated_end_date, :envisaged_end_date
   
   class << self

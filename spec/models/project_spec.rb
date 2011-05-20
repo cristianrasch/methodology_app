@@ -16,6 +16,7 @@ describe Project do
       project.should have(1).error_on(:project_name_id)
       project.should have(1).error_on(:requirement)
       project.should have(1).error_on(:org_unit_id)
+      project.should have(1).error_on(:req_nbr)
     end
     
     it "should validate dev's & owner's email addresses" do
