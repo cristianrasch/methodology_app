@@ -1,11 +1,11 @@
 MethodologyApp::Application.routes.draw do
-  resources :org_units
-  
   namespace :admin do
     post 'users/import'
     resources :holidays
     resources :reports, :only => [:index, :new]
   end
+  
+  resources :org_units
 
   resources :project_names
 
@@ -30,8 +30,6 @@ MethodologyApp::Application.routes.draw do
     end
   end
   
-  get 'search/projects'
-
   root :to => "projects#index"
   
   # The priority is based upon order of creation:
