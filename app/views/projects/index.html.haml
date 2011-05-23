@@ -1,12 +1,6 @@
-= content_for :title do 
-  #{Project.model_name.human.pluralize} en curso
+= content_for :title, "#{Project.model_name.human.pluralize} en curso"
 
-= render 'shared/email_verif_alert'
+= render 'list', :list => @projects
+%br/
+= paginate @projects
 
-= content_for :sidebar do
-  = render 'projects/sidebar'
-
-- if @projects.empty?
-  = not_found(Project)
-- else
-  = render 'projects/list', :list => @projects

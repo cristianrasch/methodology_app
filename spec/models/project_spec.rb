@@ -107,7 +107,7 @@ describe Project do
     Project.search(Project.new(:dev_id => dev.id)).should have(1).record
   end
 
-  context "search for active projects" do
+  context "search for on course projects" do
     before do
       2.times { Factory(:project, :status => Project::Status::IN_DEV) }
       @dev = find_dev
@@ -115,11 +115,15 @@ describe Project do
     end
 
     it "should return dev's current projects" do
-      Project.search_for(@dev).should have_at_most(3).records
+      Project.search_for(@dev).should have(3).records
+    end
+    
+    it "should return on course projects grouped by dev" do
+      Project.search_for(find_boss).should have(3).records
     end
 
-    it "should return the latest projects for a non-dev user" do
-      Project.search_for(Factory(:user)).should have_at_least(5).records
+    it "should return the latest projects for a non-dev/non-boss user" do
+      Project.search_for(Factory(:user)).should have(5).records
     end
   end
 

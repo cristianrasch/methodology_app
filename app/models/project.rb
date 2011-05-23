@@ -130,7 +130,14 @@ class Project < ActiveRecord::Base
     end
     
     def search_for(user, page = nil)
-      projects = user.dev? ? developed_by(user.id) : scoped
+      if user.dev?
+        projects = developed_by(user.id)
+      elsif user.boss?
+        projects = group(:dev_id).includes(:dev, :events)
+      else
+        projects = scoped
+      end
+    
       projects.on_course.ordered.page(page).per(Project.per_page)
     end
   end

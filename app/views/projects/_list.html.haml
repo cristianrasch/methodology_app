@@ -1,4 +1,31 @@
-%ul
-  = render list
-    
-= paginate list
+- if list.empty?
+  %p= not_found(Project)
+- else
+  %table.pretty{:border => 0, :cellpadding => 2, :cellspacing => 2, :width => '100%'}
+    %thead
+      %tr
+        %th N°
+        %th Fecha
+        %th Projecto
+        %th Objetivo
+        %th Tipo
+        - unless current_user.dev?
+          %th Analista
+        %th Etapa
+        %th Estado
+        %th % Avance
+        %th Fin previsto
+    %tbody
+    - list.each do |project|
+      %tr
+        %td= project.req_nbr
+        %td= l(project.created_at, :format => :tiny)
+        %td= link_to(project, project)
+        %td= truncate(project.requirement.humanize, :length => 25)
+        %td= project.klass_str.first.upcase
+        - unless current_user.dev?
+          %td= project.dev.name
+        %td= project.events.first ? project.events.first.stage_str : nil
+        %td= project.events.first ? project.events.first.status_str : nil
+        %td #{project.compl_perc} %
+        %td= l(project.envisaged_end_date, :format => :tiny)
