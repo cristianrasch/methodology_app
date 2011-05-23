@@ -79,10 +79,18 @@ class Project < ActiveRecord::Base
   validate :devs_and_owners_email_address
   validates :requirement, :presence => true
   
-  scope :on_course, lambda { where(:started_on.lteq => Date.today, :ended_on => nil) }
-  scope :pending, lambda { where(:estimated_start_date.gt => Date.today) }
-  scope :not_started, lambda { where(:estimated_start_date.lt => Date.today, :status => Project::Status::NEW) }
-  scope :not_finished, lambda { where(:estimated_end_date.lt => Date.today, :ended_on => nil) }
+  def indicator_class_for(project)
+    return 'green' if project.started_on <= Date.today &&  ! project.finished?
+    return 'yellow' if project.estimated_start_date > Date.today
+    return 'red' if project.estimated_start_date < Date.today && project.new?
+    return 'black' if project.estimated_end_date < Date.today && ! project.finished?
+    return 'blue' if project.finished?
+  end
+  
+  scope :on_course, lambda { where(:started_on <= Date.today, :status ^ Status::FINISHED) }
+  scope :pending, lambda { where(:estimated_start_date > Date.today) }
+  scope :not_started, lambda { where(:estimated_start_date < Date.today, :status => Project::Status::NEW) }
+  scope :not_finished, lambda { where(:estimated_end_date < Date.today, :status ^ Status::FINISHED) }
   scope :finished, lambda { where(:status => Project::Status::FINISHED) }
   scope :ordered, order(:req_nbr.desc)
   scope :developed_by, lambda { |dev_id| where(:dev_id => dev_id) }
@@ -115,7 +123,7 @@ class Project < ActiveRecord::Base
       projects = projects.where(:estimated_end_date <= template.estimated_end_date) if template.estimated_end_date.present?
     
       if template.indicator.present?
-        arr = Project::Indicator.constants.map {|const| const.to_s.downcase}
+        arr = Project::Indicator.constants.map {|const| const.to_s.downcase}.sort
         arr.pop
         arr.each { |ind| projects = projects.send(ind) if template.indicator.to_i == "Project::Indicator::#{ind.upcase}".constantize }
       end

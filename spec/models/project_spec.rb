@@ -30,10 +30,9 @@ describe Project do
   end
 
   it "should find active projects" do
-    active_project = Factory(:project, :started_on => Date.today)
+    active_project = create_model(:project, :started_on => Date.today, :status => Project::Status::IN_DEV)
     2.times {
-      create_model(:project, :started_on => 4.days.ago.to_date, :ended_on => Date.yesterday,
-                   :actual_duration => 20)
+      create_model(:project, :status => Project::Status::FINISHED)
     }
 
     projects = Project.on_course.all

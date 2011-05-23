@@ -115,15 +115,14 @@ pr = Project.create!(:req_nbr => 290,
                      :estimated_duration => 2, :estimated_duration_unit => Duration::HOUR)
 pr.update_attributes(:status => Project::Status::IN_DEV, :updated_by => gbe.id)
 
-pr = Project.create!(:req_nbr => 289,
-                     :project_name_id => ProjectName.find_or_create_by_text('Gcia Administración').id,
-                     :org_unit_id => OrgUnit.find_by_text('Administración').id,
-                     :requirement => 'Citi Compras ',
-                     :klass => Project::Klass::DEV, :dev_id => crr.id, :owner_id => est.id,
-                     :created_at => Date.civil(2011,5,11).to_time,
-                     :estimated_start_date => Date.civil(2011,6,6), :estimated_end_date => 1.month.from_now.to_date,
-                     :estimated_duration => 2, :estimated_duration_unit => Duration::WEEK)
-pr.update_attributes(:status => Project::Status::IN_DEV, :updated_by => crr.id)
+Project.create!(:req_nbr => 289,
+                :project_name_id => ProjectName.find_or_create_by_text('Gcia Administración').id,
+                :org_unit_id => OrgUnit.find_by_text('Administración').id,
+                :requirement => 'Citi Compras ',
+                :klass => Project::Klass::DEV, :dev_id => crr.id, :owner_id => est.id,
+                :created_at => Date.civil(2011,5,11).to_time,
+                :estimated_start_date => Date.civil(2011,6,6), :estimated_end_date => 1.month.from_now.to_date,
+                :estimated_duration => 2, :estimated_duration_unit => Duration::WEEK)
 
 pr = Project.create!(:req_nbr => 288,
                      :project_name_id => ProjectName.find_or_create_by_text('Gcia Coordinadora').id,
@@ -146,15 +145,14 @@ pr = Project.create!(:req_nbr => 287,
                      :estimated_duration => 2, :estimated_duration_unit => Duration::DAY)
 pr.update_attributes(:status => Project::Status::IN_DEV, :updated_by => gbe.id)
 
-pr = Project.create!(:req_nbr => 280,
-                     :project_name_id => ProjectName.find_or_create_by_text('Desarrollo profesional').id,
-                     :org_unit_id => OrgUnit.find_by_text('Desarrollo Profesional').id,
-                     :requirement => 'Encuesta Nuevo Matric - nuevos campos',
-                     :klass => Project::Klass::IMPR, :dev_id => fol.id, :owner_id => gig.id,
-                     :created_at => Date.civil(2011,5,3).to_time,
-                     :estimated_start_date => Date.civil(2011,6,1), :estimated_end_date => 3.weeks.from_now.to_date,
-                     :estimated_duration => 6, :estimated_duration_unit => Duration::DAY)
-pr.update_attributes(:status => Project::Status::IN_DEV, :updated_by => fol.id)
+Project.create!(:req_nbr => 280,
+                :project_name_id => ProjectName.find_or_create_by_text('Desarrollo profesional').id,
+                :org_unit_id => OrgUnit.find_by_text('Desarrollo Profesional').id,
+                :requirement => 'Encuesta Nuevo Matric - nuevos campos',
+                :klass => Project::Klass::IMPR, :dev_id => fol.id, :owner_id => gig.id,
+                :created_at => Date.civil(2011,5,3).to_time,
+                :estimated_start_date => Date.civil(2011,6,1), :estimated_end_date => 3.weeks.from_now.to_date,
+                :estimated_duration => 6, :estimated_duration_unit => Duration::DAY)
 
 pr = Project.create!(:req_nbr => 274,
                      :project_name_id => ProjectName.find_or_create_by_text('EEC').id,

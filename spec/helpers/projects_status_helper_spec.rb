@@ -12,7 +12,8 @@ require 'spec_helper'
 # end
 describe ProjectsStatusHelper do
   it "should display an indicator class for a given project" do
-    helper.indicator_class_for(Factory(:project, :estimated_end_date => Date.yesterday)).should == 'black'
+    pr = create_model(:project, :estimated_end_date => Date.yesterday, :status => Project::Status::IN_DEV)
+    helper.indicator_class_for(pr).should == 'black'
     helper.indicator_class_for(Factory(:project)).should == 'red'
     helper.indicator_class_for(Factory(:project, :estimated_start_date => Date.tomorrow)).should == 'yellow'
     helper.indicator_class_for(Factory(:project, :started_on => Date.yesterday, 
