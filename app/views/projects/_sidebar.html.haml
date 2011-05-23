@@ -19,8 +19,9 @@
           %li
             = link_to 'Inicio', projects_path
         - if controller.action_name == 'show'
-          %li
-            = link_to 'Editar', edit_project_path(@project)
+          - unless @project.finished?
+            %li
+              = link_to 'Editar', edit_project_path(@project)
           %li
             = link_to 'Eliminar', @project, :method => :delete, 
                       :confirm => "¿Está seguro que desea eliminar el #{Project.model_name.human}?"

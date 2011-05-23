@@ -445,3 +445,12 @@ div.nested_project_names {
 .bottom_spaced {
   margin-bottom: 15px;
 }
+
+div.errorExplanation {
+  color: red;
+  font-style:italic;
+}
+
+a.underline_none {
+  text-decoration: none;
+}

@@ -16,9 +16,9 @@
     %td{:width => '50%'}
       = @project.org_unit
 
-- if @project.description.present?
-  %p
-    %strong= Project.human_attribute_name('description')
+%p
+  %strong= Project.human_attribute_name('description')
+  - if @project.description.present?
     %br/
     = @project.description.humanize
 

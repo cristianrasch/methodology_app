@@ -1,5 +1,5 @@
 %li 
-  = link_to(org_unit.text, org_unit)
+  = link_to(org_unit.text, org_unit, :class => 'underline_none')
   - if org_unit.has_children?
     %ul
       = render(:partial => 'child', :collection => org_unit.children)
