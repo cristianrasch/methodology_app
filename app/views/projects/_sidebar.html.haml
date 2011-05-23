@@ -10,9 +10,11 @@
             = link_to 'Seguimiento', projects_status_index_path
           - if boss_logged_in?
             %li
+              = link_to 'Reportes', admin_reports_path
+            %li
               = link_to 'Nomenclatura', project_names_path
             %li
-              = link_to 'Reportes', admin_reports_path
+              = link_to OrgUnit.model_name.human.pluralize.humanize, org_units_path
         - else
           %li
             = link_to 'Inicio', projects_path
