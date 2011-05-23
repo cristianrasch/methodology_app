@@ -13,7 +13,7 @@ describe Report do
     
     data = Report.new(Report::Type::WORKLOAD_BY_DEV).graph_data
     data.should have(3).items
-    data[0].first.should include(crr.to_s)
+    data[0].first.should include(gbe.to_s)
     data[1].last.should_not be_zero
   end
 end

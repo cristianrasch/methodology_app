@@ -19,7 +19,7 @@ common:
   reports:
     1:
       title: Carga de trabajo por desarrollador
-      col_names: ['Desarrollador', 'HS comprometidas']
+      col_names: ['Desarrollador', 'Hs. comprometidas hta']
   ifx:
     db: ifx db
     user: ifx user
