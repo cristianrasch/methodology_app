@@ -7,6 +7,7 @@ common:
     root: root passwd
   devs: comma,separated,list,of,developers
   bosses: comma,separated,list,of,bosses
+  potential_owners: ekp,cas,hco,gem,sma,sal,fac,hpc,asm,nbd,crg,mew,eod,mrm,meg,tks,cas,gar,est,nss,gig
   stages:
     1: your
     2: stages

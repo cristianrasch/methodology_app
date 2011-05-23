@@ -42,7 +42,7 @@ class User < ActiveRecord::Base
       users = fetch_prod_users
       # vas:x:2772:1002:Vanesa Spaccavento, Marketing:/consejo/acct/vas:/sbin/sh
       users.map! {|user| user.split ':'}
-      user_ids = users.map {|arr| arr.first}.select {|user_id| user_id =~ USERNAME_REGEXP}
+      user_ids = users.map {|arr| arr.first}.select {|user_id| user_id =~ USERNAME_REGEXP && app_user?(user_id)}
       curr_users = where(:username => user_ids).all.map(&:username)
       user_ids -= curr_users
       users_hash = users.index_by {|arr| arr.first}
@@ -59,6 +59,10 @@ class User < ActiveRecord::Base
       users =  User.where(:org_unit => ['sistemas', 'Desarrollo', 'Gerencia de Sistemas']).order(:name)
       users = users.where(:username - to_a(options[:except]).map(&:username)) if options.has_key?(:except)
       users.select {|user| user.username.match(USERNAME_REGEXP)}
+    end
+    
+    def app_user?(username)
+      Conf.devs.split(',').include?(username) or Conf.bosses.split(',').include?(username) or Conf.potential_owners.split(',').include?(username)
     end
     
     private

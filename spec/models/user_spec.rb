@@ -59,4 +59,10 @@ describe User do
     Factory(:user, :username => 'gar').should be_a_boss
   end
   
+  it "should identify app users" do
+    User.app_user?('gbe').should be_true
+    User.app_user?('mev').should be_true
+    User.app_user?('crg').should be_true
+    User.app_user?('xxx').should be_false
+  end
 end
