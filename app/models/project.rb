@@ -84,7 +84,7 @@ class Project < ActiveRecord::Base
   scope :not_started, lambda { where(:estimated_start_date.lt => Date.today, :status => Project::Status::NEW) }
   scope :not_finished, lambda { where(:estimated_end_date.lt => Date.today, :ended_on => nil) }
   scope :finished, lambda { where(:status => Project::Status::FINISHED) }
-  scope :ordered, order(:id.desc)
+  scope :ordered, order(:req_nbr.desc)
   scope :developed_by, lambda { |dev_id| where(:dev_id => dev_id) }
   scope :upcoming, lambda { where( :status => Project::Status::NEW) }
   scope :on_course_by, lambda { |date| where(['? between estimated_start_date and estimated_end_date', date]) }

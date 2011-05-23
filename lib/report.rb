@@ -24,11 +24,4 @@ class Report
       [project.dev.to_s, project.envisaged_end_date.to_time.to_i*1000]
     }
   end
-  
-  # def workload_by_dev
-  #   Project.pending.upcoming.group_by(&:dev).map do |dev, projects|
-  #     sum = projects.sum { |project| in_days(project, :estimated_duration) }
-  #     ["#{dev.to_s} [#{distance_of_time_in_words(sum.days)}]", sum]
-  #   end.sort {|arr1, arr2| arr1.first <=> arr2.first}
-  # end
 end

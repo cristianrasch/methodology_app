@@ -1,5 +1,4 @@
 class ProjectsController < ApplicationController
-  # layout 'widescreen', :only => :index
   before_filter :authenticate_user!
   
   def index

@@ -1,12 +1,18 @@
 = form.error_messages :header_message => nil, :message => nil
 
+- if @project_name.parent_id
+  %p
+    %strong= ProjectName.human_attribute_name(:path)
+    %br/
+    = path_for(@project_name)
+
 %p
   = form.label :text
   %br/
   = form.text_field :text
 
 - if params[:parent_id]
-  = form.hidden_field :parent_id if params[:parent_id]
+  = form.hidden_field :parent_id
 - else
   %p
     = form.label :parent_id
