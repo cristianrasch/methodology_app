@@ -1,17 +1,9 @@
 require 'spec_helper'
 
-describe Admin::HolidaysController do
+describe HolidaysController do
   render_views
   
-  before { admin_login }
-  
-  it "should deny access to non admin users" do
-    admin_login :passwd => '123'
-    get :index
-    
-    response.should_not be_success
-    response.status.should == 401
-  end
+  before { sign_in(find_boss) }
   
   it "should display a list of this year's holidays" do
     get :index
@@ -47,7 +39,7 @@ describe Admin::HolidaysController do
       }.should change(Holiday, :count).by(1)
       
       response.should be_redirect
-      response.should redirect_to(admin_holidays_path)
+      response.should redirect_to(holidays_path)
       assigns[:holiday].should_not be_nil
       flash[:notice].should == "#{Holiday.model_name.human.humanize} creado"
     end
@@ -76,7 +68,7 @@ describe Admin::HolidaysController do
       put :update, :id => Factory(:holiday), :holiday => {:name => '..'}
       
       response.should be_redirect
-      response.should redirect_to(admin_holidays_path)
+      response.should redirect_to(holidays_path)
       assigns[:holiday].should_not be_nil
       assigns[:holiday].should be_valid
       flash[:notice].should == "#{Holiday.model_name.human.humanize} actualizado"
@@ -89,7 +81,7 @@ describe Admin::HolidaysController do
     }.should_not change(Holiday, :count)
     
     response.should be_redirect
-    response.should redirect_to(admin_holidays_path)
+    response.should redirect_to(holidays_path)
     flash[:notice].should == "#{Holiday.model_name.human.humanize} eliminado"
   end
 end

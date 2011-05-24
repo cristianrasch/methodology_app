@@ -279,4 +279,15 @@ describe Project do
     
     project.envisaged_end_date.should == 5.business_days.after(a_year_ago+2.months).to_date
   end
+  
+  it "should count projects by dev" do
+    dev1, dev2 = Factory(:user), Factory(:user)
+    1.upto(2) {|i| Factory(:project, :estimated_start_date => i.weeks.from_now.to_date, :dev => dev1)}
+    Factory(:project, :estimated_start_date => 1.month.from_now.to_date, :dev => dev2)
+    
+    hash = Project.count_by_dev
+    hash.should have(2).elements
+    hash[dev1].should == 2
+    hash[dev2].should == 1
+  end
 end

@@ -8,7 +8,7 @@ class Report
   include ActionView::Helpers::DateHelper
   
   def initialize(type)
-    @type = type
+    @type = type.to_i
   end
   
   def graph_data
@@ -20,8 +20,6 @@ class Report
   private
   
   def workload_by_dev
-    Project.group(:dev_id).order(:envisaged_end_date.desc, :id.desc).includes(:dev).map { |project|
-      [project.dev.to_s, project.envisaged_end_date.to_time.to_i*1000]
-    }
+    Project.count_by_dev
   end
 end

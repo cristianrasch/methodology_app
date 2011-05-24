@@ -11,7 +11,7 @@ class User < ActiveRecord::Base
   # :registerable, :recoverable, :validatable and :timeoutable
   devise :database_authenticatable, :rememberable
   
-  has_many :dev_projects, :foreign_key => :dev_id
+  has_many :dev_projects, :class_name => 'Project', :foreign_key => :dev_id
   has_and_belongs_to_many :projects
   has_and_belongs_to_many :comments
   

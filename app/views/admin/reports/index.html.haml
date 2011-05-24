@@ -1,6 +1,0 @@
-= content_for :title, "Reportes"
-= content_for :sidebar do
-  = render 'sidebar'
-  
-%ul
-  %li= link_to Conf.reports[Report::Type::WORKLOAD_BY_DEV]['title'], new_admin_report_path(:type => Report::Type::WORKLOAD_BY_DEV)

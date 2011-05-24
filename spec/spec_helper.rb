@@ -29,8 +29,8 @@ RSpec.configure do |config|
 end
 
 def stub_users_fetching
-  prod_users = ["xax:x:2772:1002:Mr XAX, sistemas:/consejo/acct/vas:/sbin/sh",
-                "zaz:x:2772:1002:Mr ZAZ, sistemas:/consejo/acct/vas:/sbin/sh"]
+  prod_users = ["asm:x:2772:1002:Mr XAX, sistemas:/consejo/acct/vas:/sbin/sh",
+                "cas:x:2772:1002:Mr ZAZ, sistemas:/consejo/acct/vas:/sbin/sh"]
   User.stub!(:fetch_prod_users).and_return(prod_users)
 end
 

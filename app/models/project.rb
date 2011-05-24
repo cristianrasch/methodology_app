@@ -94,8 +94,9 @@ class Project < ActiveRecord::Base
   scope :finished, lambda { where(:status => Project::Status::FINISHED) }
   scope :ordered, order(:req_nbr.desc)
   scope :developed_by, lambda { |dev_id| where(:dev_id => dev_id) }
-  scope :upcoming, lambda { where( :status => Project::Status::NEW) }
+  scope :upcoming, lambda { where(:status => Project::Status::NEW) }
   scope :on_course_by, lambda { |date| where(['? between estimated_start_date and estimated_end_date', date]) }
+  scope :on_course_or_pending, lambda { where('(started_on <= :date and status <> :status) or estimated_start_date > :date', :date => Date.today, :status => Status::FINISHED) }
 
   before_save :set_default_envisaged_end_date
   after_save :notify_project_saved
@@ -147,6 +148,15 @@ class Project < ActiveRecord::Base
       end
     
       projects.on_course.ordered.page(page).per(Project.per_page)
+    end
+    
+    def count_by_dev
+      projects = on_course_or_pending.
+                 select('projects.*, users.*, count(dev_id) indicator').
+                 group(:dev_id).
+                 joins(:dev).
+                 order(:dev => :username)
+      Hash[*projects.map { |project| [project.dev, project.attributes['indicator']] }.flatten]
     end
   end
   

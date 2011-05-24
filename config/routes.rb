@@ -1,21 +1,11 @@
 MethodologyApp::Application.routes.draw do
+  devise_for :users
   namespace :admin do
     post 'users/import'
-    resources :holidays
-    resources :reports, :only => [:index, :new]
   end
-  
-  resources :org_units
-
-  resources :project_names
-
-  get "projects_status/index"
-
-  get "home/index"
-
-  devise_for :users
   resource :account, :only => [:edit, :update]
   match 'users' => 'users#index'
+  match 'devs/:id/projects' => 'devs#projects', :as => :dev_projects
 
   resources :projects, :shallow => true do
     member do
@@ -29,6 +19,15 @@ MethodologyApp::Application.routes.draw do
       resources :comments
     end
   end
+  get "projects_status/index"
+  resources :reports, :only => [:index, :new]
+  resources :project_names
+  
+  resources :holidays
+  
+  resources :org_units
+
+  get "home/index"
   
   root :to => "projects#index"
   

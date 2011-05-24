@@ -1,6 +1,6 @@
-class Admin::HolidaysController < ApplicationController
-  
-  before_filter :basic_authenticate
+class HolidaysController < ApplicationController
+  before_filter :authenticate_user!
+  before_filter :ensure_boss_logged_in
   
   def index
     @holidays = Holiday.this_year.ordered
@@ -14,7 +14,7 @@ class Admin::HolidaysController < ApplicationController
     @holiday = Holiday.new(params[:holiday])
     
     if @holiday.save
-      redirect_to(admin_holidays_path, :notice => "#{Holiday.model_name.human.humanize} creado")
+      redirect_to(holidays_path, :notice => "#{Holiday.model_name.human.humanize} creado")
     else
       render :action => :new
     end
@@ -28,7 +28,7 @@ class Admin::HolidaysController < ApplicationController
     @holiday = Holiday.find(params[:id])
     
     if @holiday.update_attributes(params[:holiday])
-      redirect_to(admin_holidays_path, :notice => "#{Holiday.model_name.human.humanize} actualizado")
+      redirect_to(holidays_path, :notice => "#{Holiday.model_name.human.humanize} actualizado")
     else
       render :action => :edit
     end
@@ -36,6 +36,6 @@ class Admin::HolidaysController < ApplicationController
   
   def destroy
     Holiday.delete(params[:id])
-    redirect_to(admin_holidays_path, :notice => "#{Holiday.model_name.human.humanize} eliminado")
+    redirect_to(holidays_path, :notice => "#{Holiday.model_name.human.humanize} eliminado")
   end
 end

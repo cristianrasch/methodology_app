@@ -2,6 +2,6 @@
 = content_for :sidebar do
   = render 'sidebar'
 
-= form_for @holiday, :url => admin_holiday_path(@holiday) do |f|
+= form_for @holiday do |f|
   = render f
   = f.submit 'Actualizar'

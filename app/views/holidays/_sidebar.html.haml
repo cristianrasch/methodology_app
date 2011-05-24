@@ -5,10 +5,10 @@
       %ul
         - if controller.action_name == 'index'
           %li
-            = link_to 'Nuevo', new_admin_holiday_path
+            = link_to 'Nuevo', new_holiday_path
         - else
           %li
-            = link_to 'Inicio', admin_holidays_path
+            = link_to 'Inicio', holidays_path
         %li
           = link_to 'Volver', :back
 / end #sidebar
