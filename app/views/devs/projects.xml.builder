@@ -21,7 +21,7 @@ xml.chart(:dateFormat => "dd/mm/yyyy", :hoverCapBorderColor => "2222ff", :hoverC
   end
   xml.tasks(:width => "10") do
     @projects.each_with_index do |project, i|
-      xml.task(:name => project.requirement, :processId => project.req_nbr, :start => l(project.estimated_start_date), :end => l(project.envisaged_end_date), :id => project.id, :color => "4567aa", :height => "10", :topPadding => "#{i*24}", :animation => "0")
+      xml.task(:name => project.requirement, :processId => project.req_nbr, :start => l(project.estimated_start_date), :end => l(project.envisaged_end_date), :id => project.id, :color => "4567aa", :height => "10", :topPadding => "#{i*24}", :animation => "0", :link => url_for(project))
     end
   end
 end
