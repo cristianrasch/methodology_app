@@ -153,7 +153,7 @@ class Project < ActiveRecord::Base
     end
     
     def by_dev
-      on_course_or_pending.joins(:dev).order(:dev => :username).group_by(&:dev)
+      on_course_or_pending.joins(:dev).order(:estimated_start_date).group_by(&:dev)
     end
   end
   

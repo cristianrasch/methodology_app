@@ -1,11 +1,7 @@
+= link_to_function(image_tag('info.png', :border => 0), "$('#user_#{projects.first.dev.id}').toggle()")
+
 = div_for(projects.first.dev) do
-  %table.bottom_spaced{:border => 0, :cellspacing => 0, :cellpadding => 0, :width => "100%"}
-    %thead
-      %tr
-        %th FRI #
-        %th Nombre
-    %tbody
-    - projects.each do |project|
-      %tr
-        %td ##{project.req_nbr}
-        %td= project
+  - projects.each do |project|
+    %br/
+    = "##{project.req_nbr} --> #{project}"
+
