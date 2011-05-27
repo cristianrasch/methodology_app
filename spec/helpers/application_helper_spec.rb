@@ -54,10 +54,10 @@ describe ApplicationHelper do
   
   it "should display model's duration description" do
     project = Factory(:project, :estimated_duration => 168, :estimated_duration_unit => Duration::HOUR)
-    helper.duration_desc(project, :estimated_duration).should == '168 horas'
+    helper.duration_desc(project, :estimated_duration).should == '168 H'
     project.estimated_duration_unit = Duration::DAY
-    helper.duration_desc(project, :estimated_duration).should == '168 días'
+    helper.duration_desc(project, :estimated_duration).should == '168 D'
     project.estimated_duration_unit = Duration::WEEK
-    helper.duration_desc(project, :estimated_duration).should == '168 semanas'
+    helper.duration_desc(project, :estimated_duration).should == '168 S'
   end
 end

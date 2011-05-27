@@ -28,12 +28,12 @@ module ApplicationHelper
   end
   
   def duration_desc(model, attr)
-    singular = case(model.send("#{attr}_unit"))
-      when Duration::HOUR then 'hora'
-      when Duration::DAY then 'día'
-      when Duration::WEEK then 'semana'
+    unit = case(model.send("#{attr}_unit"))
+      when Duration::HOUR then 'H'
+      when Duration::DAY then 'D'
+      when Duration::WEEK then 'S'
     end
-    pluralize(model.send(attr), singular)
+    "#{model.send(attr)} #{unit}"
   end
   
   def date_default_value(date)

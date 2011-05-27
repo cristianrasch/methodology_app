@@ -1,7 +1,7 @@
 = form_for project, :url => projects_status_index_path, :html => {:method => :get, :class => 'inline'} do |f|
   = label_tag 'Filtrar por'
   &nbsp;-&nbsp;
-  = f.collection_select :project_name_id, ProjectName.leaves(ProjectName.arranged), 
+  = f.collection_select :project_name_id, ProjectName.roots, 
                         :id, :to_s,
                         {:prompt => 'Projecto', :include_blank => project.project_name_id.present?}, 
                         :onchange => "this.form.submit();"

@@ -9,9 +9,9 @@ describe ProjectNotifier do
     let(:mail) { ProjectNotifier.project_saved(@project) }
 
     it "renders the headers" do
-      mail.to.should include(@project.users.first.email)
+      # mail.to.should include(@project.users.first.email)
       mail.to.should include(@project.dev.email)
-      mail.to.should include(@project.owner.email)
+      # mail.to.should include(@project.owner.email)
       mail.from.should eq([Conf.notifications_from])
     end
     
