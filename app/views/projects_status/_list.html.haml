@@ -26,9 +26,9 @@
     %tbody
     - list.each do |project|
       %tr
-        %td= project.req_nbr
+        %td= link_to("##{project.req_nbr}", project, :class => 'underline_none')
         %td= l(project.created_at, :format => :tiny)
-        %td= link_to(project, project)
+        %td= project
         %td
           = truncate(project.description.humanize, :length => 25) if project.description
         %td= project.klass_str.first.upcase

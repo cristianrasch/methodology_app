@@ -1,4 +1,4 @@
-= form_for project, :url => projects_status_index_path, :html => {:method => :get} do |f|
+= form_for project, :url => projects_status_index_path, :html => {:method => :get, :class => 'inline'} do |f|
   = label_tag 'Filtrar por'
   &nbsp;-&nbsp;
   = f.collection_select :project_name_id, ProjectName.leaves(ProjectName.arranged), 

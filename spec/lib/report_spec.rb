@@ -13,6 +13,6 @@ describe Report do
     
     data = Report.new(Report::Type::WORKLOAD_BY_DEV).graph_data
     data.should have(3).items
-    [pap, crr, gbe].each {|dev| data[dev].should == 3}
+    [pap, crr, gbe].each {|dev| data[dev].should have(3).projects}
   end
 end

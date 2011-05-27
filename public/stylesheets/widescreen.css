@@ -457,3 +457,20 @@ div.user {
   margin-bottom: 10px;
 }
 
+div.bottom_spaced {
+  margin-bottom: 15px;
+}
+
+div.spaced {
+  margin-top: 10px; 
+  margin-bottom: 10px;
+}
+
+form.inline {
+  display: inline;
+}
+
+a.underline_none {
+  text-decoration: none;
+}
+
