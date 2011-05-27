@@ -1,7 +1,9 @@
-= link_to_function(image_tag('info.png', :border => 0), "$('#user_#{projects.first.dev.id}').toggle()")
-
-= div_for(projects.first.dev) do
-  - projects.each do |project|
-    %br/
-    = "##{project.req_nbr} --> #{project}"
+%div
+  %span
+    = link_to_function(image_tag('info.png', :border => 0), "$('#user_#{projects.first.dev.id}').toggle()")
+    = div_for(projects.first.dev) do
+      - projects.each_with_index do |project, i|
+        %span{:class => i.zero? ? '' : 'spaced'}= "##{project.req_nbr} --> #{project}"
+        - unless i == projects.length-1
+          %br/
 

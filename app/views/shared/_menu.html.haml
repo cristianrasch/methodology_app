@@ -9,7 +9,7 @@
       %li
         = link_to 'Salir', destroy_user_session_path
       %li.current_page_item.first.right
-        = link_to current_user.username, edit_account_path
+        = link_to current_user.username.upcase, edit_account_path
     - else
       %li.current_page_item.first
         = link_to 'Ingresar', new_user_session_path
