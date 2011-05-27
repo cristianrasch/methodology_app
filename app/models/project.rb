@@ -26,9 +26,10 @@ class Project < ActiveRecord::Base
     NOT_STARTED = 3
     NOT_FINISHED = 4
     FINISHED = 5
+    COMMITTED = 6
     
     SELECT = [['En curso', ON_COURSE], ['Pendiente', PENDING], ['No iniciado', NOT_STARTED], 
-             ['No finalizado', NOT_FINISHED], ['Finalizado', FINISHED]]
+             ['No finalizado', NOT_FINISHED], ['Finalizado', FINISHED], ['Comprometido', COMMITTED]]
     
     class << self
       def to_s(indicator)
@@ -87,16 +88,17 @@ class Project < ActiveRecord::Base
     return 'blue' if project.finished?
   end
   
-  scope :on_course, lambda { where(:started_on <= Date.today, :status ^ Status::FINISHED) }
-  scope :pending, lambda { where(:estimated_start_date > Date.today) }
+  scope :on_course, lambda { committed.where(:started_on <= Date.today) }
+  scope :pending, lambda { where(:estimated_start_date > Date.today, :status => Project::Status::NEW) }
   scope :not_started, lambda { where(:estimated_start_date < Date.today, :status => Project::Status::NEW) }
-  scope :not_finished, lambda { where(:estimated_end_date < Date.today, :status ^ Status::FINISHED) }
+  scope :not_finished, lambda { committed.where(:estimated_end_date < Date.today) }
   scope :finished, lambda { where(:status => Project::Status::FINISHED) }
   scope :ordered, order(:req_nbr.desc)
   scope :developed_by, lambda { |dev_id| where(:dev_id => dev_id) }
   scope :upcoming, lambda { where(:status => Project::Status::NEW) }
   scope :on_course_by, lambda { |date| where(['? between estimated_start_date and estimated_end_date', date]) }
-  scope :on_course_or_pending, lambda { where('(started_on <= :date and status <> :status) or estimated_start_date > :date', :date => Date.today, :status => Status::FINISHED) }
+  scope :on_course_or_pending, lambda { where('(started_on <= :date and status not in (:status)) or estimated_start_date > :date', :date => Date.today, :status => [Status::CANCELED, Status::FINISHED]) }
+  scope :committed, where(:status - [Project::Status::CANCELED, Project::Status::FINISHED])
 
   before_save :set_default_envisaged_end_date
   after_save :notify_project_saved
