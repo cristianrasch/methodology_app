@@ -1,0 +1,11 @@
+= div_for(projects.first.dev) do
+  %table.bottom_spaced{:border => 0, :cellspacing => 0, :cellpadding => 0, :width => "100%"}
+    %thead
+      %tr
+        %th FRI #
+        %th Nombre
+    %tbody
+    - projects.each do |project|
+      %tr
+        %td ##{project.req_nbr}
+        %td= project

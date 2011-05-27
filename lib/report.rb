@@ -4,9 +4,6 @@ class Report
     WORKLOAD_BY_DEV = 1
   end
   
-  include Duration
-  include ActionView::Helpers::DateHelper
-  
   def initialize(type)
     @type = type.to_i
   end
@@ -20,6 +17,6 @@ class Report
   private
   
   def workload_by_dev
-    Project.count_by_dev
+    Project.by_dev
   end
 end

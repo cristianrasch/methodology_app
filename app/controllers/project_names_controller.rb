@@ -46,11 +46,4 @@ class ProjectNamesController < ApplicationController
     ProjectName.destroy(params[:id])
     redirect_to(project_names_path, :notice => "#{ProjectName.model_name.human.humanize} eliminado")
   end
-  
-  def children
-    @children = ProjectName.children_of(params[:_value])
-    respond_to do |format|
-      format.json { render :json => Hash[*@children.map { |child| [child.id, child.text] }.flatten] }
-    end
-  end
 end

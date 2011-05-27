@@ -451,3 +451,9 @@ hr {
 .pretty th .desc {
   background-image: url(/methodology_app/images/down.png);
 }
+
+div.user {
+  display: none;
+  margin-bottom: 10px;
+}
+

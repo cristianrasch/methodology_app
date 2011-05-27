@@ -21,6 +21,10 @@ describe ReportsController do
   end
   
   it "should display a report graph" do
+    %w{crr gbe pap}.each do |dev|
+      1.upto(2) { |i| Factory(:project, :dev => find_dev(dev), :estimated_start_date => i.weeks.from_now.to_date) }
+    end
+  
     get :new, :type => Report::Type::WORKLOAD_BY_DEV
     
     response.should be_success

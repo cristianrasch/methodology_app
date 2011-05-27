@@ -285,9 +285,9 @@ describe Project do
     1.upto(2) {|i| Factory(:project, :estimated_start_date => i.weeks.from_now.to_date, :dev => dev1)}
     Factory(:project, :estimated_start_date => 1.month.from_now.to_date, :dev => dev2)
     
-    hash = Project.count_by_dev
+    hash = Project.by_dev
     hash.should have(2).elements
-    hash[dev1].should == 2
-    hash[dev2].should == 1
+    hash[dev1].should have(2).projects
+    hash[dev2].should have(1).project
   end
 end

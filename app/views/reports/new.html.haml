@@ -1,2 +1,4 @@
 - @data.keys.sort {|dev1, dev2| dev1.username <=> dev2.username}.each do |dev|
-  - render_chart_html('/methodology_app/FusionCharts/Gantt.swf', dev_projects_path(dev, :format => :xml), '', dev.username, 1200, 80+(25*(@data[dev]-1)), false)
+  = link_to_function(image_tag('info.png', :border => 0), "$('#user_#{dev.id}').toggle()")
+  - render_chart_html('/methodology_app/FusionCharts/Gantt.swf', dev_projects_path(dev, :format => :xml), '', dev.username, 1200, 80+(25*(@data[dev].length-1)), false)
+  = render 'projects', :projects => @data[dev]

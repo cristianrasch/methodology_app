@@ -150,13 +150,8 @@ class Project < ActiveRecord::Base
       projects.on_course.ordered.page(page).per(Project.per_page)
     end
     
-    def count_by_dev
-      projects = on_course_or_pending.
-                 select('projects.*, users.*, count(dev_id) indicator').
-                 group(:dev_id).
-                 joins(:dev).
-                 order(:dev => :username)
-      Hash[*projects.map { |project| [project.dev, project.attributes['indicator']] }.flatten]
+    def by_dev
+      on_course_or_pending.joins(:dev).order(:dev => :username).group_by(&:dev)
     end
   end
   
