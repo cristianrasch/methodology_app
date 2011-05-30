@@ -3,13 +3,106 @@
 require 'spec_helper'
 
 describe Project do
+   context "new instances' validations" do
+     it "should only save valid instances" do
+       project = Project.new
+       project.should_not be_valid
+
+       project.should have(1).error_on(:estimated_start_date)
+       project.should have(1).error_on(:estimated_end_date)
+       project.should have(1).error_on(:estimated_duration)
+       project.should have(1).error_on(:dev_id)
+       project.should have(1).error_on(:owner_id)
+       project.should have(1).error_on(:project_name_id)
+       project.should have(1).error_on(:requirement)
+       project.should have(1).error_on(:org_unit_id)
+       project.should have(1).error_on(:req_nbr)
+     end
+
+     it "should validate dev's & owner's email addresses" do
+       user = Factory(:user, :email => nil)
+       project = Project.new(:dev => user, :owner => user)
+       project.should_not be_valid
+
+       project.should have(1).error_on(:dev_id)
+       project.should have(1).error_on(:owner_id)
+     end
+   end
+
+   it "should find active projects" do
+     active_project = create_model(:project, :started_on => Date.today, :status => Project::Status::IN_DEV)
+     2.times {
+       create_model(:project, :status => Project::Status::FINISHED)
+     }
+
+     projects = Project.on_course.all
+     projects.should have(1).record
+     projects.first.should == active_project
+   end
+
+   it "should validates its estimated dates" do
+     project = Factory.build(:project, :estimated_start_date => Date.today, :estimated_end_date => Date.yesterday)
+     project.should_not be_valid
+     project.should have(1).error_on(:estimated_end_date)
+   end
+
+   it "should write its dates based on the strings supplieded as params" do
+     project = Project.new
+
+     %w{estimated_start_date estimated_end_date}.each do |attr|
+       project.send("#{attr}=", nil)
+       project.send(attr).should be_nil
+       project.send("#{attr}=", "")
+       project.send(attr).should be_nil
+       project.send("#{attr}=", "22/12/2005")
+       date = project.send(attr)
+       date.day.should == 22
+       date.month.should == 12
+       date.year.should == 2005
+     end
+   end
+
+   it "should delete its events & tasks once deleted" do
+     project = Factory(:project)
+     3.times { Factory(:event, :project => project) }
+     2.times { Factory(:task, :project => project) }
+
+     project.destroy
+     project.events(true).should be_empty
+     project.tasks(true).should be_empty
+   end
+
+   it "should send emails after being created" do
+     lambda {
+       Factory(:project)
+     }.should change(ActionMailer::Base.deliveries, :length)
+   end
+
+   it "should send emails after being updated" do
+     project = Factory(:project)
+     lambda {
+       project.update_attribute(:estimated_end_date, 3.months.from_now.to_date)
+     }.should change(ActionMailer::Base.deliveries, :length)
+   end
+
+   it "should list its tasks depending on the params supplied" do
+     project = Factory(:project)
+     2.times { Factory(:task, :project => project) }
+     3.times { Factory(:task, :project => project, :duration => 4) }
+     project.tasks.list.should have(2).records
+     project.tasks.list(:show_all => true).should have(5).records
+   end
+
   it "should search for projects and order them based on the supplied params" do
     p1 = create_model(:project, :project_name_id => Factory(:project_name, :text => '..').id)
+    2.times {
+      create_model(:project, :project_name => Factory(:project_name, :parent => p1.project_name))
+    }
     p2 = create_model(:project, :started_on => 1.week.ago.to_date)
     dev = Factory(:user)
     p3 = Factory(:project, :dev => dev)
 
-    Project.search(Project.new(:project_name_id => p1.project_name_id)).should have(1).record
+    Project.search(Project.new(:project_name_id => p1.project_name_id)).should have(3).records
     pr = Project.new
     pr.started_on = 8.days.ago.to_date
     Project.search(pr, :order => 'created_at desc').should have(1).record

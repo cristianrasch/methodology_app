@@ -3,7 +3,7 @@
   &nbsp;-&nbsp;
   = f.collection_select :project_name_id, ProjectName.roots, 
                         :id, :to_s,
-                        {:prompt => 'Projecto', :include_blank => project.project_name_id.present?}, 
+                        {:prompt => 'Servicio', :include_blank => project.project_name_id.present?}, 
                         :onchange => "this.form.submit();"
   &nbsp;|&nbsp;
   = f.collection_select :dev_id, User.devs, :id, :name, 

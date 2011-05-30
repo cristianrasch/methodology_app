@@ -118,7 +118,11 @@ class Project < ActiveRecord::Base
     def search(template, options = {})
       projects = scoped
       
-      [:dev_id, :owner_id, :project_name_id].each { |col|
+      if template.project_name_id.present?
+        projects = projects.where(:project_name_id => ProjectName.subtree_of(template.project_name_id).map(&:id))
+      end
+      
+      [:dev_id, :owner_id].each { |col|
         projects = projects.where(col => template.send(col)) if template.send(col).present?
       }
     
