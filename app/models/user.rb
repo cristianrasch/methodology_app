@@ -48,7 +48,7 @@ class User < ActiveRecord::Base
       users_hash = users.index_by {|arr| arr.first}
       user_ids.each {|user_id|      
         name, org_unit = users_hash[user_id][4].split(/,\s?/)
-        next unless name        
+        next unless name
         user = User.new :name => name, :org_unit => org_unit, :password => "#{user_id}123"
         user.username = user_id
         user.save
