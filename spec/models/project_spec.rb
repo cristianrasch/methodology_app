@@ -131,6 +131,7 @@ describe Project do
 
   it "should know all project's participants" do
     project = Factory(:project)
+    3.times { project.users << Factory(:user) }
     users = project.all_users
 
     users.should have(5).records
@@ -293,4 +294,29 @@ describe Project do
     hash[dev1].should have(2).projects
     hash[dev2].should have(1).project
   end
+  
+  it "should only allow modify its notify_envisaged_end_date_changed" do
+    Project.new(:notify_envisaged_end_date_changed => '1').notify_envisaged_end_date_changed.should be_false
+    project = Factory(:project)
+    project.update_attributes(:notify_envisaged_end_date_changed => '1')
+    project.notify_envisaged_end_date_changed.should be_false
+    project.update_attributes(:envisaged_end_date => 6.months.from_now.to_date, :notify_envisaged_end_date_changed => '1')
+    project.notify_envisaged_end_date_changed.should be_true
+  end
+  
+  # it "should notify project's owner of schedule changes only when told so" do
+  #   project = Factory(:project)
+    
+  #   lambda {
+  #     project.update_attribute(:envisaged_end_date, 2.weeks.from_now.to_date)
+  #    }.should_not change(ActionMailer::Base.deliveries, :length)
+     
+  #    lambda {
+  #     project.update_attributes(:envisaged_end_date => 2.months.from_now.to_date, :notify_envisaged_end_date_changed => '1')
+  #    }.should change(ActionMailer::Base.deliveries, :length).by(1)
+     
+  #    email = ActionMailer::Base.deliveries.first
+  #    email.to.should include(project.dev.email)
+  #    email.to.should include(project.owner.email)
+  # end
 end

@@ -106,12 +106,13 @@ class Project < ActiveRecord::Base
   
   cattr_reader :per_page
   @@per_page = 10
-  attr_reader :user_tokens
+  attr_reader :user_tokens, :notify_envisaged_end_date_changed
+  attr_writer :notify_envisaged_end_date_changed
   attr_accessor :indicator
   attr_accessible :description, :dev_id, :owner_id, :user_ids, :estimated_start_date, :estimated_end_date, 
                   :estimated_duration, :status, :updated_by, :user_tokens, :compl_perc, :klass, :indicator, 
                   :envisaged_end_date, :estimated_duration_unit, :project_name_id, :delayed_by, :requirement, 
-                  :org_unit_id, :req_nbr
+                  :org_unit_id, :req_nbr, :notify_envisaged_end_date_changed
   date_writer_for :estimated_start_date, :estimated_end_date, :envisaged_end_date
   
   class << self
@@ -190,7 +191,10 @@ class Project < ActiveRecord::Base
     if [Status::NEW, Status::FINISHED].include?(attrs.has_key?(:status) ? attrs[:status].to_i : status)
       attrs.delete(:compl_perc)
     end
+    
     super
+    
+    @notify_envisaged_end_date_changed = attrs[:notify_envisaged_end_date_changed].to_i == 1 && envisaged_end_date_changed? && persisted?
   end
   
   def status=(stat)
@@ -246,9 +250,7 @@ class Project < ActiveRecord::Base
   end
   
   def notify_project_saved
-    if created_at == updated_at || Project.column_names.grep(/_date$/).any? {|attr| send("#{attr}_changed?")}
-      send_async(ProjectNotifier, :project_saved, self)
-    end
+    send_async(ProjectNotifier, :project_saved, self) if created_at == updated_at || @notify_envisaged_end_date_changed
   end
   
   def set_default_envisaged_end_date

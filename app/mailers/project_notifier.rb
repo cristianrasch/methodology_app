@@ -12,6 +12,7 @@ class ProjectNotifier < ActionMailer::Base
     @project = project
     recipients = project.dev.email
     # recipients = project.all_users.map(&:email)
+    
     mail(:to => recipients, :subject => "#{project.created_at == project.updated_at ? 'Nuevo' : 'Edición de'} #{Project.model_name.human}")
   end
 end

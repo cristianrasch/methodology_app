@@ -16,7 +16,7 @@ class User < ActiveRecord::Base
   has_and_belongs_to_many :comments
   
   validates :username, :presence => true, :uniqueness => true
-  validates_length_of :username, :is => 3
+  validates_length_of :username, :is => 3 if Rails.env.production?
   
   validates :name, :presence => true
   

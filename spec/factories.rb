@@ -51,6 +51,6 @@ Factory.define :project do |p|
   p.association :owner, :factory => :user
   p.association :dev, :factory => :user
   p.association :project_name
-  3.times { p.after_build { |pp| pp.users << Factory(:user) } }
+  # 3.times { p.after_build { |pp| pp.users << Factory(:user) } }
   p.association :org_unit
 end
