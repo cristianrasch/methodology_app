@@ -96,13 +96,15 @@ class Project < ActiveRecord::Base
   scope :ordered, order(:req_nbr.desc)
   scope :developed_by, lambda { |dev_id| where(:dev_id => dev_id) }
   scope :upcoming, lambda { where(:status => Project::Status::NEW) }
-  scope :on_course_by, lambda { |date| where(['? between estimated_start_date and estimated_end_date', date]) }
+  scope :on_est_course_by, lambda { |date| where(['? between estimated_start_date and estimated_end_date', date]) }
+  scope :on_course_by, lambda { |date| where(['? between estimated_start_date and envisaged_end_date', date]) }
   scope :on_course_or_pending, lambda { where('(started_on <= :date and status not in (:status)) or estimated_start_date > :date', :date => Date.today, :status => [Status::CANCELED, Status::FINISHED]) }
   scope :committed, where(:status - [Project::Status::CANCELED, Project::Status::FINISHED])
 
   before_save :set_default_envisaged_end_date
   after_save :notify_project_saved
-  after_save :update_schedule_if_necessary
+  after_create :update_pending_projects_schedule_after_create
+  after_update :update_pending_projects_schedule_after_update
   
   cattr_reader :per_page
   @@per_page = 10
@@ -257,22 +259,37 @@ class Project < ActiveRecord::Base
     self.envisaged_end_date = estimated_end_date unless envisaged_end_date
   end
   
-  def update_schedule_if_necessary
-    if estimated_start_date_changed?
-      delay = in_days(self, :estimated_duration)
-      affected_projects = self.class.where(:id ^ id).upcoming.on_course_by(estimated_start_date).developed_by(dev_id)
+  def update_pending_projects_schedule_after_create
+    delay = in_days(self, :estimated_duration)
+    affected_projects = self.class.where(:id ^ id).upcoming.on_est_course_by(estimated_start_date).developed_by(dev_id)
+    
+    unless affected_projects.empty?
+      # so that updated projects won't be updated again by the update_pending_projects_schedule_after_update callback
+      Project.update_all(['delayed_by = ?', id], :id => affected_projects.map(&:id))
+      
       affected_projects.each { |project|
-        project.update_attributes(:envisaged_end_date => delay.business_days.after(project.envisaged_end_date).to_date,
-                                  :delayed_by => id)
+        project.update_attribute(:envisaged_end_date, delay.business_days.after(project.envisaged_end_date).to_date)
       }
     end
-    
-    if envisaged_end_date_changed? && envisaged_end_date_was
+  end
+  
+  def update_pending_projects_schedule_after_update
+    if envisaged_end_date_changed? && ! delayed_by_changed?
       delay = (envisaged_end_date - envisaged_end_date_was).to_i
       change = delay > 0 ? envisaged_end_date_was.business_days_until(envisaged_end_date) : envisaged_end_date.business_days_until(envisaged_end_date_was)
-      self.class.where(:delayed_by => id).each { |project|
-        project.update_attribute(:envisaged_end_date, change.business_days.send(delay > 0 ? :after : :before, project.envisaged_end_date).to_date)
-      }
+      
+      if delay > 0
+        affected_projects = self.class.upcoming.on_course_by(envisaged_end_date).
+                                 where(:envisaged_end_date > envisaged_end_date).developed_by(dev_id)
+        affected_projects.each do |project|
+          project.update_attributes(:envisaged_end_date => change.business_days.after(project.envisaged_end_date).to_date, :delayed_by => id)
+        end
+      else
+        affected_projects = self.class.where(:delayed_by => id)
+        affected_projects.each { |project|
+          project.update_attribute(:envisaged_end_date, change.business_days.before(project.envisaged_end_date).to_date)
+        }
+      end
     end
   end
   

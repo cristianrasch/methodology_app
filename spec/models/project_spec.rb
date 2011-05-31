@@ -254,33 +254,35 @@ describe Project do
   end
   
   it "should auto-update project's schedule when new ones override work priorities" do
-    project = Factory(:project, :estimated_start_date => 1.week.from_now.to_date, 
-                      :estimated_end_date => 1.month.from_now.to_date, :dev => find_dev)
-    pr = Factory(:project, :estimated_start_date => 2.weeks.from_now.to_date, 
-                 :estimated_end_date => 1.month.from_now.to_date, :dev => find_dev,
-                 :estimated_duration => 1, :estimated_duration_unit => Duration::WEEK)
+    dev = find_dev
+    pr = Factory(:project, :estimated_start_date => 1.week.from_now.to_date, 
+                 :estimated_end_date => 1.month.from_now.to_date, :dev => dev)
     
-    project.reload
-    project.envisaged_end_date.should == 5.business_days.after(1.month.from_now).to_date
-    project.delayed_by_proj.should == pr
+    pr1 = Factory(:project, :estimated_start_date => 2.weeks.from_now.to_date, 
+                  :estimated_end_date => 3.weeks.from_now.to_date,
+                  :dev => dev, :estimated_duration => 1, :estimated_duration_unit => Duration::WEEK)
+    
+    pr.reload
+    pr.envisaged_end_date.should == 5.business_days.after(1.month.from_now).to_date
+    pr.delayed_by_proj.should == pr1
   end
   
   it "should auto-update project's schedule when delayed_by_proj's envisaged_end_date is changed" do
-    a_year_ago = 1.year.ago.to_date
+    a_year_ago, dev = 1.year.ago.to_date, find_dev
+    
     project = Factory(:project, :estimated_start_date => a_year_ago, 
-                      :estimated_end_date => a_year_ago+2.months, :dev => find_dev)
-                      
+                      :estimated_end_date => a_year_ago+2.months, :dev => dev)
     pr = Factory(:project, :estimated_start_date => a_year_ago+1.week, 
-                 :estimated_end_date => a_year_ago+2.weeks, :dev => find_dev,
+                 :estimated_end_date => a_year_ago+2.weeks, :dev => dev,
                  :estimated_duration => 1, :estimated_duration_unit => Duration::WEEK)
     pr.update_attribute(:envisaged_end_date, a_year_ago+3.weeks)
-    project.reload
     
+    project.reload
     project.envisaged_end_date.should == 10.business_days.after(a_year_ago+2.months).to_date
     
     pr.update_attribute(:envisaged_end_date, a_year_ago+2.weeks)
-    project.reload
     
+    project.reload
     project.envisaged_end_date.should == 5.business_days.after(a_year_ago+2.months).to_date
   end
   

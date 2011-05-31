@@ -7,9 +7,11 @@ BusinessTime::Config.load("#{Rails.root}/config/business_time.yml")
 
 # BusinessTime::Config.holidays += Holiday.this_year.map(&:date) if Holiday.table_exists?
 
-Sequel.quote_identifiers = false
-db = Sequel.informix(Conf.ifx['db'], :user => Conf.ifx['user'], :password => Conf.ifx['passwd'])
-BusinessTime::Config.holidays += db[:feriados].filter(['year(fecha) = ?', Date.today.year]).all.map { |holiday| holiday[:fecha] }
+unless Rails.env.test?
+  Sequel.quote_identifiers = false
+  db = Sequel.informix(Conf.ifx['db'], :user => Conf.ifx['user'], :password => Conf.ifx['passwd'])
+  BusinessTime::Config.holidays += db[:feriados].filter(['year(fecha) = ?', Date.today.year]).all.map { |holiday| holiday[:fecha] }
+end
 
 # require 'informix'
 
