@@ -4,6 +4,7 @@ require "delayed/recipes"
 default_run_options[:pty] = true
 default_environment['LD_LIBRARY_PATH'] = '/opt/IBM/informix/lib:/opt/IBM/informix/lib/esql:/opt/IBM/informix/lib/cli:/usr/lib/sqlapi' 
 default_environment['INFORMIXSERVER'] = 'cpcecf_desar'
+default_environment['PATH'] = '/usr/local/rvm/gems/ree-1.8.7-2011.03/bin:/usr/local/rvm/gems/ree-1.8.7-2011.03@global/bin:/usr/local/rvm/rubies/ree-1.8.7-2011.03/bin:/usr/local/rvm/bin'
 
 set :application, 'methodology_app'
 set :rails_env, "production" #added for delayed job 
@@ -11,9 +12,10 @@ set :rails_env, "production" #added for delayed job
 set :scm, :git
 set :repository,  "ssh://git-server/~/repos/#{application}.git"
 
-set :user, 'cristian'
+set :user, 'crasch'
+set :use_sudo, false
 
-role :app, 'dev'
+role :app, 'vcentos'
 set :deploy_via, :remote_cache
 set :deploy_to, "/home/#{user}/public_html/#{application}"
 

@@ -1,0 +1,272 @@
+0.7.3  2010-02-02
+------------------
+Bugs fixed:
+	* CursorBase#drop was raising an ArgumentError exception on Ruby 1.8.7
+
+Caveats:
+	* Database#each and Database#each_hash removed. Use Database#foreach and
+	  Database#foreach_hash instead.
+
+
+0.7.2  2008-11-21
+------------------
+Bugs fixed:
+	* rb_cArray symbol was duplicated
+
+Caveats:
+	* Database#each and Database#each_hash renamed to Database#foreach and
+	  Database#foreach_hash respectively.
+
+
+0.7.1  04/02/2008
+------------------
+Bugs fixed:
+	* The name of Informix resources were not unique. This problem was
+	  introduced in 0.7.0. It doesn't affect previous versions.
+	* The documentation insisted that Database#execute is an alias for
+	  Database#immediate.
+	* Cursor for Database#columns was prepared and declared every time it was
+	  called.
+
+
+0.7.0  03/31/2008
+------------------
+New features:
+	* Experimental support for the INTERVAL data type:
+		- year_to_month, day_to_fraction, from_months and from_seconds class
+		  methods for creating an Interval object
+		- +@ and -@ unary operators
+		- +, * and / operations available with Integer, Rational, Date, Time
+		  and DateTime objects
+		- methods for returning the respective fields of an Interval object
+		  individually (years, months, days, hours, minutes and seconds)
+		- to_a method for returning the fields of an Interval object as an array
+		- methods for converting the Interval object to the given unit, where
+		  apply (to_years, to_months, to_days, to_hours, to_minutes and
+		  to_seconds)
+		- to_s method for displaying an Interval object as an string according
+		  to ANSI SQL standards
+		- includes Comparable
+	* Database#version returns a struct with version information of the database
+	  server.
+	* Database#each and Database#each_hash shortcut methods for declaring and
+	  opening a cursor in a single step.
+	  Contributed by Reid Morrison <reidmo at gmail>
+	* Database#execute is not an alias for Database#immediate any more.
+	  It has become a shortcut for preparing and executing a statement in a
+	  single step.
+	* SequentialCursor includes Enumerable
+	* Ruby 1.9 compatible
+	* More and better documentation
+
+Bugs fixed:
+	* The documentation for class Error was not being recognized by rdoc
+
+Remarks:
+	* Database.new deprecated in favor of Database.open
+	* Database#do was removed
+	* A lot of C code has been reimplemented in Ruby
+	* Modules and classes have been reorganized
+	* Database#execute still behaves the same, except that it can also accept
+	  input parameters and return at most one record. Database#immediate is
+	  more efficient though.
+
+
+0.6.2  10/20/2007
+------------------
+Bugs fixed:
+	* Microsoft's cl compiler was failing due to a variable declaration
+	  where it is not allowed.
+
+	  Noticed by Joe Lanotte <joe.lanotte at comcast dot net>
+
+
+0.6.1  10/13/2007
+------------------
+Bugs fixed:
+	* Database#columns was returning an empty array from within the
+	  Informix ActiveRecord adapter
+	  (ActiveRecord::ConnectionAdapters::InformixAdapter#columns) if
+	  called for different tables. This bug was raising the following
+	  error in Ruby on Rails:
+
+		undefined method columname=
+
+	  Noticed by Andrés Rafael <aandresrafael at gmail dot com>
+
+
+0.6.0  08/28/2007
+------------------
+New features:
+	* Test suite
+	* Error, Warning, and AssertionFailure classes replace RuntimeError when
+	  raising exceptions.
+
+	  Error class methods: 
+		- message
+		- sql_code
+		- add_info
+		- []
+		- each
+		- to_s
+		- size, length
+
+	  message and sql_code reference the first error message. Following
+	  errors can be accessed through Error#[] as ExcInfo objects.
+
+	  ExcInfo is a Struct with the following members:
+		- sql_code
+		- sql_state
+		- class_origin_val
+		- subclass_origin_val
+		- message
+		- server_name
+		- connection_name
+
+	  See test/testcase.rb for a simple example of exception handling.
+
+	* Informix.version returns the version of this extension
+	* Database#do aliased as Database#execute
+	* More documentation
+
+Remarks:
+	* Database#do is deprecated and will be removed in next versions. Use
+	  Database#execute or Database#immediate instead.
+
+	* In case of Informix errors, RuntimeError objects are no longer raised.
+	  Error, Warning and AssertionFailure objects are raised instead.
+
+
+Acknowledgments:
+	I want to thank Edwin Fine <emofine at finecomputerconsultants dot com>
+who contributed all the functionality of this release.
+
+
+0.5.1  08/10/2007
+------------------
+Bugs fixed:
+	* When a DATETIME HOUR TO SECOND column had a value with leading zeroes
+	  it was incorrectly interpreted.
+	  Reported by Daniel Bush <dlb.id.au at gmail>
+
+
+0.5.0  12/27/2006
+------------------
+New features:
+	* Easier to install
+	* BigDecimal accepted for input parameters
+	* BigDecimal used for instantiating DECIMAL and MONEY values
+	* Cursor, Statement, Slob and Database accept an optional block that
+	  automatically frees resources after execution.
+	  Based on ideas and pseudo-code by
+	  Edwin Fine <emofine at finecomputerconsultants dot com> and me.
+	* Database#slob shortcut for creating Slob objects.
+	* Slob::Stat class implemented. Returned by Slob#stat, represents the
+	  SLOB status. Methods: atime, ctime, mtime, refcnt and size. Includes
+	  Comparable.
+	* Slob new methods: <<, rewind, stat, pos, pos=, lock, unlock,
+	                    estbytes, extsz, flags, maxbytes, sbspace,
+	                    extsz=, flags=,
+	                    atime, ctime, mtime, refcnt and size
+	* Thread safe
+
+Remarks:
+	* DECIMAL and MONEY columns are no longer returned as Float. BigDecimal
+	  is used instead.
+
+Bugs fixed:
+	* If there was an error reading (ifx_lo_read) an SLOB, memory
+	  allocated for the read buffer was not freed. Noticed by
+	  Edwin Fine <emofine at finecomputerconsultants dot com>
+	* maxbytes option was ignored when creating an Slob object
+	* Documentation for Slob mentioned an RDRW constant, but it actually
+	  is RDWR.
+
+Special thanks to Guy Bowerman, Jonathan Leffler and Logan Capaldo for their
+feedback and help.
+
+
+0.4.0  12/13/2006
+------------------
+New features:
+	* Support for multiple connections to databases
+	* Support for scroll cursors. Methods available:
+		- [], slice 
+		- prev, next, first, last, current
+		- prev_hash, next_hash, first_hash, last_hash, current_hash
+		- slice!, prev!, next!, first!, last!, current!
+		- slice_hash, prev_hash, next_hash, first_hash, last_hash,
+		  current_hash!
+		- slice_hash!, prev_hash!, next_hash!, first_hash!, last_hash!,
+		  current_hash!
+	* New Cursor#id method that returns the cursor name for use in
+	  update cursors
+
+Bugs fixed:
+	* Memory for input parameters was allocated before statement/cursor
+	  preparation but not freed if preparation failed.
+
+
+0.3.0  11/26/2006
+------------------
+New features:
+	* Initial support for Smart Large Objects (BLOB/CLOB).
+	  Operations supported:
+		- new
+		- open, close
+		- read, write
+		- seek, tell
+		- truncate
+	* Database#columns now also returns the extended id (xid)
+	* small documentation improvements and fixes
+
+
+0.2.1  11/11/2006
+------------------
+Bugs fixed:
+	* changing free() for xfree() avoids crashes on Windows XP SP1. Noticed
+	  by Dinko <dsrkoc at helix dot hr>
+
+
+0.2.0  04/24/2006
+------------------
+New features:
+	* Methods added to SequentialCursor:
+
+		- fetch_hash_many(n), fetch_hash_all
+		- each_by(n), each_hash_by(n)
+		- fetch!, fetch_hash!, each!, each_hash!
+
+	  where !-methods reduce object creation by reusing the same result
+	  object in each call
+
+Remarks:
+	* fetch*many and fetch*all methods now return [] instead of nil when
+	  no records are found
+
+Bugs fixed:
+	* When freeing a cursor that was opened but never used, a segmentation
+	  fault occurred
+
+
+0.1.0  04/10/2006
+-------------------
+Features:
+	* Support for all built-in data types, except INTERVAL
+	* immediate statements
+	* prepared statements
+	* select cursors and bulk inserts (insert cursors)
+	* transactions
+	* #columns method for retrieving column information
+	* rows retrieved as arrays or hashes
+	* IO-based and IO-like (StringIO) objects for storing a BYTE/TEXT
+	  column, and retrieved as a String object
+	* NULL, DATE and DATETIME mapped to nil, Date and Time objects and
+	  viceversa
+	* #drop method for freeing Informix resources immediatly
+	* source code documented with RDoc
+
+Caveats:
+	* INTERVAL not supported
+	* cursors must be closed before reopening them
+	* only one open connection at a time is supported
