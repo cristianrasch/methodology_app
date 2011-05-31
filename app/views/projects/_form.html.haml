@@ -64,14 +64,14 @@
   
   %table.bottom_spaced{:border => 0, :cellspacing => 0, :cellpadding => 0, :width => "100%"}
     %tr
-      %td{:width => '50%'}
+      %td{:width => '20%'}
         %strong= form.label :req_nbr
-      %td{:width => '50%'}
+      %td{:width => '80%'}
         %strong= form.label :project_name_id
     %tr
-      %td{:width => '50%'}
+      %td{:width => '20%'}
         = form.text_field :req_nbr, :size => 3
-      %td{:width => '50%'}
+      %td{:width => '80%'}
         = select_tag :project_name_id0, options_for_select(ProjectName.at_depth(0).map{|pn| [pn.text, pn.id]}), :include_blank => true
         = select_tag :project_name_id1, options_for_select(ProjectName.at_depth(1).map{|pn| [pn.text, pn.id, {:class => pn.parent_id}]}), :include_blank => true
         = select_tag :project_name_id2, options_for_select(ProjectName.at_depth(2).map{|pn| [pn.text, pn.id, {:class => pn.parent_id}]}), :include_blank => true
