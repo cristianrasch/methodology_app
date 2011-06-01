@@ -47,10 +47,9 @@ Factory.define :project do |p|
   p.requirement Faker::Lorem.sentence
   p.estimated_start_date 2.months.ago.to_date
   p.estimated_end_date 3.months.from_now.to_date
-  p.estimated_duration 80
+  p.estimated_duration 30
   p.association :owner, :factory => :user
   p.association :dev, :factory => :user
   p.association :project_name
-  # 3.times { p.after_build { |pp| pp.users << Factory(:user) } }
   p.association :org_unit
 end

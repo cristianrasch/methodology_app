@@ -329,6 +329,13 @@ describe Project do
     project.delayed_by_proj.should == pr
   end
   
+  it "should set its estimated_end_date attr based on the specified estimated duration" do
+    project = Project.new(:estimated_start_date => Date.today, 
+                          :estimated_duration => 2, :estimated_duration_unit => Duration::WEEK)
+    project.estimated_end_date.should_not be_nil
+    project.estimated_end_date.should == 10.business_days.after(Date.today).to_date
+  end
+  
   # it "should notify project's owner of schedule changes only when told so" do
   #   project = Factory(:project)
     

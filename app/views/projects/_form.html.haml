@@ -4,7 +4,7 @@
   :javascript
     $(document).ready(function() {
       $('#project_estimated_start_date').datepicker();
-      $('#project_estimated_end_date').datepicker();
+      // $('#project_estimated_end_date').datepicker();
       $('#project_envisaged_end_date').datepicker();
       $("#project_user_tokens").tokenInput("#{users_path(:format => :json)}", {
         crossDomain: false,
@@ -12,9 +12,9 @@
         theme: "facebook"
       });
       
-      $('#project_estimated_start_date').change(function() {
+      /*$('#project_estimated_start_date').change(function() {
         $('#project_estimated_end_date').datepicker('setDate', addDaysTo($(this).datepicker('getDate'), 1));
-      });
+      });*/
       
       if(#{@project.persisted?}) {
         $('#project_envisaged_end_date').change(function() {
@@ -132,7 +132,8 @@
                             :value => date_default_value(@project.estimated_start_date)
         %td{:width => '33.3%'}
           = form.text_field :estimated_end_date, :size => 27, 
-                            :value => date_default_value(@project.estimated_end_date)
+                            :value => date_default_value(@project.estimated_end_date),
+                            :disabled => true
         %td{:width => '33.3%'}
           = form.text_field :estimated_duration, :size => 4
           = duration_options_for(@project, :estimated_duration_unit)

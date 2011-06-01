@@ -197,6 +197,11 @@ class Project < ActiveRecord::Base
     super
     
     @notify_envisaged_end_date_changed = attrs[:notify_envisaged_end_date_changed].to_i == 1 && envisaged_end_date_changed? && persisted?
+    
+    if new? && estimated_duration
+      duration_in_days = in_days(self, :estimated_duration)
+      self.estimated_end_date = duration_in_days.business_days.after(estimated_start_date).to_date
+    end
   end
   
   def status=(stat)
@@ -311,7 +316,5 @@ class Project < ActiveRecord::Base
     %w[dev owner].each { |attr|
       errors.add("#{attr}_id", I18n.t('errors.messages.invalid_email_address')) if send(attr) && send(attr).email.nil?
     }
-    # errors.add(:dev_id, I18n.t('errors.messages.invalid_email_address')) if dev && dev.email.nil?
-    # errors.add(:owner_id, I18n.t('errors.messages.invalid_email_address')) if owner && owner.email.nil?
   end
 end
