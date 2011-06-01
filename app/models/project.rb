@@ -81,25 +81,25 @@ class Project < ActiveRecord::Base
   validates :requirement, :presence => true
   
   def indicator_class_for(project)
-    return 'green' if project.started_on <= Date.today &&  ! project.finished?
+    return 'green' if project.started_on <= Date.today &&  project.in_dev?
     return 'yellow' if project.estimated_start_date > Date.today
     return 'red' if project.estimated_start_date < Date.today && project.new?
     return 'black' if project.estimated_end_date < Date.today && ! project.finished?
     return 'blue' if project.finished?
   end
   
-  scope :on_course, lambda { committed.where(:started_on <= Date.today) }
-  scope :pending, lambda { where(:estimated_start_date > Date.today, :status => Project::Status::NEW) }
-  scope :not_started, lambda { where(:estimated_start_date < Date.today, :status => Project::Status::NEW) }
+  scope :on_course, lambda { where(:started_on <= Date.today, :status => Status::IN_DEV) }
+  scope :pending, lambda { where(:estimated_start_date > Date.today, :status => Status::NEW) }
+  scope :not_started, lambda { where(:estimated_start_date < Date.today, :status => Status::NEW) }
   scope :not_finished, lambda { committed.where(:estimated_end_date < Date.today) }
-  scope :finished, lambda { where(:status => Project::Status::FINISHED) }
+  scope :finished, lambda { where(:status => Status::FINISHED) }
   scope :ordered, order(:req_nbr.desc)
   scope :developed_by, lambda { |dev_id| where(:dev_id => dev_id) }
-  scope :upcoming, lambda { where(:status => Project::Status::NEW) }
+  scope :upcoming, lambda { where(:status => Status::NEW) }
   scope :on_est_course_by, lambda { |date| where(['? between estimated_start_date and estimated_end_date', date]) }
   scope :on_course_by, lambda { |date| where(['? between estimated_start_date and envisaged_end_date', date]) }
   scope :on_course_or_pending, lambda { where('(started_on <= :date and status not in (:status)) or estimated_start_date > :date', :date => Date.today, :status => [Status::CANCELED, Status::FINISHED]) }
-  scope :committed, where(:status - [Project::Status::CANCELED, Project::Status::FINISHED])
+  scope :committed, where(:status - [Status::CANCELED, Status::FINISHED])
 
   before_save :set_default_envisaged_end_date
   after_save :notify_project_saved
@@ -234,6 +234,10 @@ class Project < ActiveRecord::Base
     status == Status::NEW
   end
   
+  def in_dev?
+    status == Status::IN_DEV
+  end
+  
   def stopped?
     status == Status::STOPPED
   end
@@ -261,8 +265,19 @@ class Project < ActiveRecord::Base
   
   def update_pending_projects_schedule_after_create
     delay = in_days(self, :estimated_duration)
-    affected_projects = self.class.where(:id ^ id).upcoming.on_est_course_by(estimated_start_date).developed_by(dev_id)
+
+    # stop ongoing projects first    
+    on_course_projects = self.class.where(:id ^ id).on_course.developed_by(dev_id)
+    unless on_course_projects.empty?
+      # be careful not to fire the update_pending_projects_schedule_after_update callback inadvertently
+      Project.update_all(['status = ?, delayed_by = ?', Status::STOPPED, id], :id => on_course_projects.map(&:id))
+      on_course_projects.each { |project|
+        project.update_attribute(:envisaged_end_date, delay.business_days.after(project.envisaged_end_date).to_date)
+      }
+    end
     
+    # then re-schedule pending projects
+    affected_projects = self.class.where(:id ^ id).upcoming.on_est_course_by(estimated_start_date).developed_by(dev_id)
     unless affected_projects.empty?
       # so that updated projects won't be updated again by the update_pending_projects_schedule_after_update callback
       Project.update_all(['delayed_by = ?', id], :id => affected_projects.map(&:id))

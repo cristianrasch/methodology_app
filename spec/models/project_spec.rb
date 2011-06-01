@@ -3,7 +3,7 @@
 require 'spec_helper'
 
 describe Project do
-   context "new instances' validations" do
+  context "new instances' validations" do
      it "should only save valid instances" do
        project = Project.new
        project.should_not be_valid
@@ -30,12 +30,10 @@ describe Project do
    end
 
    it "should find active projects" do
-     active_project = create_model(:project, :started_on => Date.today, :status => Project::Status::IN_DEV)
-     2.times {
-       create_model(:project, :status => Project::Status::FINISHED)
-     }
-
-     projects = Project.on_course.all
+     active_project = create_model(:project, :started_on => Date.yesterday, :status => Project::Status::IN_DEV)
+     2.times { create_model(:project, :status => Project::Status::FINISHED) }
+     projects = Project.on_course
+     
      projects.should have(1).record
      projects.first.should == active_project
    end
@@ -113,11 +111,14 @@ describe Project do
     before do
       2.times { Factory(:project, :status => Project::Status::IN_DEV) }
       @dev = find_dev
-      3.times { Factory(:project, :dev => @dev, :status => Project::Status::IN_DEV) }
+      @dev_projects = []
+      3.times { @dev_projects << Factory(:project, :dev => @dev, :status => Project::Status::IN_DEV) }
     end
 
     it "should return dev's current projects" do
-      Project.search_for(@dev).should have(3).records
+      projects = Project.search_for(@dev)
+      projects.should have(1).record
+      projects.first.should == @dev_projects.last
     end
     
     it "should return on course projects grouped by dev" do
@@ -125,7 +126,7 @@ describe Project do
     end
 
     it "should return the latest projects for a non-dev/non-boss user" do
-      Project.search_for(Factory(:user)).should have(5).records
+      Project.search_for(Factory(:user)).should have(3).records # one for each dev
     end
   end
 
@@ -286,6 +287,16 @@ describe Project do
     project.envisaged_end_date.should == 5.business_days.after(a_year_ago+2.months).to_date
   end
   
+  it "should put dev's current project on hold when a new one with a higher priority is created" do
+    project = Factory(:project, :estimated_start_date => Date.today, :estimated_end_date => 2.months.from_now.to_date)
+    dev = project.dev
+    project.update_attributes(:status => Project::Status::IN_DEV, :updated_by => dev.id)
+    Factory(:project, :dev => dev, :estimated_start_date => 1.week.from_now.to_date, :estimated_duration => 1, :estimated_duration_unit => Duration::WEEK)
+    project.reload
+    
+    project.envisaged_end_date.should == 5.business_days.after(2.months.from_now).to_date
+  end
+  
   it "should count projects by dev" do
     dev1, dev2 = Factory(:user), Factory(:user)
     1.upto(2) {|i| Factory(:project, :estimated_start_date => i.weeks.from_now.to_date, :dev => dev1)}
@@ -304,6 +315,18 @@ describe Project do
     project.notify_envisaged_end_date_changed.should be_false
     project.update_attributes(:envisaged_end_date => 6.months.from_now.to_date, :notify_envisaged_end_date_changed => '1')
     project.notify_envisaged_end_date_changed.should be_true
+  end
+
+   it "should put dev's current project on hold when a new one with a higher priority is created" do
+    project = Factory(:project, :estimated_start_date => Date.today, :estimated_end_date => 2.months.from_now.to_date)
+    dev = project.dev
+    project.update_attributes(:status => Project::Status::IN_DEV, :updated_by => dev.id)
+    pr = Factory(:project, :dev => dev, :estimated_start_date => 1.week.from_now.to_date, 
+                 :estimated_duration => 1, :estimated_duration_unit => Duration::WEEK)
+    project.reload
+    project.should be_stopped
+    project.envisaged_end_date.should == 5.business_days.after(2.months.from_now).to_date
+    project.delayed_by_proj.should == pr
   end
   
   # it "should notify project's owner of schedule changes only when told so" do
