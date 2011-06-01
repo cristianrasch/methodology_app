@@ -1,4 +1,5 @@
 MethodologyApp::Application.routes.draw do
+
   devise_for :users
   namespace :admin do
     post 'users/import'
@@ -19,6 +20,7 @@ MethodologyApp::Application.routes.draw do
       resources :comments
     end
   end
+  get 'projects/:id/versions' => 'versions#project', :as => :project_versions
   get "projects_status/index"
   resources :reports, :only => [:index, :new]
   resources :project_names

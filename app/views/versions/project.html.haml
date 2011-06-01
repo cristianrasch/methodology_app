@@ -1,0 +1,17 @@
+= content_for :title, "Replanificación de #{@project}"
+= content_for :sidebar, render('projects/sidebar')
+
+%table{:border => 0, :cellspacing => 0, :cellpadding => 0, :width => "100%"}
+  %thead
+    %tr
+      %th Fecha de modificación
+      %th Fin previsto antes
+      %th Fin previsto después
+      %th #{Project.model_name.human.humanize} responsable
+  %tbody
+    - 0.downto((@project.versions.length-2)*-1) do |i|
+      %tr
+        %td= l((i.zero? ? @project : @project.versions[i].reify).updated_at, :format => :short)
+        %td= l(@project.versions[i-1].reify.envisaged_end_date)
+        %td= l((i.zero? ? @project : @project.versions[i].reify).envisaged_end_date)
+        %td= delay_responsible(i.zero? ? @project : @project.versions[i].reify)

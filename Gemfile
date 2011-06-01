@@ -16,6 +16,7 @@ gem 'delayed_job'
 gem "business_time"
 gem 'ruby-informix'
 gem 'sequel'
+gem 'paper_trail', '~> 2'
 
 group :test, :development do
   gem "rspec-rails", "~> 2.4"

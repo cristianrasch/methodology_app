@@ -39,6 +39,8 @@ class Project < ActiveRecord::Base
     end
   end
 
+  has_paper_trail :only => [:envisaged_end_date]
+
   include DateUtils
   include AsyncEmail
   include Duration
@@ -298,17 +300,19 @@ class Project < ActiveRecord::Base
       delay = (envisaged_end_date - envisaged_end_date_was).to_i
       change = delay > 0 ? envisaged_end_date_was.business_days_until(envisaged_end_date) : envisaged_end_date.business_days_until(envisaged_end_date_was)
       
+      # delay upcoming projects
       if delay > 0
-        affected_projects = self.class.where(:id ^ id).upcoming.on_course_by(envisaged_end_date).developed_by(dev_id)
+        affected_projects = self.class.where(:id ^ id).where(:delayed_by ^ id).upcoming.on_course_by(envisaged_end_date).developed_by(dev_id)
         affected_projects.each do |project|
           project.update_attributes(:envisaged_end_date => change.business_days.after(project.envisaged_end_date).to_date, :delayed_by => id)
         end
-      else
-        affected_projects = self.class.where(:delayed_by => id)
-        affected_projects.each { |project|
-          project.update_attribute(:envisaged_end_date, change.business_days.before(project.envisaged_end_date).to_date)
-        }
       end
+      
+      # reschedule projects already delayed by this project
+      affected_projects = self.class.where(:delayed_by => id)
+      affected_projects.each { |project|
+        project.update_attribute(:envisaged_end_date, change.business_days.send(delay > 0 ? :after : :before,  project.envisaged_end_date).to_date)
+      }
     end
   end
   

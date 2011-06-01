@@ -31,6 +31,9 @@
             = link_to Event.model_name.human.humanize.pluralize, project_events_path(@project)
           %li
             = link_to Task.model_name.human.humanize.pluralize, project_tasks_path(@project)
+          - if @project.versions.length > 1
+            %li
+              = link_to 'Replanificación', project_versions_path(@project)
         %li
           = link_to 'Volver', :back
 / end #sidebar
