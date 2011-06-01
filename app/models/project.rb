@@ -294,8 +294,7 @@ class Project < ActiveRecord::Base
       change = delay > 0 ? envisaged_end_date_was.business_days_until(envisaged_end_date) : envisaged_end_date.business_days_until(envisaged_end_date_was)
       
       if delay > 0
-        affected_projects = self.class.upcoming.on_course_by(envisaged_end_date).
-                                 where(:envisaged_end_date > envisaged_end_date).developed_by(dev_id)
+        affected_projects = self.class.where(:id ^ id).upcoming.on_course_by(envisaged_end_date).developed_by(dev_id)
         affected_projects.each do |project|
           project.update_attributes(:envisaged_end_date => change.business_days.after(project.envisaged_end_date).to_date, :delayed_by => id)
         end
@@ -309,7 +308,10 @@ class Project < ActiveRecord::Base
   end
   
   def devs_and_owners_email_address
-    errors.add(:dev_id, I18n.t('errors.messages.invalid_email_address')) if dev && dev.email.nil?
-    errors.add(:owner_id, I18n.t('errors.messages.invalid_email_address')) if owner && owner.email.nil?
+    %w[dev owner].each { |attr|
+      errors.add("#{attr}_id", I18n.t('errors.messages.invalid_email_address')) if send(attr) && send(attr).email.nil?
+    }
+    # errors.add(:dev_id, I18n.t('errors.messages.invalid_email_address')) if dev && dev.email.nil?
+    # errors.add(:owner_id, I18n.t('errors.messages.invalid_email_address')) if owner && owner.email.nil?
   end
 end
