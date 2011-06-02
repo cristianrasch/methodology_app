@@ -170,8 +170,11 @@ class Project < ActiveRecord::Base
     self.user_ids = ids.split(",")
   end
   
-  def to_s
-    "[#{project_name}] - #{requirement.humanize}" 
+  def to_s(format = :default)
+    case format
+      when :default then "[#{project_name}] - #{requirement.humanize}"
+      when :short then project_name.to_s
+    end
   end
   
   def all_users

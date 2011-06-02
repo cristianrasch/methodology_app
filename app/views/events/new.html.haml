@@ -1,4 +1,4 @@
-= content_for :title, "Nuevo #{Event.model_name.human}"
+= content_for :title, "Nuevo #{Event.model_name.human} - #{@project.to_s(:short)}"
 = content_for :sidebar do
   = render 'sidebar'
   
