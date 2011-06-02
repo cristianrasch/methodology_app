@@ -1,0 +1,7 @@
+= content_for :title, "Editando #{User.model_name.human}"
+= content_for :sidebar do
+  = render 'sidebar'
+
+= form_for @user do |f|
+  = render f
+  = f.submit 'Actualizar'

@@ -31,11 +31,16 @@ class User < ActiveRecord::Base
 
   scope :devs, where(:username => Conf.devs.split(',')).order(:name)
   scope :nondevs, where(:username - Conf.devs.split(',')).order(:name)
+  scope :ordered, order(:name)
+  scope :potential_owners, where(:potential_owner => true).order(:name)
   
+  attr_writer :source
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :name, :org_unit, :position, :email, :password, :password_confirmation, :remember_me
+  attr_accessible :name, :org_unit, :position, :email, :password, :password_confirmation, :remember_me,
+                  :potential_owner
   
   before_create :format_name
+  before_save :titleize_name
   
   class << self
     def import
@@ -51,6 +56,7 @@ class User < ActiveRecord::Base
         next unless name
         user = User.new :name => name, :org_unit => org_unit, :password => "#{user_id}123"
         user.username = user_id
+        user.source = :unix
         user.save
       }
     end
@@ -90,14 +96,27 @@ class User < ActiveRecord::Base
     name
   end
   
-  private
-  
-  def format_name
-    i = name.rindex(' ')
-    if i
-      i += 1
-      self.name = name[i,name.length-i]+', '+name[0,i-1]
+  def delete
+    if dev?
+      false
+    else
+      super
     end
   end
   
+  private
+  
+  def format_name
+    if @source == :unix
+      i = name.rindex(' ')
+      if i
+        i += 1
+        self.name = name[i,name.length-i]+', '+name[0,i-1]
+      end
+    end
+  end
+  
+  def titleize_name
+    self.name = name.titleize
+  end
 end

@@ -1,0 +1,29 @@
+= content_for :title, @user.username
+  
+= content_for :sidebar do
+  = render 'sidebar'
+
+%p
+  %strong= User.human_attribute_name(:name)
+  %br/
+  = @user.name
+  
+- if @user.org_unit.present?
+  %p
+    %strong= User.human_attribute_name(:org_unit)
+    %br/
+    = @user.org_unit
+
+- if @user.email.present?
+  %p
+    %strong= User.human_attribute_name(:email)
+    %br/
+    = @user.email
+
+%p
+  %strong= User.human_attribute_name(:potential_owner)
+  %br/
+  = bool_to_str(@user.potential_owner?)
+
+= created_at(@user)
+= updated_at(@user)

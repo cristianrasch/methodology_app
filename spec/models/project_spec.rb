@@ -27,6 +27,14 @@ describe Project do
        project.should have(1).error_on(:dev_id)
        project.should have(1).error_on(:owner_id)
      end
+     
+     it "should validate project's owner is not among its users" do
+       project = Factory.build(:project)
+       project.users << project.owner
+       
+       project.should be_invalid
+       project.should have(1).error_on(:owner_id)
+     end
    end
 
    it "should find active projects" do

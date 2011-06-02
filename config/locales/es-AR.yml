@@ -198,6 +198,7 @@ es-AR:
         username: Nombre de usuario
         name: Nombre
         org_unit: Sector
+        potential_owner: Usuario resp. potencial?
       project:
         description: Descripción
         estimated_start_date: Fecha de inicio estimada

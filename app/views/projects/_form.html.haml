@@ -103,7 +103,7 @@
       %td{:width => '33.3%'}
         = form.collection_select :dev_id, User.devs, :id, :name, :include_blank => true
       %td{:width => '33.3%'}
-        = form.collection_select :owner_id, User.nondevs, :id, :name, :include_blank => true
+        = form.collection_select :owner_id, User.potential_owners, :id, :name, :include_blank => true
       %td{:width => '33.3%'}
         = form.select :klass, options_for_select(Project::Klass::SELECT, controller.action_name == 'new' ? nil : @project.klass), 
                   :include_blank => controller.action_name == 'new'

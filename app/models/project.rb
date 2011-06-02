@@ -78,9 +78,10 @@ class Project < ActiveRecord::Base
   validates :estimated_start_date, :presence => true
   validates :estimated_end_date, :presence => true
   validates :estimated_duration, :numericality => { :greater_than => 0 }
+  validates :requirement, :presence => true
   validate :dates_set
   validate :devs_and_owners_email_address
-  validates :requirement, :presence => true
+  validate :owner_not_among_users
   
   def indicator_class_for(project)
     return 'green' if project.started_on <= Date.today &&  project.in_dev?
@@ -100,7 +101,7 @@ class Project < ActiveRecord::Base
   scope :upcoming, lambda { where(:status => Status::NEW) }
   scope :on_est_course_by, lambda { |date| where(['? between estimated_start_date and estimated_end_date', date]) }
   scope :on_course_by, lambda { |date| where(['? between estimated_start_date and envisaged_end_date', date]) }
-  scope :on_course_or_pending, lambda { where('(started_on <= :date and status not in (:status)) or estimated_start_date > :date', :date => Date.today, :status => [Status::CANCELED, Status::FINISHED]) }
+  scope :on_course_or_pending, lambda { where('(started_on is not null and status not in (:status)) or estimated_start_date > :date', :date => Date.today, :status => [Status::CANCELED, Status::FINISHED]) }
   scope :committed, where(:status - [Status::CANCELED, Status::FINISHED])
 
   before_save :set_default_envisaged_end_date
@@ -323,5 +324,9 @@ class Project < ActiveRecord::Base
     %w[dev owner].each { |attr|
       errors.add("#{attr}_id", I18n.t('errors.messages.invalid_email_address')) if send(attr) && send(attr).email.nil?
     }
+  end
+  
+  def owner_not_among_users
+    errors.add(:owner_id) if errors[:owner_id].empty? && users.include?(owner)
   end
 end

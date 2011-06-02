@@ -1,0 +1,12 @@
+= content_for :title, "Nuevo #{User.model_name.human}"
+= content_for :sidebar do
+  = render 'sidebar'
+
+= form_for @user do |f|
+  %p
+    = f.label :username
+    %br/
+    = text_field_tag :username, @user.username, :size => 30
+  
+  = render f
+  = f.submit 'Crear'

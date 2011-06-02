@@ -1,0 +1,30 @@
+= form.error_messages :header_message => nil, :message => nil
+
+%p
+  = form.label :name
+  %br/
+  = form.text_field :name
+  
+%p
+  = form.label :org_unit
+  %br/
+  = form.text_field :org_unit
+  
+%p
+  = form.label :email
+  %br/
+  = form.text_field :email
+  
+%p
+  = form.label :password
+  %br/
+  = form.password_field :password
+  
+%p
+  = form.label :password_confirmation
+  %br/
+  = form.password_field :password_confirmation
+  
+%p
+  = form.check_box :potential_owner
+  = form.label :potential_owner

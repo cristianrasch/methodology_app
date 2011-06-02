@@ -39,4 +39,8 @@ module ApplicationHelper
   def date_default_value(date)
     date ? l(date) : nil
   end
+  
+  def bool_to_str(boolean)
+    boolean ? 'Sí' : 'No'
+  end
 end

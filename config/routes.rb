@@ -1,12 +1,11 @@
 MethodologyApp::Application.routes.draw do
-
   devise_for :users
   namespace :admin do
     post 'users/import'
   end
   resource :account, :only => [:edit, :update]
-  match 'users' => 'users#index'
   match 'devs/:id/projects' => 'devs#projects', :as => :dev_projects
+  resources :users
 
   resources :projects, :shallow => true do
     member do

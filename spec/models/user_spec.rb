@@ -23,7 +23,9 @@ describe User do
   end
   
   it "should format user's name properly" do
-    rms = Factory(:user, :name => 'Richard Matthew Stallman')
+    rms = Factory.build(:user, :name => 'Richard Matthew Stallman')
+    rms.source = :unix
+    rms.save
     rms.name.should == 'Stallman, Richard Matthew'
   end
   
@@ -64,5 +66,14 @@ describe User do
     User.app_user?('mev').should be_true
     User.app_user?('crg').should be_true
     User.app_user?('xxx').should be_false
+  end
+  
+  it "should not delete developers" do
+    dev = find_dev
+    dev.delete
+    dev.should be_persisted
+    user = Factory(:user)
+    user.delete
+    user.should be_destroyed
   end
 end

@@ -1,0 +1,20 @@
+#sidebar
+  %ul
+    %li
+      %h2 Menú
+      %ul
+        - if controller.action_name == 'index'
+          %li
+            = link_to 'Nuevo', new_user_path
+        - else
+          %li
+            = link_to 'Inicio', users_path
+        - if controller.action_name == 'show'
+          %li
+            = link_to 'Editar', edit_user_path(@user)
+          %li
+            = link_to 'Eliminar', @user, :method => :delete, 
+                      :confirm => "¿Está seguro que desea eliminar el #{User.model_name.human}?"
+        %li
+          = link_to 'Volver', :back
+/ end #sidebar

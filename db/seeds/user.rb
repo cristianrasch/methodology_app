@@ -30,3 +30,5 @@ gem = User.find_by_username('gem')
     user.update_attribute(:email, "#{letter}#{surname}@consejo.org.ar")
   end
 }
+
+User.update_all({:potential_owner => true}, :username => Conf.potential_owners.split(','))
