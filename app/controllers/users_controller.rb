@@ -7,7 +7,7 @@ class UsersController < ApplicationController
       @users = User.where("name like ?", "%#{params[:q]}%")
     else
       return unless ensure_boss_logged_in
-      @users = User.ordered.page(params[:page]).per(10)
+      @users = User.ordered
     end
     
     respond_to do |format|

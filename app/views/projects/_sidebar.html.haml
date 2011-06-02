@@ -11,12 +11,6 @@
           - if boss_logged_in?
             %li
               = link_to 'Reportes', reports_path
-            %li
-              = link_to 'Nomenclatura', project_names_path
-            %li
-              = link_to OrgUnit.model_name.human.pluralize.humanize, org_units_path
-            %li
-              = link_to User.model_name.human.pluralize.humanize, users_path
         - else
           %li
             = link_to 'Inicio', projects_path
