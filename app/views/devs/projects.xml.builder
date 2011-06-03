@@ -1,10 +1,10 @@
 xml.chart(:dateFormat => "dd/mm/yyyy", :hoverCapBorderColor => "2222ff", :hoverCapBgColor => "e1f5ff", :ganttWidthPercent => "94", :ganttLineAlpha => "80", :canvasBorderColor => "024455", :canvasBorderThickness => "0", :gridBorderColor => "4567aa", :gridBorderAlpha => "20") do
   
   xml.categories(:bgColor => "ffffff", :fontColor => "1288dd", :fontSize => "10") do
-    month = Date.today.month
+    start_date = @projects.first.estimated_start_date
     13.times do |i|
-      next_month = i.months.from_now.to_date
-      xml.category(:start => l(next_month.at_beginning_of_month), :end => l(next_month.at_end_of_month.to_date), :align => "center", :name => "#{t('date.abbr_month_names')[next_month.month]} #{Date.today.strftime('%y')}", :isBold => "1")
+      date = start_date.advance(:months => i)
+      xml.category(:start => l(date.at_beginning_of_month), :end => l(date.at_end_of_month), :align => "center", :name => "#{t('date.abbr_month_names')[date.month]} #{date.strftime('%y')}", :isBold => "1")
     end
   end
   
