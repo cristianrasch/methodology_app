@@ -27,14 +27,15 @@ describe Event do
   end
 
   it "should display its status & stage descriptions" do
-    event = Event.new :stage => Conf.stages.first.first, :status => Conf.statuses.first.first
+    event = Event.new :stage => Event::Stage::DEFINITION, :status => Event::Status::IN_DEV
     event.stage_str.should be_present
     event.status_str.should be_present
   end
   
   it "should return a string representation of itself" do
-    str = Factory.build(:event).to_s
-    str.should match(/#{Conf.stages.first.last}/i)
-    str.should match(/#{Conf.statuses.first.last}/i)
+    event = Factory.build(:event)
+    str = event.to_s
+    str.should match(/#{event.stage_str}/i)
+    str.should match(/#{event.status_str}/i)
   end
 end

@@ -11,15 +11,4 @@ require 'spec_helper'
 #   end
 # end
 describe EventsHelper do
-  
-  %w{stage status}.each do |method|
-    it "should return some #{method} select options" do
-      matrix = helper.send("#{method}_select_options") 
-      matrix.should be_an(Array)
-      matrix.should_not be_empty
-      arr = matrix.first
-      arr.should_not be_empty
-    end
-  end
-  
 end

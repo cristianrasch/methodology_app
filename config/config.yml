@@ -8,14 +8,6 @@ common:
   devs: comma,separated,list,of,developers
   bosses: comma,separated,list,of,bosses
   potential_owners: ekp,cas,hco,gem,sma,sal,fac,hpc,asm,nbd,crg,mew,eod,mrm,meg,tks,cas,gar,est,nss,gig
-  stages:
-    1: your
-    2: stages
-    3: here
-  statuses:
-    1: your
-    2: statuses
-    3: here
   notifications_from: desarrollo@consejo.org.ar
   reports:
     1:

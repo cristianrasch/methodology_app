@@ -1,5 +1,4 @@
-= content_for :title do
-  = event_name(@event)
+= content_for :title, @event.to_s
   
 = content_for :sidebar do
   = render 'sidebar'

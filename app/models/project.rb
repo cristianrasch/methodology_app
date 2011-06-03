@@ -104,10 +104,11 @@ class Project < ActiveRecord::Base
   scope :committed, where(:status - [Status::CANCELED, Status::FINISHED])
 
   before_save :set_default_envisaged_end_date
-  after_save :notify_project_saved
   after_create :update_pending_projects_schedule_after_create
   after_update :update_pending_projects_schedule_after_update
   after_update :create_first_event
+  after_update :stop_current_event
+  after_save :notify_project_saved
   
   cattr_reader :per_page
   @@per_page = 10
@@ -332,9 +333,16 @@ class Project < ActiveRecord::Base
   
   def create_first_event
     if status_changed? && status_was == Status::NEW && in_dev?
-      event = events.build(:stage => Conf.stages.keys.sort.first, :status => Conf.statuses.keys.sort.first)
+      event = events.build(:stage => Event::Stage::DEFINITION, :status => Event::Status::IN_DEV)
       event.author_id = dev_id
       event.save
+    end
+  end
+  
+  def stop_current_event
+    if status_changed? && stopped?
+      curr_event = events.last
+      curr_event.stop if curr_event
     end
   end
 end

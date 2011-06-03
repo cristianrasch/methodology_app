@@ -7,8 +7,8 @@ Factory.define :user do |u|
 end
 
 Factory.define :event do |e|
-  e.stage Conf.stages.first.first
-  e.status Conf.statuses.first.first
+  e.stage Event::Stage::DEFINITION
+  e.status Event::Status::IN_DEV
   e.duration 25
   e.association :project
   e.association :author, :factory => :user

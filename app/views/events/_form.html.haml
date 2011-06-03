@@ -9,12 +9,12 @@
 %p
   = form.label :stage
   %br/
-  = form.select :stage, stage_select_options, :include_blank => true
+  = form.select :stage, options_for_select(Event::Stage::SELECT, @event.stage), :include_blank => true
   
 %p
   = form.label :status
   %br/
-  = form.select :status, status_select_options, :include_blank => true
+  = form.select :status, options_for_select(Event::Status::SELECT, @event.status), :include_blank => true
 
 - 1.upto(3) do |i|
   %p

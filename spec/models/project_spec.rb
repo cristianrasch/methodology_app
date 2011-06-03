@@ -367,8 +367,17 @@ describe Project do
     project.should be_in_dev
     project.events(true).should have(1).event
     event = project.events.first
-    event.stage.should == Conf.stages.keys.sort.first
-    event.status.should == Conf.statuses.keys.sort.first
+    event.stage.should == Event::Stage::DEFINITION
+    event.status.should == Event::Status::IN_DEV
     event.author.should == project.dev
+  end
+  
+  it "should auto stop its latest event when a Project is stopped" do
+    project = Factory(:project)
+    project.update_attributes(:status => Project::Status::IN_DEV, :updated_by => project.dev_id)
+    project.update_attributes(:status => Project::Status::STOPPED, :updated_by => project.dev_id)
+    
+    project.should be_stopped
+    project.events.first.status.should == Event::Status::STOPPED
   end
 end
