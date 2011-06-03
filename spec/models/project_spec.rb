@@ -359,4 +359,16 @@ describe Project do
   #    email.to.should include(project.dev.email)
   #    email.to.should include(project.owner.email)
   # end
+  
+  it "should create project's first event once work it's started" do
+    project = Factory(:project)
+    project.update_attributes(:status => Project::Status::IN_DEV, :updated_by => project.dev_id)
+    
+    project.should be_in_dev
+    project.events(true).should have(1).event
+    event = project.events.first
+    event.stage.should == Conf.stages.keys.sort.first
+    event.status.should == Conf.statuses.keys.sort.first
+    event.author.should == project.dev
+  end
 end
