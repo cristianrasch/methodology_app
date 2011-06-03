@@ -188,17 +188,17 @@ class Project < ActiveRecord::Base
       attrs.delete(:status) if !updated_by_dev || (attrs[:status].to_i == Status::FINISHED && new?)
     end
     
-    unless (attrs.has_key?(:status) ? attrs[:status].to_i : status) == Status::NEW
-      cols = Project.column_names.map(&:to_sym)
-      cols.delete(:compl_perc)
-      cols.delete(:status)
-      cols.delete(:envisaged_end_date)
-      cols.each { |col| attrs.delete(col) }
-    end
+    # unless (attrs.has_key?(:status) ? attrs[:status].to_i : status) == Status::NEW
+    #   cols = Project.column_names.map(&:to_sym)
+    #   cols.delete(:compl_perc)
+    #   cols.delete(:status)
+    #   cols.delete(:envisaged_end_date)
+    #   cols.each { |col| attrs.delete(col) }
+    # end
     
-    if [Status::NEW, Status::FINISHED].include?(attrs.has_key?(:status) ? attrs[:status].to_i : status)
-      attrs.delete(:compl_perc)
-    end
+    # if [Status::NEW, Status::FINISHED].include?(attrs.has_key?(:status) ? attrs[:status].to_i : status)
+    #   attrs.delete(:compl_perc)
+    # end
     
     super
     
