@@ -8,7 +8,7 @@
             = link_to 'Nuevo', new_project_name_path
         - else
           %li
-            = link_to 'Inicio', project_names_path
+            = link_to ProjectName.model_name.human.pluralize.humanize, project_names_path
         - if controller.action_name == 'show'
           %li
             = link_to 'Editar', edit_project_name_path(@project_name)

@@ -8,7 +8,7 @@
             = link_to 'Nuevo', new_project_event_path(@project || @event.project)
         - else
           %li
-            = link_to 'Inicio', project_events_path(@event.project)
+            = link_to Event.model_name.human.pluralize.humanize, project_events_path(@event.project)
         - if controller.action_name == 'show'
           %li
             = link_to 'Editar', edit_event_path(@event)

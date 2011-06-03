@@ -8,7 +8,7 @@
             = link_to 'Nueva', new_org_unit_path
         - else
           %li
-            = link_to 'Inicio', org_units_path
+            = link_to OrgUnit.model_name.human.pluralize.humanize, org_units_path
         - if controller.action_name == 'show'
           %li
             = link_to 'Editar', edit_org_unit_path(@project_name)

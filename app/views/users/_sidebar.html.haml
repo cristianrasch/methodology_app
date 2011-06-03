@@ -8,7 +8,7 @@
             = link_to 'Nuevo', new_user_path
         - else
           %li
-            = link_to 'Inicio', users_path
+            = link_to User.model_name.human.pluralize.humanize, users_path
         - if controller.action_name == 'show'
           %li
             = link_to 'Editar', edit_user_path(@user)

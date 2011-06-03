@@ -13,7 +13,7 @@
               = link_to 'Reportes', reports_path
         - else
           %li
-            = link_to 'Inicio', projects_path
+            = link_to Project.model_name.human.pluralize.humanize, projects_path
         - if controller.action_name == 'show'
           - unless @project.finished?
             %li

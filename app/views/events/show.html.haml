@@ -1,4 +1,4 @@
-= content_for :title, @event.to_s
+= content_for :title, "#{Event.model_name.human.humanize} - #{@event}"
   
 = content_for :sidebar do
   = render 'sidebar'
@@ -7,11 +7,12 @@
   %strong= Event.human_attribute_name(:author_id)
   %br/
   = @event.author.name
-  
-%p
-  %strong= Event.human_attribute_name(:duration)
-  %br/
-  = duration_desc(@event, :duration)
+
+- if @event.duration  
+  %p
+    %strong= Event.human_attribute_name(:duration)
+    %br/
+    = duration_desc(@event, :duration)
 
 - if @event.has_attachments?
   %ul

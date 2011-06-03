@@ -8,7 +8,7 @@
             = link_to 'Nuevo', new_holiday_path
         - else
           %li
-            = link_to 'Inicio', holidays_path
+            = link_to Holiday.model_name.human.pluralize.humanize, holidays_path
         %li
           = link_to 'Volver', :back
 / end #sidebar
