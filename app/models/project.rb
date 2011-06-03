@@ -107,7 +107,7 @@ class Project < ActiveRecord::Base
   after_save :notify_project_saved
   after_create :update_pending_projects_schedule_after_create
   after_update :update_pending_projects_schedule_after_update
-  after_update :create_first_event_if_necessary
+  after_update :create_first_event
   
   cattr_reader :per_page
   @@per_page = 10
@@ -330,7 +330,7 @@ class Project < ActiveRecord::Base
     errors.add(:owner_id) if errors[:owner_id].empty? && users.include?(owner)
   end
   
-  def create_first_event_if_necessary
+  def create_first_event
     if status_changed? && status_was == Status::NEW && in_dev?
       event = events.build(:stage => Conf.stages.keys.sort.first, :status => Conf.statuses.keys.sort.first)
       event.author_id = dev_id
