@@ -24,6 +24,10 @@
     %br/
     = form.file_field "attachment#{i}"
     = form.hidden_field "attachment#{i}_cache"
+    - if @event.send("attachment#{i}?")
+      %br/
+      = form.check_box "remove_attachment#{i}"
+      Eliminar
   
 %p
   = form.label :duration

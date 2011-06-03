@@ -24,3 +24,7 @@
     %br/
     = form.file_field "attachment#{i}"
     = form.hidden_field "attachment#{i}_cache"
+    - if @task.send("attachment#{i}?")
+      %br/
+      = form.check_box "remove_attachment#{i}"
+      Eliminar

@@ -38,7 +38,7 @@ class Task < ActiveRecord::Base
   1.upto(3) { |i| mount_uploader "attachment#{i}", FileUploader }
   
   attr_accessible :description, :owner_id, :duration, :updated_by, :status, :duration_unit
-  1.upto(3) { |i| attr_accessible "attachment#{i}", "attachment#{i}_cache" }
+  1.upto(3) { |i| attr_accessible "attachment#{i}", "attachment#{i}_cache", "remove_attachment#{i}" }
   
   def duration=(dur)
     if dur.present?

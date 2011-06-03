@@ -18,7 +18,7 @@ class Comment < ActiveRecord::Base
   
   mount_uploader :attachment, FileUploader
   
-  attr_accessible :content, :attachment, :attachment_cache, :user_ids
+  attr_accessible :content, :attachment, :attachment_cache, :remove_attachment, :user_ids
   
   def to_s
     content.to_s.humanize

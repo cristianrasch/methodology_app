@@ -17,6 +17,10 @@
     &nbsp;[#{File.basename(@comment.attachment.path)}]
   %br/
   = form.file_field :attachment
+  - if @comment.attachment?
+    %br/
+    = form.check_box :remove_attachment
+    Eliminar
   
 %p
   = form.label :recipient_ids
