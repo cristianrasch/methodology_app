@@ -10,7 +10,8 @@ class Event < ActiveRecord::Base
 
   validates :stage, :numericality => { :greater_than => 0, :message => I18n.t('errors.messages.blank') }
   validates :status, :numericality => { :greater_than => 0, :message => I18n.t('errors.messages.blank') }
-  validates :duration, :numericality => { :greater_than => 0, :message => I18n.t('errors.messages.blank') }
+  validates :duration, :numericality => { :greater_than => 0, :message => I18n.t('errors.messages.blank'), 
+                                          :allow_nil => true }
   validates :project_id, :numericality => true
   validates :author_id, :numericality => true
   

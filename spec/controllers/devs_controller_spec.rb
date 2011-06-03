@@ -6,7 +6,9 @@ describe DevsController do
   before { sign_in(find_boss) }
 
   it "should return an XML representation of dev's on course or pending projects" do
-    get :projects, :id => find_dev('crr'), :format => :xml
+    dev = find_dev
+    2.times { |i| Factory(:project, :dev => dev, :estimated_start_date => i.months.ago.to_date) }  
+    get :projects, :id => dev, :format => :xml
     
     response.should be_success
     response.should render_template(:projects)
