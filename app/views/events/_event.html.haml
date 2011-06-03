@@ -1,1 +1,6 @@
-%li= link_to event.to_s, event
+%li
+  = link_to event.to_s, event
+  - unless event.comments.empty?
+    %br/
+    [#{Comment.model_name.human.humanize}]
+    = event.comments.last.content

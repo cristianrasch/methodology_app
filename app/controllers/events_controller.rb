@@ -4,7 +4,7 @@ class EventsController < ApplicationController
   before_filter :grab_project, :only => [:index, :new, :create]
   
   def index
-    @events = @project.events.page(params[:page]).per(10)
+    @events = @project.events.includes(:comments).page(params[:page]).per(10)
   end
   
   def new
