@@ -101,7 +101,6 @@ class Project < ActiveRecord::Base
   scope :upcoming, lambda { where(:status => Status::NEW) }
   scope :on_est_course_by, lambda { |date| where(['? between estimated_start_date and estimated_end_date', date]) }
   scope :on_course_by, lambda { |date| where(['? between estimated_start_date and envisaged_end_date', date]) }
-  scope :on_course_or_pending, lambda { where('(started_on is not null and status not in (:status)) or estimated_start_date > :date', :date => Date.today, :status => [Status::CANCELED, Status::FINISHED]) }
   scope :committed, where(:status - [Status::CANCELED, Status::FINISHED])
 
   before_save :set_default_envisaged_end_date
@@ -163,7 +162,7 @@ class Project < ActiveRecord::Base
     end
     
     def by_dev
-      on_course_or_pending.joins(:dev).order(:estimated_start_date).group_by(&:dev)
+      committed.joins(:dev).order(:estimated_start_date).group_by(&:dev)
     end
   end
   
