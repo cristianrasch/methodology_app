@@ -18,9 +18,9 @@
     %tbody
     - list.each do |project|
       %tr
-        %td= project.req_nbr
+        %td= link_to("##{project.req_nbr}", project)
         %td= l(project.created_at, :format => :tiny)
-        %td= link_to(project, project)
+        %td= project
         %td
           = truncate(project.description.humanize, :length => 25) if project.description.present?
         %td= project.klass_str.first.upcase

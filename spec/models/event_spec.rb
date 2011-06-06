@@ -45,4 +45,12 @@ describe Event do
     
     event.duration_in_days.should == 6
   end
+  
+  it "should return a string representation of its stage & status" do
+    event = Factory.build(:event)
+    event.stage_str.should == 'Definición'
+    event.status_str.should == 'En desarrollo'
+    event.stage_str(:short).should == 'Def'
+    event.status_str(:short).should == 'Desar'
+  end
 end

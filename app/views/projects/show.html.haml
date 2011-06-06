@@ -42,52 +42,53 @@
   %br/
   = @project.users.map{|user| user.name}.join(' - ') 
 
-%table.bottom_spaced{:border => 0, :cellspacing => 0, :cellpadding => 0, :width => "100%"}
-  %thead
-    %tr
-      %td{:colspan => 3}
-        %em Estimación
-  %tbody
-    %tr
-      %td{:width => '33.3%'}
-        %strong= Project.human_attribute_name('estimated_start_date')
-      %td{:width => '33.3%'}
-        %strong= Project.human_attribute_name('estimated_end_date')
-      %td{:width => '33.3%'}
-        %strong= Project.human_attribute_name('estimated_duration')
-    %tr
-      %td{:width => '33.3%'}
-        = l(@project.estimated_start_date)
-      %td{:width => '33.3%'}
-        = l(@project.estimated_end_date)
-      %td{:width => '33.3%'}
-        = duration_desc(@project, :estimated_duration)
-
-%p
-  %strong= Project.human_attribute_name('envisaged_end_date')
-  %br/
-  = l(@project.envisaged_end_date)
+%table.bottom_spaced{:border => 1, :cellspacing => 0, :cellpadding => 0, :width => "100%"}
+  %tr
+    %td
+      %table{:border => 0, :cellspacing => 0, :cellpadding => 0, :width => "100%"}
+        %thead
+          %tr
+            %td.underlined
+              %em Estimación inicial
+            %td{:colspan => 2}
+        %tbody
+          %tr
+            %td{:width => '33.3%'}
+              %strong Fecha de inicio:
+              = l(@project.estimated_start_date)
+            %td{:width => '33.3%'}
+              %strong Fecha de fin:
+              = l(@project.estimated_end_date)
+            %td{:width => '33.3%'}
+              %strong Duración:
+              = duration_desc(@project, :estimated_duration)
 
 %table.bottom_spaced{:border => 0, :cellspacing => 0, :cellpadding => 0, :width => "100%"}
-  %thead
-    %tr
-      %td{:colspan => 3}
-        %em Ajustes
-  %tbody
-    %tr
-      %td{:width => '33.3%'}
-        %strong= Project.human_attribute_name('started_on')
-      %td{:width => '33.3%'}
-        %strong= Project.human_attribute_name('ended_on')
-      %td{:width => '33.3%'}
-        %strong= Project.human_attribute_name('actual_duration')
-    %tr
-      %td{:width => '33.3%'}
-        = date_default_value(@project.started_on)
-      %td{:width => '33.3%'}
-        = date_default_value(@project.ended_on)
-      %td{:width => '33.3%'}
-        = distance_of_time_in_words(@project.actual_duration) if @project.actual_duration
+  %tr
+    %td.centered
+      %strong #{Project.human_attribute_name('envisaged_end_date')}:
+      = l(@project.envisaged_end_date)
+
+%table.bottom_spaced{:border => 1, :cellspacing => 0, :cellpadding => 0, :width => "100%"}
+  %tr
+    %td
+      %table{:border => 0, :cellspacing => 0, :cellpadding => 0, :width => "100%"}
+        %thead
+          %tr
+            %td.underlined
+              %em Ejecución
+            %td{:colspan => 2}
+        %tbody
+          %tr
+            %td{:width => '33.3%'}
+              %strong #{Project.human_attribute_name('started_on')}:
+              = date_default_value(@project.started_on)
+            %td{:width => '33.3%'}
+              %strong #{Project.human_attribute_name('ended_on')}:
+              = date_default_value(@project.ended_on)
+            %td{:width => '33.3%'}
+              %strong #{Project.human_attribute_name('actual_duration')}:
+              = distance_of_time_in_words(@project.actual_duration) if @project.actual_duration
     
 = created_at(@project)
 = updated_at(@project)

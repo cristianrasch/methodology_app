@@ -455,3 +455,10 @@ a.underline_none {
   text-decoration: none;
 }
 
+td.underlined {
+  text-decoration: underline;
+}
+
+td.centered {
+  text-align: center;
+}

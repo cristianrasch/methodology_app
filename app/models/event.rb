@@ -12,6 +12,10 @@ class Event < ActiveRecord::Base
     SELECT = [['Definición',DEFINITION], ['Diseño funcional', FUNC_DESIGN], ['Demostración', DEMO], 
               ['Testing', TESTING], ['Presentación', PRESENTATION], ['Prueba de usuario', ACCEP_TESTING], 
               ['Implementación', IMPLEMENTATION]]
+              
+    MINI_SELECT = [['Def',DEFINITION], ['Diseño', FUNC_DESIGN], ['Demo', DEMO], 
+                  ['Test', TESTING], ['Pres', PRESENTATION], ['Prueba', ACCEP_TESTING], 
+                  ['Impl', IMPLEMENTATION]]
   end
   
   class Status
@@ -23,6 +27,9 @@ class Event < ActiveRecord::Base
     
     SELECT = [['En desarrollo', IN_DEV], ['Pendiente de aprobación', APPR_PENDING], ['Aprobado', APPROVED], 
               ['Detenido', STOPPED], ['Rechazado', REJECTED]]
+              
+    MINI_SELECT = [['Desar', IN_DEV], ['Pend', APPR_PENDING], ['Apr', APPROVED], 
+                  ['Det', STOPPED], ['Recha', REJECTED]]
   end
     
   include Commentable
@@ -51,13 +58,13 @@ class Event < ActiveRecord::Base
     status_str
   end
   
-  def stage_str
-    arr = Stage::SELECT.find {|arr| arr.last == stage}
+  def stage_str(format = :default)
+    arr = (format == :default ? Stage::SELECT : Stage::MINI_SELECT).find {|arr| arr.last == stage}
     arr.first if arr
   end
 
-  def status_str
-    arr = Status::SELECT.find {|arr| arr.last == status}
+  def status_str(format = :default)
+    arr = (format == :default ? Status::SELECT : Status::MINI_SELECT).find {|arr| arr.last == status}
     arr.first if arr
   end
   
