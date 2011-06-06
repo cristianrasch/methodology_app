@@ -1,6 +1,5 @@
 = content_for :title, @project_name.text
-= content_for :sidebar do
-  = render 'sidebar'
+= content_for :sidebar, render('sidebar')
 
 %p
   %strong= ProjectName.human_attribute_name(:path)

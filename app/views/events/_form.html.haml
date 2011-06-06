@@ -15,22 +15,3 @@
   = form.label :status
   %br/
   = form.select :status, options_for_select(Event::Status::SELECT, @event.status), :include_blank => true
-
-- 1.upto(3) do |i|
-  %p
-    = form.label "attachment#{i}"
-    - if @event.send("attachment#{i}?")
-      &nbsp;[#{File.basename(@event.send("attachment#{i}").path)}]
-    %br/
-    = form.file_field "attachment#{i}"
-    = form.hidden_field "attachment#{i}_cache"
-    - if @event.send("attachment#{i}?")
-      %br/
-      = form.check_box "remove_attachment#{i}"
-      Eliminar
-  
-%p
-  = form.label :duration
-  %br/
-  = form.text_field :duration, :size => 4
-  = duration_options_for(@event, :duration_unit)

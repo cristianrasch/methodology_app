@@ -44,6 +44,6 @@ class ProjectsController < ApplicationController
   end
   
   def library
-    @project = Project.find(params[:id], :include => :events)
+    @project = Project.find(params[:id], :include => [:events => :documents])
   end
 end

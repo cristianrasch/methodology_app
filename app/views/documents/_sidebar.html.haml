@@ -1,0 +1,22 @@
+#sidebar
+  %ul
+    %li
+      %h2 Menú
+      %ul
+        - if controller.action_name == 'index'
+          %li
+            = link_to 'Nuevo', new_event_document_path(@event)
+        - else
+          %li
+            = link_to Document.model_name.human.pluralize.humanize, event_documents_path(@document.event)
+        - if controller.action_name == 'show'
+          %li
+            = link_to 'Editar', edit_document_path(@document)
+          %li
+            = link_to 'Eliminar', @document, :method => :delete, 
+                      :confirm => "¿Está seguro que desea eliminar el #{Document.model_name.human}?"
+        %li
+          = link_to Event.model_name.human.humanize, (@event || @document.event)
+        %li
+          = link_to 'Volver', :back
+/ end #sidebar

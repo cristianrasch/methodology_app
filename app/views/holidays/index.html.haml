@@ -1,7 +1,5 @@
 = content_for :title, "Listando #{Holiday.model_name.human.pluralize}"
-
-= content_for :sidebar do
-  = render 'sidebar'
+= content_for :sidebar, render('sidebar')
 
 - if @holidays.empty?
   = not_found(Holiday)

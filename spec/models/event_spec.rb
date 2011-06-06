@@ -22,7 +22,7 @@ describe Event do
   it "should send emails after being updated" do
     event = Factory(:event)
     lambda {
-      event.update_attribute(:duration, 5)
+      event.update_attribute(:status, Event::Status::IN_DEV)
     }.should change(ActionMailer::Base.deliveries, :length)
   end
 
@@ -37,5 +37,12 @@ describe Event do
     str = event.to_s
     str.should match(/#{event.stage_str}/i)
     str.should match(/#{event.status_str}/i)
+  end
+  
+  it "should calculate its duration in days" do
+    event = Factory(:event)
+    1.upto(3) { |i| event.documents << Factory(:document, :duration => i) }
+    
+    event.duration_in_days.should == 6
   end
 end

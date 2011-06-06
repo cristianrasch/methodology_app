@@ -1,6 +1,5 @@
 = content_for :title, "Nuevo #{Holiday.model_name.human}"
-= content_for :sidebar do
-  = render 'sidebar'
+= content_for :sidebar, render('sidebar')
 
 = form_for @holiday do |f|
   = render f

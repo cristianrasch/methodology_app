@@ -1,8 +1,7 @@
 = content_for :title do 
   #{Project.model_name.human.humanize} ##{@project.req_nbr}
   [#{@project.status_str} - &#37;#{@project.compl_perc}]
-= content_for :sidebar do
-  = render 'sidebar'
+= content_for :sidebar, render('sidebar')
 
 %table.bottom_spaced{:border => 0, :cellspacing => 0, :cellpadding => 0, :width => "100%"}
   %tr

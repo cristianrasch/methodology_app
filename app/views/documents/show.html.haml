@@ -1,0 +1,16 @@
+= content_for :title, @document.name
+= content_for :sidebar, render('sidebar')
+  
+- if @document.duration
+  %p
+    %strong= Document.human_attribute_name(:duration)
+    %br/
+    = duration_desc(@document, :duration)
+
+%p
+  %strong= Document.human_attribute_name(:file)
+  %br/
+  = link_to File.basename(@document.file.to_s), @document.file.url
+        
+= created_at(@document)
+= updated_at(@document)

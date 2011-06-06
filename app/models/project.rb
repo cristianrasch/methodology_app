@@ -51,7 +51,7 @@ class Project < ActiveRecord::Base
   belongs_to :project_name
   belongs_to :delayed_by_proj, :class_name => 'Project', :foreign_key => :delayed_by
   belongs_to :org_unit
-  has_many :events, :dependent => :destroy, :order => 'created_at desc'
+  has_many :events, :dependent => :destroy, :order => 'id desc'
   has_many :tasks, :dependent => :destroy do
     def list(options={})
       t = options.has_key?(:show_all) ? scoped : incomplete
@@ -233,13 +233,9 @@ class Project < ActiveRecord::Base
   end
   
   def library_empty?
-    empty = true
-    events.each do |event|
-      1.upto(3) { |i|
-        empty = false and break if event.send("attachment#{i}?") 
-      }      
-    end
-    empty
+    events.inject(0) { |sum, event|
+      sum += event.documents.length
+    }.zero?
   end
   
   def new?
@@ -256,6 +252,10 @@ class Project < ActiveRecord::Base
   
   def finished?
     status == Status::FINISHED
+  end
+  
+  def documents
+    events.map(&:documents).flatten
   end
   
   private

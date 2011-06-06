@@ -27,7 +27,7 @@
       %tr
         %td= link_to("##{project.req_nbr}", project, :class => 'underline_none')
         %td= l(project.created_at, :format => :tiny)
-        %td= link_to_function(project, "$('##{dom_id(project)}').toggle()")
+        %td= project.description.present? ? link_to_function(project, "$('##{dom_id(project)}').toggle()") : project
         %td= project.klass_str.first.upcase
         %td= project.dev.name
         %td
@@ -42,7 +42,8 @@
         %td #{project.compl_perc} %
         %td= l(project.envisaged_end_date, :format => :tiny)
         %td{:style => "background-color: #{indicator_class_for(project)};"}
-      = content_tag_for(:tr, project) do
-        %td{:colspan => 2}
-        %td= project.description
+      - if project.description.present?
+        = content_tag_for(:tr, project) do
+          %td{:colspan => 2}
+          %td= project.description
         %td{:colspan => 7}

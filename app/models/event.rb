@@ -27,27 +27,22 @@ class Event < ActiveRecord::Base
     
   include Commentable
   include AsyncEmail
-  include Duration
 
   belongs_to :project
   belongs_to :author, :class_name => 'User'
   has_many :comments, :as => :commentable, :dependent => :delete_all
+  has_many :documents, :dependent => :delete_all, :order => 'id desc'
 
   validates :stage, :numericality => { :greater_than => 0, :message => I18n.t('errors.messages.blank') }
   validates :status, :numericality => { :greater_than => 0, :message => I18n.t('errors.messages.blank') }
-  validates :duration, :numericality => { :greater_than => 0, :message => I18n.t('errors.messages.blank'), 
-                                          :allow_nil => true }
   validates :project_id, :numericality => true
   validates :author_id, :numericality => true
   
-  scope :ordered, order(:created_at.desc)
-  
-  1.upto(3) { |i| mount_uploader "attachment#{i}", FileUploader }
+  scope :ordered, order(:id.desc)
   
   after_save :notify_event_saved
 
-  attr_accessible :stage, :status, :duration, :duration_unit
-  1.upto(3) { |i| attr_accessible "attachment#{i}", "attachment#{i}_cache", "remove_attachment#{i}" }
+  attr_accessible :stage, :status
 
   def to_s
     self.class.human_attribute_name(:stage)+': '+
@@ -67,7 +62,9 @@ class Event < ActiveRecord::Base
   end
   
   def duration_in_days
-    in_days(self, :duration)
+    documents.inject(0) { |sum, doc|
+      sum += doc.duration_in_days
+    }
   end
   
   def stop

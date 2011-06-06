@@ -1,25 +1,10 @@
 = content_for :title, "#{Event.model_name.human.humanize} - #{@event}"
-  
-= content_for :sidebar do
-  = render 'sidebar'
+= content_for :sidebar, render('sidebar')
   
 %p
   %strong= Event.human_attribute_name(:author_id)
   %br/
   = @event.author.name
 
-- if @event.duration  
-  %p
-    %strong= Event.human_attribute_name(:duration)
-    %br/
-    = duration_desc(@event, :duration)
-
-- if @event.has_attachments?
-  %ul
-    - 1.upto(3) do |i|
-      - if @event.send("attachment#{i}?")
-        %li
-          = link_to File.basename(@event.send("attachment#{i}").to_s), @event.send("attachment#{i}").url
-        
 = created_at(@event)
 = updated_at(@event)

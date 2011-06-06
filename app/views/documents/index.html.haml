@@ -1,0 +1,7 @@
+= content_for :title, Document.model_name.human.pluralize.humanize
+= content_for :sidebar, render('sidebar')
+
+- if @documents.empty?
+  = not_found(Document)
+- else
+  = render 'list', :list => @documents

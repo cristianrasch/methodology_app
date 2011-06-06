@@ -14,6 +14,7 @@ MethodologyApp::Application.routes.draw do
     
     resources :events do
       resources :comments
+      resources :documents
     end
     resources :tasks do
       resources :comments

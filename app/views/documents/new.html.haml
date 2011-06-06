@@ -1,0 +1,6 @@
+= content_for :title, "Nuevo #{Document.model_name.human}"
+= content_for :sidebar, render('sidebar')
+  
+= form_for [@event, @document], :html => {:multipart => true} do |f|
+  = render f
+  = f.submit 'Crear'

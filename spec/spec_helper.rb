@@ -61,3 +61,8 @@ def create_model(model, attrs)
   m.save!
   m
 end
+
+def test_file(file = 'robots.txt')
+  File.open(File.join(Rails.public_path, file))
+end
+

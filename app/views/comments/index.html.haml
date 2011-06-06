@@ -1,6 +1,5 @@
 = content_for :title, Comment.model_name.human.humanize.pluralize
-= content_for :sidebar do
-  = render 'sidebar'
+= content_for :sidebar, render('sidebar')
 
 - if @comments.empty?
   = not_found(Comment)

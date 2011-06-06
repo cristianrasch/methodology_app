@@ -189,6 +189,7 @@ es-AR:
       project_name: nombre de proyecto
       holiday: feriado
       org_unit: area
+      document: documento
     attributes:
       user:
         email: Correo electrónico
@@ -255,6 +256,10 @@ es-AR:
         text: Nombre
         parent_id: Padre
         children: Sub-áreas
+      document:
+        file: Archivo
+        duration: Duración
+        comment: Comentario
   lbls:
     created_at: Fecha de creación
     updated_at: Fecha de modificación

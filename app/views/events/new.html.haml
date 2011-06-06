@@ -1,7 +1,6 @@
 = content_for :title, "Nuevo #{Event.model_name.human} - #{@project.to_s(:short)}"
-= content_for :sidebar do
-  = render 'sidebar'
+= content_for :sidebar, render('sidebar')
   
-= form_for [@project, @event], :html => {:multipart => true} do |f|
+= form_for [@project, @event] do |f|
   = render f
   = f.submit 'Crear'

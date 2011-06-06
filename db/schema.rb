@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110602140832) do
+ActiveRecord::Schema.define(:version => 20110606162220) do
 
   create_table "comments", :force => true do |t|
     t.text     "content"
@@ -47,18 +47,25 @@ ActiveRecord::Schema.define(:version => 20110602140832) do
 
   add_index "delayed_jobs", ["priority", "run_at"], :name => "delayed_jobs_priority"
 
+  create_table "documents", :force => true do |t|
+    t.string   "file"
+    t.integer  "duration"
+    t.integer  "duration_unit", :limit => 1, :default => 2
+    t.string   "comment"
+    t.integer  "event_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "documents", ["event_id"], :name => "index_documents_on_event_id"
+
   create_table "events", :force => true do |t|
     t.integer  "stage"
     t.integer  "status"
-    t.string   "attachment1"
-    t.string   "attachment2"
-    t.string   "attachment3"
-    t.integer  "duration"
     t.integer  "project_id"
     t.integer  "author_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "duration_unit", :limit => 1, :default => 2
   end
 
   add_index "events", ["author_id"], :name => "index_events_on_author_id"

@@ -3,15 +3,10 @@
   = Project.model_name.human.humanize
   = @project
   
-= content_for :sidebar do
-  = render 'projects/sidebar'
+= content_for :sidebar, render('projects/sidebar')
 
 - if @project.library_empty?
   = not_found('archivos')
 - else
   %ul
-    - @project.events.each do |event|
-      - 1.upto(3) do |i|
-        - if event.send("attachment#{i}?")
-          %li= link_to File.basename(event.send("attachment#{i}").to_s), event.send("attachment#{i}").url
-  
+    = render :partial => 'document', :collection => @project.documents

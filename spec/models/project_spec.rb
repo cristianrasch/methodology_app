@@ -163,7 +163,10 @@ describe Project do
   context "once a project is finished" do
     before do
       @project = Factory(:project, :status => Project::Status::IN_DEV)
-      1.upto(2) { |i| Factory(:event, :duration => 5*i, :project => @project) }
+      1.upto(2) do |i| 
+        event = Factory(:event, :project => @project)
+        Factory(:document, :duration => 5*i, :event => event)
+      end
       1.upto(2) { |i| Factory(:task, :duration => 3*i, :project => @project) }
       @project.update_attributes(:status => Project::Status::FINISHED, :updated_by => @project.dev.id)
     end
@@ -216,10 +219,10 @@ describe Project do
 
   it "should be able to tell whether its library is empty or not" do
     project = Factory(:project)
+    event = Factory(:event, :project => project)
     project.library_empty?.should be_true
-    event = Factory(:event, :attachment1 => File.open(File.join(Rails.root, 'README')), :project => project)
-    project.events.reload
-    project.library_empty?.should be_false
+    Factory(:document, :event => event)
+    project.reload.library_empty?.should be_false
   end
 
   it "should not be able to set its status to klass if still NEW" do

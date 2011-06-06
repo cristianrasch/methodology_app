@@ -16,6 +16,8 @@
             = link_to 'Eliminar', @event, :method => :delete, 
                       :confirm => "¿Está seguro que desea eliminar el #{Event.model_name.human}?"
           %li
+            = link_to Document.model_name.human.humanize.pluralize, event_documents_path(@event)
+          %li
             = link_to Comment.model_name.human.humanize.pluralize, event_comments_path(@event)
         %li
           = link_to Project.model_name.human.humanize, (@project || @event.project)

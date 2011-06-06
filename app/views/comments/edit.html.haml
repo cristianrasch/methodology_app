@@ -1,6 +1,5 @@
 = content_for :title, "Editando #{Comment.model_name.human}"
-= content_for :sidebar do
-  = render 'sidebar'
+= content_for :sidebar, render('sidebar')
   
 = form_for @comment, :html => {:multipart => true} do |f|
   = render f

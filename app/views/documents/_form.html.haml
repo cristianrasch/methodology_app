@@ -1,0 +1,26 @@
+= content_for :head do
+  :javascript
+    $(document).ready(function () {
+      $('#document_comment').focus();
+    });
+
+= form.error_messages :header_message => nil, :message => nil
+
+%p
+  = form.label :comment
+  %br/
+  = form.text_area :comment, :cols => 55, :rows => 5
+  
+%p
+  = form.label :file
+  - if @document.file?
+    &nbsp;[#{File.basename(@document.file.path)}]
+  %br/
+  = form.file_field :file
+  = form.hidden_field :file_cache
+  
+%p
+  = form.label :duration
+  %br/
+  = form.text_field :duration, :size => 4
+  = duration_options_for(@document, :duration_unit)
