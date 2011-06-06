@@ -6,11 +6,11 @@ class CreateHolidays < ActiveRecord::Migration
 
       t.timestamps
     end
+    
     add_index(:holidays, :date, :unique => true)
   end
 
   def self.down
-    remove_index(:holidays, :date)
     drop_table :holidays
   end
 end

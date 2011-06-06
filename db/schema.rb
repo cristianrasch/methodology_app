@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110606162220) do
+ActiveRecord::Schema.define(:version => 20110606191502) do
 
   create_table "comments", :force => true do |t|
     t.text     "content"
@@ -23,6 +23,7 @@ ActiveRecord::Schema.define(:version => 20110606162220) do
   end
 
   add_index "comments", ["author_id"], :name => "index_comments_on_author_id"
+  add_index "comments", ["commentable_id", "commentable_type"], :name => "index_comments_on_commentable_id_and_commentable_type"
 
   create_table "comments_users", :id => false, :force => true do |t|
     t.integer "comment_id"
@@ -87,7 +88,7 @@ ActiveRecord::Schema.define(:version => 20110606162220) do
     t.datetime "updated_at"
   end
 
-  add_index "org_units", ["parent_id", "text"], :name => "index_org_units_on_parent_id_and_text"
+  add_index "org_units", ["text", "parent_id"], :name => "index_org_units_on_text_and_parent_id"
 
   create_table "project_names", :force => true do |t|
     t.string   "text"
@@ -97,7 +98,7 @@ ActiveRecord::Schema.define(:version => 20110606162220) do
     t.integer  "ancestry_depth", :default => 0
   end
 
-  add_index "project_names", ["ancestry", "text"], :name => "index_project_names_on_ancestry_and_text"
+  add_index "project_names", ["text", "ancestry"], :name => "index_project_names_on_text_and_ancestry"
 
   create_table "projects", :force => true do |t|
     t.text     "description"
@@ -126,11 +127,12 @@ ActiveRecord::Schema.define(:version => 20110606162220) do
 
   add_index "projects", ["delayed_by"], :name => "index_projects_on_delayed_by"
   add_index "projects", ["dev_id"], :name => "index_projects_on_dev_id"
+  add_index "projects", ["estimated_start_date", "envisaged_end_date"], :name => "index_projects_on_estimated_start_date_and_envisaged_end_date"
+  add_index "projects", ["estimated_start_date", "estimated_end_date"], :name => "index_projects_on_estimated_start_date_and_estimated_end_date"
   add_index "projects", ["org_unit_id"], :name => "index_projects_on_org_unit_id"
   add_index "projects", ["owner_id"], :name => "index_projects_on_owner_id"
   add_index "projects", ["project_name_id"], :name => "index_projects_on_project_name_id"
-  add_index "projects", ["req_nbr"], :name => "index_projects_on_req_nbr"
-  add_index "projects", ["started_on", "ended_on"], :name => "index_projects_on_started_on_and_ended_on"
+  add_index "projects", ["started_on"], :name => "index_projects_on_started_on"
   add_index "projects", ["status"], :name => "index_projects_on_status"
   add_index "projects", ["updated_by"], :name => "index_projects_on_updated_by"
 
@@ -160,6 +162,7 @@ ActiveRecord::Schema.define(:version => 20110606162220) do
   end
 
   add_index "tasks", ["author_id"], :name => "index_tasks_on_author_id"
+  add_index "tasks", ["finished_at"], :name => "index_tasks_on_finished_at"
   add_index "tasks", ["owner_id"], :name => "index_tasks_on_owner_id"
   add_index "tasks", ["project_id"], :name => "index_tasks_on_project_id"
   add_index "tasks", ["status"], :name => "index_tasks_on_status"

@@ -1,7 +1,7 @@
 class CreateProjects < ActiveRecord::Migration
   def self.up
     create_table :projects do |t|
-      t.text :description     
+      t.text :description
       t.date :estimated_start_date
       t.date :estimated_end_date
       t.date :started_on

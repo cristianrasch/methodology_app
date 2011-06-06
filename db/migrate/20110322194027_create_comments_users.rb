@@ -4,6 +4,7 @@ class CreateCommentsUsers < ActiveRecord::Migration
       t.references :comment
       t.references :user
     end
+    
     add_index :comments_users, [:comment_id, :user_id]
     add_index :comments_users, :user_id
   end
