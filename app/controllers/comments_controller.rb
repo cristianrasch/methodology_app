@@ -42,7 +42,7 @@ class CommentsController < ApplicationController
   end
   
   def destroy
-    @comment.delete
+    @comment.destroy
     flash[:notice] = "#{Comment.model_name.human.humanize} eliminado"
     redirect_to(:controller => :comments, :action => :index, 
                 "#{@commentable.class.name.downcase}_id" => @commentable)

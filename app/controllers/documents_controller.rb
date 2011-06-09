@@ -40,7 +40,7 @@ class DocumentsController < ApplicationController
   
   def destroy
     @document = Document.find(params[:id], :include => :event)
-    @document.delete
+    @document.destroy
     redirect_to(event_documents_path(@document.event), :notice => "#{Document.model_name.human.humanize} eliminado")
   end
   

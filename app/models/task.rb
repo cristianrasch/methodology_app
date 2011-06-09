@@ -21,7 +21,7 @@ class Task < ActiveRecord::Base
   belongs_to :author, :class_name => 'User'
   belongs_to :owner, :class_name => 'User'
   belongs_to :updater, :class_name => 'User', :foreign_key => :updated_by
-  has_many :comments, :as => :commentable, :dependent => :delete_all
+  has_many :comments, :as => :commentable, :dependent => :destroy
   
   validates :description, :presence => true
   validates :duration, :numericality => { :greater_than => 0, :message => I18n.t('errors.messages.blank'), 

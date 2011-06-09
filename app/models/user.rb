@@ -11,10 +11,6 @@ class User < ActiveRecord::Base
   # :registerable, :recoverable, :validatable and :timeoutable
   devise :database_authenticatable, :rememberable
   
-  has_many :dev_projects, :class_name => 'Project', :foreign_key => :dev_id
-  has_and_belongs_to_many :projects
-  has_and_belongs_to_many :comments
-  
   validates :username, :presence => true, :uniqueness => true
   validates_length_of :username, :is => 3 if Rails.env.production?
   
@@ -28,6 +24,10 @@ class User < ActiveRecord::Base
   validates_confirmation_of :password, :if => :encrypted_password_changed?, :on => :update
   
   validates_presence_of :password_confirmation, :if => :encrypted_password_changed?, :on => :update
+  
+  has_many :dev_projects, :class_name => 'Project', :foreign_key => :dev_id
+  has_and_belongs_to_many :projects
+  has_and_belongs_to_many :comments
 
   scope :devs, where(:username => Conf.devs.split(',')).order(:name)
   scope :nondevs, where(:username - Conf.devs.split(',')).order(:name)

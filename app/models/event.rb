@@ -37,8 +37,8 @@ class Event < ActiveRecord::Base
 
   belongs_to :project
   belongs_to :author, :class_name => 'User'
-  has_many :comments, :as => :commentable, :dependent => :delete_all
-  has_many :documents, :dependent => :delete_all, :order => 'id desc'
+  has_many :comments, :as => :commentable, :dependent => :destroy
+  has_many :documents, :dependent => :destroy, :order => 'id desc'
 
   validates :stage, :numericality => { :greater_than => 0, :message => I18n.t('errors.messages.blank') }
   validates :status, :numericality => { :greater_than => 0, :message => I18n.t('errors.messages.blank') }
