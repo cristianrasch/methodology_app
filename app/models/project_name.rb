@@ -1,12 +1,14 @@
 class ProjectName < ActiveRecord::Base
+  has_ancestry :cache_depth => true
+  
   validates :text, :presence => true, :uniqueness => { :scope => :ancestry }
   validate :tree_depth
   
-  before_save :humanize_text
-  
-  has_ancestry :cache_depth => true
+  scope :ordered, order(:text)
   
   attr_accessible :text, :parent_id
+  
+  before_save :humanize_text
   
   class << self
     def arranged

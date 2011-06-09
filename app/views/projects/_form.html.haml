@@ -72,9 +72,9 @@
     %td{:width => '20%'}
       = form.text_field :req_nbr, :size => 3
     %td{:width => '80%'}
-      = select_tag :project_name_id0, options_for_select(ProjectName.at_depth(0).map{|pn| [pn.text, pn.id]}), :include_blank => true
-      = select_tag :project_name_id1, options_for_select(ProjectName.at_depth(1).map{|pn| [pn.text, pn.id, {:class => pn.parent_id}]}), :include_blank => true
-      = select_tag :project_name_id2, options_for_select(ProjectName.at_depth(2).map{|pn| [pn.text, pn.id, {:class => pn.parent_id}]}), :include_blank => true
+      = select_tag :project_name_id0, options_for_select(ProjectName.at_depth(0).ordered.map{|pn| [pn.text, pn.id]}), :include_blank => true
+      = select_tag :project_name_id1, options_for_select(ProjectName.at_depth(1).ordered.map{|pn| [pn.text, pn.id, {:class => pn.parent_id}]}), :include_blank => true
+      = select_tag :project_name_id2, options_for_select(ProjectName.at_depth(2).ordered.map{|pn| [pn.text, pn.id, {:class => pn.parent_id}]}), :include_blank => true
 
 %p
   %strong= form.label :org_unit_id
