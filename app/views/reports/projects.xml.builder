@@ -23,9 +23,9 @@ xml.chart(:dateFormat => "dd/mm/yyyy", :hoverCapBorderColor => "2222ff", :hoverC
     end
     
     unless pending_projects.empty?
-      prev_envisaged_end_date, envisaged_end_date = nil, pending_projects.first.envisaged_end_date_from(nil)
+      prev_envisaged_end_date, envisaged_end_date = nil, pending_projects.first.envisaged_end_date_from(on_course_projects.empty? ? nil : on_course_projects.last.envisaged_end_date)
       pending_projects.each do |project|
-        xml.task(:name => project.requirement, :processId => project.req_nbr, :start => l(prev_envisaged_end_date.nil? ? project.estimated_start_date : prev_envisaged_end_date), :end => l(envisaged_end_date), :id => project.id, :color => "4567aa", :height => "10", :topPadding => i-i*0.8, :animation => "0", :link => url_for(project))
+        xml.task(:name => project.requirement, :processId => project.req_nbr, :start => l(prev_envisaged_end_date.nil? ?  (on_course_projects.empty? ? today : on_course_projects.last.envisaged_end_date) : prev_envisaged_end_date), :end => l(envisaged_end_date), :id => project.id, :color => "4567aa", :height => "10", :topPadding => i-i*0.8, :animation => "0", :link => url_for(project))
         
         prev_envisaged_end_date = envisaged_end_date
         envisaged_end_date = project.envisaged_end_date_from(envisaged_end_date)
