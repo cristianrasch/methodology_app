@@ -29,7 +29,7 @@ xml.chart(:dateFormat => "dd/mm/yyyy", :hoverCapBorderColor => "2222ff", :hoverC
     
     unless pending_projects.empty?
       prev_envisaged_end_date = nil
-      envisaged_end_date = pending_projects.first.envisaged_end_date_from(on_course_projects.empty? ? nil : on_course_projects.last.envisaged_end_date)
+      envisaged_end_date = pending_projects.first.envisaged_end_date_from(on_course_projects.empty? ? (pending_projects.first.estimated_start_date < at_beginning_of_month ? at_beginning_of_month : nil) : on_course_projects.last.envisaged_end_date)
       
       pending_projects.each do |project|
         start_date = prev_envisaged_end_date.nil? ?  (on_course_projects.empty? ? at_beginning_of_month : on_course_projects.last.envisaged_end_date) : prev_envisaged_end_date
