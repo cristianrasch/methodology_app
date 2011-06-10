@@ -9,7 +9,7 @@
 - @data.each do |dev, projects|
   - render_chart_html('/methodology_app/FusionCharts/Gantt.swf', '', 
                       render(:file => 'reports/projects.xml.builder', 
-                             :locals => {:today => Date.today, :dev => dev, 
+                             :locals => {:dev => dev, 
                                          :on_course_projects => @data[dev][:on_course],
                                          :pending_projects => @data[dev][:pending]}), 
                       dev.username, 

@@ -1,3 +1,6 @@
+today = Date.today
+at_beginning_of_month = today.at_beginning_of_month
+
 xml.chart(:dateFormat => "dd/mm/yyyy", :hoverCapBorderColor => "2222ff", :hoverCapBgColor => "e1f5ff", :ganttWidthPercent => "94", :ganttLineAlpha => "80", :canvasBorderColor => "024455", :canvasBorderThickness => "0", :gridBorderColor => "4567aa", :gridBorderAlpha => "20") do
   
   xml.categories(:bgColor => "ffffff", :fontColor => "1288dd", :fontSize => "10") do
@@ -18,14 +21,14 @@ xml.chart(:dateFormat => "dd/mm/yyyy", :hoverCapBorderColor => "2222ff", :hoverC
   i = 0
   xml.tasks(:width => "10") do
     on_course_projects.each do |project|
-      xml.task(:name => project.requirement, :processId => project.req_nbr, :start => l(project.started_on && project.started_on > today.at_beginning_of_month ? project.started_on : today.at_beginning_of_month), :end => l(project.envisaged_end_date), :id => project.id, :color => "4567aa", :height => "10", :topPadding => i-i*0.5, :animation => "0", :link => url_for(project))
+      xml.task(:name => project.requirement, :processId => project.req_nbr, :start => l(project.started_on && project.started_on > at_beginning_of_month ? project.started_on : at_beginning_of_month), :end => l(project.envisaged_end_date), :id => project.id, :color => "4567aa", :height => "10", :topPadding => i-i*0.5, :animation => "0", :link => url_for(project))
       i += 1
     end
     
     unless pending_projects.empty?
       prev_envisaged_end_date, envisaged_end_date = nil, pending_projects.first.envisaged_end_date_from(on_course_projects.empty? ? nil : on_course_projects.last.envisaged_end_date)
       pending_projects.each do |project|
-        xml.task(:name => project.requirement, :processId => project.req_nbr, :start => l(prev_envisaged_end_date.nil? ?  (on_course_projects.empty? ? today : on_course_projects.last.envisaged_end_date) : prev_envisaged_end_date), :end => l(envisaged_end_date), :id => project.id, :color => "4567aa", :height => "10", :topPadding => i-i*0.8, :animation => "0", :link => url_for(project))
+        xml.task(:name => project.requirement, :processId => project.req_nbr, :start => l(prev_envisaged_end_date.nil? ?  (on_course_projects.empty? ? at_beginning_of_month : on_course_projects.last.envisaged_end_date) : prev_envisaged_end_date), :end => l(envisaged_end_date), :id => project.id, :color => "4567aa", :height => "10", :topPadding => i-i*0.8, :animation => "0", :link => url_for(project))
         
         prev_envisaged_end_date = envisaged_end_date
         envisaged_end_date = project.envisaged_end_date_from(envisaged_end_date)
