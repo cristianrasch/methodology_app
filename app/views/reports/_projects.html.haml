@@ -1,9 +1,12 @@
 %div
   %span
-    = link_to_function(image_tag('info.png', :border => 0), "$('##{dom_id(projects.first.dev)}').toggle()")
-    = div_for(projects.first.dev) do
-      - projects.each_with_index do |project, i|
-        %span{:class => i.zero? ? '' : 'spaced'}= "##{project.req_nbr} --> #{project}"
-        - unless i == projects.length-1
+    = link_to_function(image_tag('info.png', :border => 0), "$('##{dom_id(dev)}').toggle()")
+    = div_for(dev) do
+      - arr = projects[:on_course]+projects[:pending]+projects[:stopped]
+      - arr.each_with_index do |project, i|
+        %span{:class => (i.zero? ? '' : 'spaced')+(project.stopped? ? ' highlighted' : '')}
+          = link_to("##{project.req_nbr}", project)
+          = "--> #{project}"
+          = "[suspendido]" if project.stopped?
+        - unless i == arr.length-1
           %br/
-

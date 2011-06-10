@@ -125,16 +125,12 @@ describe Project do
 
     it "should return dev's current projects" do
       projects = Project.search_for(@dev)
-      projects.should have(1).record
+      projects.should have(3).record
       projects.first.should == @dev_projects.last
     end
     
-    it "should return on course projects grouped by dev" do
-      Project.search_for(find_boss).should have(3).records
-    end
-
-    it "should return the latest projects for a non-dev/non-boss user" do
-      Project.search_for(Factory(:user)).should have(3).records # one for each dev
+    it "should return on course projects sorted by dev" do
+      Project.search_for(find_boss).should have(5).records
     end
   end
 
@@ -265,58 +261,23 @@ describe Project do
     project.envisaged_end_date.should == project.estimated_end_date
   end
   
-  it "should auto-update project's schedule when new ones override work priorities" do
-    dev = find_dev
-    pr = Factory(:project, :estimated_start_date => 1.week.from_now.to_date, 
-                 :estimated_end_date => 1.month.from_now.to_date, :dev => dev)
-    
-    pr1 = Factory(:project, :estimated_start_date => 2.weeks.from_now.to_date, 
-                  :estimated_end_date => 3.weeks.from_now.to_date,
-                  :dev => dev, :estimated_duration => 1, :estimated_duration_unit => Duration::WEEK)
-    
-    pr.reload
-    pr.envisaged_end_date.should == 5.business_days.after(1.month.from_now).to_date
-    pr.delayed_by_proj.should == pr1
-  end
-  
-  it "should auto-update project's schedule when delayed_by_proj's envisaged_end_date is changed" do
-    a_year_ago, dev = 1.year.ago.to_date, find_dev
-    
-    project = Factory(:project, :estimated_start_date => a_year_ago, 
-                      :estimated_end_date => a_year_ago+2.months, :dev => dev)
-    pr = Factory(:project, :estimated_start_date => a_year_ago+1.week, 
-                 :estimated_end_date => a_year_ago+2.weeks, :dev => dev,
-                 :estimated_duration => 1, :estimated_duration_unit => Duration::WEEK)
-    pr.update_attribute(:envisaged_end_date, a_year_ago+3.weeks)
-    
-    project.reload
-    project.envisaged_end_date.should == 10.business_days.after(a_year_ago+2.months).to_date
-    
-    pr.update_attribute(:envisaged_end_date, a_year_ago+2.weeks)
-    
-    project.reload
-    project.envisaged_end_date.should == 5.business_days.after(a_year_ago+2.months).to_date
-  end
-  
-  it "should put dev's current project on hold when a new one with a higher priority is created" do
-    project = Factory(:project, :estimated_start_date => Date.today, :estimated_end_date => 2.months.from_now.to_date)
-    dev = project.dev
-    project.update_attributes(:status => Project::Status::IN_DEV, :updated_by => dev.id)
-    Factory(:project, :dev => dev, :estimated_start_date => 1.week.from_now.to_date, :estimated_duration => 1, :estimated_duration_unit => Duration::WEEK)
-    project.reload
-    
-    project.envisaged_end_date.should == 5.business_days.after(2.months.from_now).to_date
-  end
-  
   it "should count projects by dev" do
-    dev1, dev2 = Factory(:user), Factory(:user)
-    1.upto(2) {|i| Factory(:project, :estimated_start_date => i.weeks.from_now.to_date, :dev => dev1)}
-    Factory(:project, :estimated_start_date => 1.month.from_now.to_date, :dev => dev2)
+    dev1 = Factory(:user)
+    stopped_project = Factory(:project, :dev => dev1)
+    stopped_project.update_attributes(:status => Project::Status::STOPPED, :updated_by => dev1.id)
+    on_course_project = Factory(:project, :dev => dev1)
+    on_course_project.update_attributes(:status => Project::Status::IN_DEV, :updated_by => dev1.id)
+    Factory(:project, :dev => dev1)
+    
+    dev2 = Factory(:user)
+    canceled_project = Factory(:project, :dev => dev2)
+    canceled_project.update_attributes(:status => Project::Status::CANCELED, :updated_by => dev2.id)
     
     hash = Project.by_dev
-    hash.should have(2).elements
-    hash[dev1].should have(2).projects
-    hash[dev2].should have(1).project
+    hash.should have(1).element
+    hash[dev1][:on_course].should have(1).project
+    hash[dev1][:pending].should have(1).project
+    hash[dev1][:stopped].should have(1).project
   end
   
   it "should only allow modify its notify_envisaged_end_date_changed" do
@@ -328,18 +289,6 @@ describe Project do
     project.notify_envisaged_end_date_changed.should be_true
   end
 
-   it "should put dev's current project on hold when a new one with a higher priority is created" do
-    project = Factory(:project, :estimated_start_date => Date.today, :estimated_end_date => 2.months.from_now.to_date)
-    dev = project.dev
-    project.update_attributes(:status => Project::Status::IN_DEV, :updated_by => dev.id)
-    pr = Factory(:project, :dev => dev, :estimated_start_date => 1.week.from_now.to_date, 
-                 :estimated_duration => 1, :estimated_duration_unit => Duration::WEEK)
-    project.reload
-    project.should be_stopped
-    project.envisaged_end_date.should == 5.business_days.after(2.months.from_now).to_date
-    project.delayed_by_proj.should == pr
-  end
-  
   it "should set its estimated_end_date attr based on the specified estimated duration" do
     project = Project.new(:estimated_start_date => Date.today, 
                           :estimated_duration => 2, :estimated_duration_unit => Duration::WEEK)
@@ -382,5 +331,13 @@ describe Project do
     
     project.should be_stopped
     project.events.first.status.should == Event::Status::STOPPED
+  end
+  
+  it "should return an envisaged end date from a given date" do
+    project = Factory(:project, :estimated_start_date => Date.today, 
+                      :estimated_duration => 1, :estimated_duration_unit => Duration::WEEK)
+    a_week_from_now = 1.week.from_now.to_date
+    project.envisaged_end_date_from(nil).should == a_week_from_now
+    project.envisaged_end_date_from(a_week_from_now).should == 2.weeks.from_now.to_date
   end
 end

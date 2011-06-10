@@ -49,7 +49,6 @@ class Project < ActiveRecord::Base
   belongs_to :dev, :class_name => 'User', :foreign_key => :dev_id
   belongs_to :updater, :class_name => 'User', :foreign_key => :updated_by
   belongs_to :project_name
-  belongs_to :delayed_by_proj, :class_name => 'Project', :foreign_key => :delayed_by
   belongs_to :org_unit
   has_many :events, :dependent => :destroy, :order => 'id desc'
   has_many :tasks, :dependent => :destroy do
@@ -104,8 +103,6 @@ class Project < ActiveRecord::Base
   scope :committed, where(:status - [Status::CANCELED, Status::FINISHED])
 
   before_save :set_default_envisaged_end_date
-  after_create :update_pending_projects_schedule_after_create
-  after_update :update_pending_projects_schedule_after_update
   after_update :create_first_event
   after_update :stop_current_event
   after_save :notify_project_saved
@@ -117,7 +114,7 @@ class Project < ActiveRecord::Base
   attr_accessor :indicator
   attr_accessible :description, :dev_id, :owner_id, :user_ids, :estimated_start_date, :estimated_end_date, 
                   :estimated_duration, :status, :updated_by, :user_tokens, :compl_perc, :klass, :indicator, 
-                  :envisaged_end_date, :estimated_duration_unit, :project_name_id, :delayed_by, :requirement, 
+                  :envisaged_end_date, :estimated_duration_unit, :project_name_id, :requirement, 
                   :org_unit_id, :req_nbr, :notify_envisaged_end_date_changed
   date_writer_for :estimated_start_date, :estimated_end_date, :envisaged_end_date
   
@@ -151,20 +148,44 @@ class Project < ActiveRecord::Base
       projects.page(options[:page]).per(per_page)
     end
     
-    def search_for(user, page = nil)
+    def search_for(user)
       if user.dev?
         projects = developed_by(user.id)
-      elsif user.boss?
-        projects = group(:dev_id).includes(:dev, :events)
       else
         projects = scoped
       end
     
-      projects.on_course.ordered.page(page).per(Project.per_page)
+      projects_by_dev = projects.on_course.includes(:dev, :events, :project_name).group_by(&:dev)
+      
+      projects_by_dev.keys.sort{|dev1, dev2| dev1.name <=> dev2.name}.map { |dev|
+        projects_by_dev[dev].sort{|pr1, pr2| pr2.req_nbr <=> pr1.req_nbr}
+      }.flatten
     end
     
     def by_dev
-      committed.joins(:dev).order(:estimated_start_date).group_by(&:dev)
+      projects_by_dev = {}
+      keys = [:on_course, :pending, :stopped]
+      
+      committed_by_dev = committed.includes(:dev, :project_name).group_by(&:dev)
+      devs = committed_by_dev.keys.sort{|dev1, dev2| dev1.name <=> dev2.name}
+      
+      devs.each do |dev|
+        projects_by_dev[dev] = {}
+        keys.each { |key| projects_by_dev[dev][key] = [] }
+        
+        committed_by_dev[dev].each do |project|
+          keys.each do |key| 
+            if project.send("#{key}?")
+              projects_by_dev[dev][key] << project
+              break
+            end
+          end
+        end
+      end
+      projects_by_dev.each do |dev, projects|
+        projects[:on_course].sort! { |pr1, pr2| pr1.started_on <=> pr2.started_on }
+        projects[:pending].sort! { |pr1, pr2| pr1.estimated_start_date <=> pr2.estimated_start_date }
+      end
     end
   end
   
@@ -206,8 +227,7 @@ class Project < ActiveRecord::Base
     @notify_envisaged_end_date_changed = attrs[:notify_envisaged_end_date_changed].to_i == 1 && envisaged_end_date_changed? && persisted?
     
     if new? && estimated_duration
-      duration_in_days = in_days(self, :estimated_duration)
-      self.estimated_end_date = duration_in_days.business_days.after(estimated_start_date).to_date
+      self.estimated_end_date = in_days(self, :estimated_duration).business_days.after(estimated_start_date).to_date
     end
   end
   
@@ -241,6 +261,7 @@ class Project < ActiveRecord::Base
   def new?
     status == Status::NEW
   end
+  alias_method :pending?, :new?
   
   def in_dev?
     status == Status::IN_DEV
@@ -254,8 +275,17 @@ class Project < ActiveRecord::Base
     status == Status::FINISHED
   end
   
+  def on_course?
+    started_on && started_on <= Date.today && in_dev?
+  end
+  
   def documents
     events.map(&:documents).flatten
+  end
+  
+  def envisaged_end_date_from(date)
+    date ||= estimated_start_date
+    in_days(self, :estimated_duration).business_days.after(date).to_date
   end
   
   private
@@ -273,52 +303,6 @@ class Project < ActiveRecord::Base
   
   def set_default_envisaged_end_date
     self.envisaged_end_date = estimated_end_date unless envisaged_end_date
-  end
-  
-  def update_pending_projects_schedule_after_create
-    delay = in_days(self, :estimated_duration)
-
-    # stop ongoing projects first    
-    on_course_projects = self.class.where(:id ^ id).on_course.developed_by(dev_id)
-    unless on_course_projects.empty?
-      # be careful not to fire the update_pending_projects_schedule_after_update callback inadvertently
-      Project.update_all(['status = ?, delayed_by = ?', Status::STOPPED, id], :id => on_course_projects.map(&:id))
-      on_course_projects.each { |project|
-        project.update_attribute(:envisaged_end_date, delay.business_days.after(project.envisaged_end_date).to_date)
-      }
-    end
-    
-    # then re-schedule pending projects
-    affected_projects = self.class.where(:id ^ id).upcoming.on_est_course_by(estimated_start_date).developed_by(dev_id)
-    unless affected_projects.empty?
-      # so that updated projects won't be updated again by the update_pending_projects_schedule_after_update callback
-      Project.update_all(['delayed_by = ?', id], :id => affected_projects.map(&:id))
-      
-      affected_projects.each { |project|
-        project.update_attribute(:envisaged_end_date, delay.business_days.after(project.envisaged_end_date).to_date)
-      }
-    end
-  end
-  
-  def update_pending_projects_schedule_after_update
-    if envisaged_end_date_changed? && ! delayed_by_changed?
-      delay = (envisaged_end_date - envisaged_end_date_was).to_i
-      change = delay > 0 ? envisaged_end_date_was.business_days_until(envisaged_end_date) : envisaged_end_date.business_days_until(envisaged_end_date_was)
-      
-      # delay upcoming projects
-      if delay > 0
-        affected_projects = self.class.where(:id ^ id).where(:delayed_by ^ id).upcoming.on_course_by(envisaged_end_date).developed_by(dev_id)
-        affected_projects.each do |project|
-          project.update_attributes(:envisaged_end_date => change.business_days.after(project.envisaged_end_date).to_date, :delayed_by => id)
-        end
-      end
-      
-      # reschedule projects already delayed by this project
-      affected_projects = self.class.where(:delayed_by => id)
-      affected_projects.each { |project|
-        project.update_attribute(:envisaged_end_date, change.business_days.send(delay > 0 ? :after : :before,  project.envisaged_end_date).to_date)
-      }
-    end
   end
   
   def devs_and_owners_email_address

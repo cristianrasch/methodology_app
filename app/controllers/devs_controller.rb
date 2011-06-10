@@ -4,6 +4,8 @@ class DevsController < ApplicationController
   
   def projects
     @dev = User.find(params[:id])
-    @projects = @dev.dev_projects.committed.order(:estimated_start_date)
+    @on_course_projects = @dev.dev_projects.on_course.order(:started_on)
+    @pending_projects = @dev.dev_projects.upcoming.order(:estimated_start_date)
+    @today = Date.today
   end
 end

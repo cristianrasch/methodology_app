@@ -3,7 +3,7 @@ class ProjectsController < ApplicationController
   
   def index
     @project = Project.new
-    @projects = Project.search_for(current_user, params[:page])
+    @projects = Project.search_for(current_user)
   end
   
   def new
