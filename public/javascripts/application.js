@@ -9,14 +9,3 @@ function addDaysTo(date, nbrDays) {
   date.setDate(date.getDate()+nbrDays);
   return date;
 }
-
-function selectDefaultValue(select, value) {
-  options = select.attr('options')
-  for(i=0; i<options.length;i++)
-    if(options[i].value == value) {
-      select.attr('selectedIndex', i);
-      select.change();
-      break;
-    }
-}
-
