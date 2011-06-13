@@ -218,9 +218,9 @@ class Project < ActiveRecord::Base
     #   cols.each { |col| attrs.delete(col) }
     # end
     
-    # if [Status::NEW, Status::FINISHED].include?(attrs.has_key?(:status) ? attrs[:status].to_i : status)
-    #   attrs.delete(:compl_perc)
-    # end
+    if [Status::NEW, Status::FINISHED].include?(attrs.has_key?(:status) ? attrs[:status].to_i : status)
+      attrs.delete(:compl_perc)
+    end
     
     super
     
