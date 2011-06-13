@@ -3,9 +3,9 @@ db/*.sqlite3
 log/*.log
 tmp/
 .project
-public/uploads
 coverage
 coverage.data
 config/database.yml
 config/config.local.yml
 public/methodology_app
+public/system
