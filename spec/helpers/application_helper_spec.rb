@@ -60,4 +60,8 @@ describe ApplicationHelper do
     project.estimated_duration_unit = Duration::WEEK
     helper.duration_desc(project, :estimated_duration).should == '168 S'
   end
+  
+  it "should replace accented chars present in a String" do
+    helper.replace_accented_chars('áéíóú').should == 'aeiou'
+  end
 end

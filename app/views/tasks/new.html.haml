@@ -1,4 +1,4 @@
-= content_for :title, "Nueva #{Task.model_name.human} - #{@project.to_s(:short)}"
+= content_for :title, "Nueva #{Task.model_name.human}. #{@project}"
 = content_for :sidebar, render('sidebar')
   
 = form_for [@project, @task], :html => {:multipart => true} do |f|

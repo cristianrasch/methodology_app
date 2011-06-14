@@ -1,1 +1,5 @@
-%li= link_to document.name, document
+%li
+  = link_to document.name, document
+  = link_to image_tag('down.png', :border => 0), document.file.url
+  [#{l(document.created_at, :format => :short)}]
+

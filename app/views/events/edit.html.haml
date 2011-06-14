@@ -1,4 +1,4 @@
-= content_for :title, "Editando #{Event.model_name.human} - #{@event.project.to_s(:short)}"
+= content_for :title, "Editando #{Event.model_name.human} - #{@event.project}"
 = content_for :sidebar, render('sidebar')
   
 = form_for @event do |f|

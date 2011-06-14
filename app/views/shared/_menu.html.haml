@@ -14,6 +14,8 @@
         %li
           = link_to Holiday.model_name.human.humanize.pluralize, holidays_path
       %li
+        = link_to 'Metodología', methodology_index_path
+      %li
         = link_to 'Salir', destroy_user_session_path
       %li.current_page_item.first.right
         = link_to current_user.username.upcase, edit_account_path

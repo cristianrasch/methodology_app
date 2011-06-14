@@ -1,4 +1,4 @@
-= content_for :title, "#{Event.model_name.human.humanize.pluralize} del #{Project.model_name.human} - #{@project.to_s(:short)}"
+= content_for :title, "#{Event.model_name.human.humanize.pluralize}. #{@project}"
 = content_for :sidebar, render('sidebar')
 
 - if @events.empty?

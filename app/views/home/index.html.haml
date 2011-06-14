@@ -1,6 +1,0 @@
-= content_for :title, 'Bienvenido'
-
-- if user_signed_in?
-  = link_to Project.model_name.human.humanize.pluralize, projects_path
-- else
-  = link_to 'Ingresar', new_user_session_path

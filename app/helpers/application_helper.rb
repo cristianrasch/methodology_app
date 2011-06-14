@@ -43,4 +43,13 @@ module ApplicationHelper
   def bool_to_str(boolean)
     boolean ? 'Sí' : 'No'
   end
+  
+  def replace_accented_chars(str)
+    accented_chars = {'á' => 'a', 'é' => 'e', 'í' => 'i', 'ó' => 'o', 'ú' => 'u'}
+    s = str.dup
+    accented_chars.each { |accented_char, not_accenter_char|
+      s.gsub!(accented_char, not_accenter_char)
+    }
+    s
+  end
 end

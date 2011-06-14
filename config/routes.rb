@@ -4,7 +4,6 @@ MethodologyApp::Application.routes.draw do
     post 'users/import'
   end
   resource :account, :only => [:edit, :update]
-  match 'devs/:id/projects' => 'devs#projects', :as => :dev_projects
   resources :users
 
   resources :projects, :shallow => true do
@@ -29,7 +28,7 @@ MethodologyApp::Application.routes.draw do
   
   resources :org_units
 
-  get "home/index"
+  get "methodology/index"
   
   root :to => "projects#index"
   
