@@ -23,7 +23,7 @@ xml.chart(:dateFormat => "dd/mm/yyyy", :hoverCapBorderColor => "2222ff", :hoverC
     on_course_projects.each do |project|
       start_date = project.started_on && project.started_on > at_beginning_of_month ? project.started_on : at_beginning_of_month
       
-      xml.task(:name => project.requirement, :processId => project.id, :start => l(start_date), :end => l(project.envisaged_end_date), :id => project.req_nbr, :color => "4567aa", :height => "10", :topPadding => i-i*0.5, :animation => "0", :link => url_for(project))
+      xml.task(:name => replace_accented_chars(project.requirement), :processId => project.id, :start => l(start_date), :end => l(project.envisaged_end_date), :id => project.req_nbr, :color => "4567aa", :height => "10", :topPadding => i-i*0.5, :animation => "0", :link => url_for(project))
       i += 1
     end
     
