@@ -363,5 +363,12 @@ describe Project do
       @project.update_attributes(:compl_perc => 30, :updated_by => @project.dev.id)
       @project.status_indicator.should == :red
     end
+    
+    it "should be green for projects starting & ending on the same day" do
+      project = Factory(:project, :estimated_start_date => Date.today, 
+                        :estimated_end_date => Date.today, 
+                        :status => Project::Status::IN_DEV, :started_on => Date.today)
+      project.status_indicator.should == :green
+    end
   end
 end

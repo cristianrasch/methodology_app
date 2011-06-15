@@ -291,10 +291,14 @@ class Project < ActiveRecord::Base
   def status_indicator
     if in_dev?
       days_from_start_to_finish = started_on.business_days_until(envisaged_end_date)
-      days_since_started = started_on.business_days_until(Date.today)
-      expected_compl_perc = ((days_since_started*100)/days_from_start_to_finish).round
-      expected_min_compl_perc = expected_compl_perc - (expected_compl_perc*10)/100
-      compl_perc < expected_min_compl_perc ? :red : (compl_perc >= expected_min_compl_perc && compl_perc < expected_compl_perc ? :yellow : :green)
+      if days_from_start_to_finish.zero?
+        :green
+      else
+        days_since_started = started_on.business_days_until(Date.today)
+        expected_compl_perc = ((days_since_started*100)/days_from_start_to_finish).round
+        expected_min_compl_perc = expected_compl_perc - (expected_compl_perc*10)/100
+        compl_perc < expected_min_compl_perc ? :red : (compl_perc >= expected_min_compl_perc && compl_perc < expected_compl_perc ? :yellow : :green)
+      end
     end
   end
   
