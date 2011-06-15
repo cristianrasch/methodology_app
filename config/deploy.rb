@@ -1,5 +1,7 @@
 require 'bundler/capistrano'
-require "delayed/recipes"
+require 'delayed/recipes'
+set :whenever_command, "bundle exec whenever"
+require "whenever/capistrano"
 
 # default_run_options[:pty] = true
 default_environment['LD_LIBRARY_PATH'] = '/opt/IBM/informix/lib:/opt/IBM/informix/lib/esql:/opt/IBM/informix/lib/cli:/usr/lib/sqlapi' 

@@ -7,9 +7,9 @@ class User < ActiveRecord::Base
   USERNAME_REGEXP = /\A[a-z]{3}\z/
 
   # Include default devise modules. Others available are:
-  # :token_authenticatable, :confirmable, :lockable, :trackable, 
-  # :registerable, :recoverable, :validatable and :timeoutable
-  devise :database_authenticatable, :rememberable
+  # :token_authenticatable, :confirmable, :lockable, :registerable, 
+  # :recoverable, :validatable and :timeoutable
+  devise :database_authenticatable, :rememberable, :trackable
   
   validates :username, :presence => true, :uniqueness => true
   validates_length_of :username, :is => 3 if Rails.env.production?
@@ -33,6 +33,8 @@ class User < ActiveRecord::Base
   scope :nondevs, where(:username - Conf.devs.split(',')).order(:name)
   scope :ordered, order(:name)
   scope :potential_owners, where(:potential_owner => true).order(:name)
+  scope :devs_who_have_not_signed_in_since_last_week, lambda { where(:username => Conf.devs.split(',')).
+                                                               where(:last_sign_in_at < 1.week.ago) }
   
   attr_writer :source
   # Setup accessible (or protected) attributes for your model
@@ -69,6 +71,12 @@ class User < ActiveRecord::Base
     
     def app_user?(username)
       Conf.devs.split(',').include?(username) or Conf.bosses.split(',').include?(username) or Conf.potential_owners.split(',').include?(username)
+    end
+    
+    def notify_devs_who_have_not_signed_in_since_last_week
+      devs_who_have_not_signed_in_since_last_week.each { |user|
+        Notifications.has_not_signed_in_since_last_week(user).deliver
+      }
     end
     
     private

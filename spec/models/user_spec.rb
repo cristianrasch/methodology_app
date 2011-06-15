@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 describe User do
-  
   context "model validations" do
     it "should validate new instances" do
       user = User.new
@@ -75,5 +74,20 @@ describe User do
     user = Factory(:user)
     user.delete
     user.should be_destroyed
+  end
+  
+  context do "dev's notifications"
+    it "should notify users who have not signed in since last week" do
+      devs = []
+      %w[crr gbe].each { |dev| 
+        devs << Factory(:user, :username => dev, :last_sign_in_at => 1.month.ago)
+      }
+      
+      lambda {
+        User.notify_devs_who_have_not_signed_in_since_last_week
+      }.should change(ActionMailer::Base.deliveries, :length).by(devs.length)
+      ActionMailer::Base.deliveries[-1].to.should include(devs.last.email)
+      ActionMailer::Base.deliveries[-2].to.should include(devs.first.email)
+    end
   end
 end

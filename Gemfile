@@ -18,6 +18,7 @@ gem 'ruby-informix'
 gem 'sequel'
 gem 'paper_trail', '~> 2'
 gem 'crumble', :require => 'breadcrumb'
+gem 'whenever', :require => false
 
 group :test, :development do
   gem "rspec-rails", "~> 2.4"
