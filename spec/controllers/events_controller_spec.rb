@@ -60,6 +60,7 @@ describe EventsController do
       response.should be_success
       response.should render_template(action)
       assigns[:event].should_not be_nil
+      assigns[:project].should_not be_nil
     end
   end
   

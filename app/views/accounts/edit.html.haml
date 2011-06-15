@@ -1,4 +1,5 @@
 = content_for :title, @user.username.upcase
+= content_for :sidebar, render('sidebar')
 
 = form_for @user, :url => account_path, :html => {:method => :put} do |f|
   = f.error_messages :header_message => nil, :message => nil

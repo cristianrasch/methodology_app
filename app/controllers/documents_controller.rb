@@ -21,11 +21,13 @@ class DocumentsController < ApplicationController
   end
   
   def show
-    @document = Document.find(params[:id], :include => :event)
+    @document = Document.find(params[:id], :include => [:event => :project])
+    @event, @project = @document.event, @document.event.project
   end
   
   def edit
-    @document = Document.find(params[:id], :include => :event)
+    @document = Document.find(params[:id], :include => [:event => :project])
+    @event, @project = @document.event, @document.event.project
   end
   
   def update
@@ -47,6 +49,7 @@ class DocumentsController < ApplicationController
   private
   
   def grab_event
-    @event = Event.find(params[:event_id])
+    @event = Event.find(params[:event_id], :include => :project)
+    @project = @event.project
   end
 end

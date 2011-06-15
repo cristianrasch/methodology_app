@@ -14,6 +14,8 @@ describe CommentsController do
     response.should be_success
     response.should render_template(:index)
     assigns[:commentable].should_not be_nil
+    assigns[:event].should_not be_nil
+    assigns[:project].should_not be_nil
     assigns[:comments].should_not be_nil
   end
   
@@ -23,6 +25,8 @@ describe CommentsController do
     response.should be_success
     response.should render_template(:new)
     assigns[:commentable].should_not be_nil
+    assigns[:event].should_not be_nil
+    assigns[:project].should_not be_nil
     assigns[:comment].should_not be_nil
   end
   
@@ -35,6 +39,8 @@ describe CommentsController do
       response.should be_success
       response.should render_template(:new)
       assigns[:commentable].should_not be_nil
+      assigns[:event].should_not be_nil
+      assigns[:project].should_not be_nil
       assigns[:comment].should_not be_nil
       assigns[:comment].should_not be_valid
     end
@@ -48,6 +54,8 @@ describe CommentsController do
       response.should be_redirect
       response.should redirect_to(event_comments_path(event))
       assigns[:commentable].should_not be_nil
+      assigns[:event].should_not be_nil
+      assigns[:project].should_not be_nil
       assigns[:comment].should_not be_nil
       flash[:notice].should == "#{Comment.model_name.human.humanize} agregado"
     end
@@ -60,6 +68,8 @@ describe CommentsController do
     response.should render_template(:show)
     assigns[:comment].should_not be_nil
     assigns[:commentable].should_not be_nil
+    assigns[:event].should_not be_nil
+    assigns[:project].should_not be_nil
   end
   
   context "edit action" do
@@ -74,7 +84,7 @@ describe CommentsController do
       assigns[:commentable].should_not be_nil
     end
     
-    it "should deny access to anyone who is not the comment's author" do
+    it "should allow edit access to its author" do
       sign_in @comment.author
       get :edit, :id => @comment
       
@@ -82,6 +92,8 @@ describe CommentsController do
       response.should render_template(:edit)
       assigns[:comment].should_not be_nil
       assigns[:commentable].should_not be_nil
+      assigns[:event].should_not be_nil
+      assigns[:project].should_not be_nil
     end
   end
   

@@ -26,11 +26,15 @@ class CommentsController < ApplicationController
   end
   
   def show
-    @comment = Comment.find(params[:id], :include => [:commentable, :author])
+    @comment = Comment.find(params[:id], :include => [:author, {:commentable => :project}])
     @commentable = @comment.commentable
+    instance_variable_set("@#{@commentable.class.name.downcase}".to_sym, @commentable)
+    @project = @commentable.project
   end
   
   def edit
+    instance_variable_set("@#{@commentable.class.name.downcase}".to_sym, @commentable)
+    @project = @commentable.project
   end
   
   def update
@@ -52,7 +56,11 @@ class CommentsController < ApplicationController
 
   def find_commentable
     value = params.find {|k,v| k.to_s =~ /(.+)_id$/}
-    @commentable = $1.classify.constantize.find(value.last, :include => {:project => :users}) if value
+    if value
+      @commentable = $1.classify.constantize.find(value.last, :include => [:project => :users])
+      instance_variable_set("@#{$1}".to_sym, @commentable)
+      @project = @commentable.project
+    end
   end
   
   def authenticate_owner!

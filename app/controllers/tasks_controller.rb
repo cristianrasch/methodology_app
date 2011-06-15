@@ -25,10 +25,12 @@ class TasksController < ApplicationController
   
   def show
     @task = Task.find(params[:id], :include => [:author, :owner, :project])
+    @project = @task.project
   end
   
   def edit
     @task = Task.find(params[:id], :include => [:project => :dev])
+    @project = @task.project
   end
   
   def update

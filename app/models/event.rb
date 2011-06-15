@@ -51,11 +51,15 @@ class Event < ActiveRecord::Base
 
   attr_accessible :stage, :status
 
-  def to_s
-    self.class.human_attribute_name(:stage)+': '+
-    stage_str+' - '+
-    self.class.human_attribute_name(:status)+': '+
-    status_str
+  def to_s(format = :default)
+    case(format)
+      when :short then "#{stage_str(:short)} - #{status_str(:short)}"
+      else
+        self.class.human_attribute_name(:stage)+': '+
+        stage_str+' - '+
+        self.class.human_attribute_name(:status)+': '+
+        status_str
+    end
   end
   
   def stage_str(format = :default)

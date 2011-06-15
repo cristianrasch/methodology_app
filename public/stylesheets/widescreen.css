@@ -480,3 +480,22 @@ span.spaced {
 span.highlighted {
   color: red;
 }
+
+.breadcrumbs {
+  font: bold 14px "Lucida Grande", "Trebuchet MS", Verdana, Helvetica, sans-serif;
+  margin-bottom: 10px;
+}
+
+.breadcrumbs a {
+  background: transparent url(media/breadcrumb.gif) no-repeat center right;
+  text-decoration: none;
+  color: navy;
+}
+
+.breadcrumbs a:visited, .breadcrumb a:active {
+  color: navy;
+}
+
+.breadcrumbs a:hover {
+  text-decoration: underline;
+}

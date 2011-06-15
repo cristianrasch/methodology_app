@@ -15,6 +15,7 @@
         #page-bgtop
           #content
             .post
+              .breadcrumbs= crumbs
               %h2.title
                 %a{:href => "#"}= yield(:title)
               - unless flash.empty?

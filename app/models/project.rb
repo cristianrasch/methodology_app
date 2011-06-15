@@ -100,7 +100,7 @@ class Project < ActiveRecord::Base
   scope :upcoming, lambda { where(:status => Status::NEW) }
   scope :on_est_course_by, lambda { |date| where(['? between estimated_start_date and estimated_end_date', date]) }
   scope :on_course_by, lambda { |date| where(['? between estimated_start_date and envisaged_end_date', date]) }
-  scope :committed, where(:status - [Status::CANCELED, Status::FINISHED])
+  scope :committed, where(:status.not_in => [Status::CANCELED, Status::FINISHED])
 
   before_save :set_default_envisaged_end_date
   after_update :create_first_event

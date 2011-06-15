@@ -17,6 +17,7 @@ gem "business_time"
 gem 'ruby-informix'
 gem 'sequel'
 gem 'paper_trail', '~> 2'
+gem 'crumble', :require => 'breadcrumb'
 
 group :test, :development do
   gem "rspec-rails", "~> 2.4"

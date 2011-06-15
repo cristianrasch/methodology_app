@@ -14,6 +14,7 @@ describe DocumentsController do
     response.should be_success
     response.should render_template(:index)
     assigns[:event].should_not be_nil
+    assigns[:project].should_not be_nil
     assigns[:documents].should_not be_nil
   end
 
@@ -23,6 +24,7 @@ describe DocumentsController do
     response.should be_success
     response.should render_template(:new)
     assigns[:event].should_not be_nil
+    assigns[:project].should_not be_nil
     assigns[:document].should_not be_nil
     assigns[:document].should be_a_new_record
   end  
@@ -38,6 +40,7 @@ describe DocumentsController do
       response.should be_success
       response.should render_template(:new)
       assigns[:event].should_not be_nil
+      assigns[:project].should_not be_nil
       assigns[:document].should_not be_nil
       assigns[:document].should be_invalid
     end
@@ -51,6 +54,7 @@ describe DocumentsController do
       assigns[:document].should_not be_nil
       response.should redirect_to(assigns[:document])
       assigns[:event].should_not be_nil
+      assigns[:project].should_not be_nil
       flash[:notice].should == "#{Document.model_name.human.humanize} creado"
     end
   end
@@ -62,6 +66,8 @@ describe DocumentsController do
     response.should render_template(:show)
     assigns[:document].should_not be_nil
     assigns[:document].should be_valid
+    assigns[:project].should_not be_nil
+    assigns[:event].should_not be_nil
   end
   
   it "should display Document's edit form" do
@@ -70,6 +76,8 @@ describe DocumentsController do
     response.should be_success
     response.should render_template(:edit)
     assigns[:document].should_not be_nil
+    assigns[:project].should_not be_nil
+    assigns[:event].should_not be_nil
   end
 
   context "update action" do

@@ -263,3 +263,6 @@ es-AR:
   lbls:
     created_at: Fecha de creación
     updated_at: Fecha de modificación
+    
+  breadcrumbs:
+    reports: Reportes

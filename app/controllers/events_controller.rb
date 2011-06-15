@@ -24,10 +24,12 @@ class EventsController < ApplicationController
   
   def show
     @event = Event.find(params[:id], :include => [:project, :author])
+    @project = @event.project
   end
   
   def edit
     @event = Event.find(params[:id], :include => :project)
+    @project = @event.project
   end
   
   def update
