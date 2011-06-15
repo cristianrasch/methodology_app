@@ -101,7 +101,11 @@ class Project < ActiveRecord::Base
   scope :on_est_course_by, lambda { |date| where(['? between estimated_start_date and estimated_end_date', date]) }
   scope :on_course_by, lambda { |date| where(['? between estimated_start_date and envisaged_end_date', date]) }
   scope :committed, where(:status.not_in => [Status::CANCELED, Status::FINISHED])
+  scope :compl_perc_has_not_been_updated_since_last_week, lambda { joins(:dev).
+                                                                   where(:dev => {:username => Conf.devs.split(',')}).
+                                                                   where(:last_compl_perc_update_at < 1.week.ago) }
 
+  before_create :touch_last_compl_perc_update
   before_save :set_default_envisaged_end_date
   after_update :create_first_event
   after_update :stop_current_event
@@ -187,6 +191,13 @@ class Project < ActiveRecord::Base
         projects[:pending].sort! { |pr1, pr2| pr1.estimated_start_date <=> pr2.estimated_start_date }
       end
     end
+    
+    def notify_devs_compl_perc_has_not_been_updated_since_last_week
+      on_course.compl_perc_has_not_been_updated_since_last_week.order(:last_compl_perc_update_at).
+                group_by(&:dev).each { |dev, projects|
+        Notifications.compl_perc_has_not_been_updated_since_last_week(dev, projects).deliver
+      }
+    end
   end
   
   def user_tokens=(ids)
@@ -240,6 +251,11 @@ class Project < ActiveRecord::Base
       self.actual_duration = events.map(&:duration_in_days).sum + tasks.map(&:duration_in_days).sum
     end
     super
+  end
+  
+  def compl_perc=(perc)
+    super
+    self.last_compl_perc_update_at = Time.now
   end
   
   def status_str
@@ -342,5 +358,9 @@ class Project < ActiveRecord::Base
       curr_event = events.last
       curr_event.stop if curr_event
     end
+  end
+  
+  def touch_last_compl_perc_update
+    self.last_compl_perc_update_at = Time.now
   end
 end

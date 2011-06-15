@@ -22,3 +22,7 @@
 every :sunday, :at => '12pm' do
   runner 'User.notify_devs_who_have_not_signed_in_since_last_week'
 end
+
+every :sunday, :at => '2pm' do
+  runner 'Project.notify_devs_compl_perc_has_not_been_updated_since_last_week'
+end

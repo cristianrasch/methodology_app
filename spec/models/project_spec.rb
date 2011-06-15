@@ -371,4 +371,29 @@ describe Project do
       project.status_indicator.should == :green
     end
   end
+  
+  it "should touch its compl_perc_updated_at attr before being created" do
+    project = Factory(:project)
+    project.last_compl_perc_update_at.should_not be_nil
+    project.last_compl_perc_update_at.to_date.should == Date.today
+    project.last_compl_perc_update_at.hour.should == Time.now.hour
+    project.last_compl_perc_update_at.min.should == Time.now.min
+  end
+  
+  it "should notify devs whose projects' compl_perc hasn't been updated in a week" do
+    crr = find_dev('crr')
+    2.times do
+      pr = Factory(:project, :status => Project::Status::IN_DEV, :started_on => 1.week.ago.to_date, :dev => crr)
+      pr.update_attribute(:last_compl_perc_update_at, 2.weeks.ago)
+    end
+    gbe = find_dev('gbe')
+    pr = Factory(:project, :status => Project::Status::IN_DEV, :started_on => 1.week.ago.to_date, :dev => gbe)
+    pr.update_attribute(:last_compl_perc_update_at, 2.weeks.ago)
+    pr.update_attributes(:compl_perc => 25, :updated_by => gbe.id)
+    
+    lambda {
+      Project.notify_devs_compl_perc_has_not_been_updated_since_last_week
+    }.should change(ActionMailer::Base.deliveries, :length).by(1)
+    ActionMailer::Base.deliveries.last.to.should include(crr.email)
+  end
 end

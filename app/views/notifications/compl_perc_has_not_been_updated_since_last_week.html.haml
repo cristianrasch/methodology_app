@@ -1,0 +1,7 @@
+Debe actualizar el #{Project.human_attribute_name(:compl_perc).downcase}
+= @projects.length > 1 ? 'de los' : 'del'
+siguiente#{@projects.length > 1 ? 's' : ''}
+= @projects.length > 1 ? Project.model_name.human.pluralize : Project.model_name.human
+
+%ul
+  = render(:partial => 'project', :collection => @projects)

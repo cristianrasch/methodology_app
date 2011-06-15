@@ -74,8 +74,8 @@ class User < ActiveRecord::Base
     end
     
     def notify_devs_who_have_not_signed_in_since_last_week
-      devs_who_have_not_signed_in_since_last_week.each { |user|
-        Notifications.has_not_signed_in_since_last_week(user).deliver
+      devs_who_have_not_signed_in_since_last_week.each { |dev|
+        Notifications.has_not_signed_in_since_last_week(dev).deliver
       }
     end
     
