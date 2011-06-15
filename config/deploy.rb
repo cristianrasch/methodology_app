@@ -1,6 +1,7 @@
 require 'bundler/capistrano'
 require 'delayed/recipes'
 set :whenever_command, "bundle exec whenever"
+set :whenever_roles, :app
 require "whenever/capistrano"
 
 # default_run_options[:pty] = true
