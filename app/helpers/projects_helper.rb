@@ -4,4 +4,8 @@ module ProjectsHelper
       children.empty? ? render('project_name', :project_name => project_name) : potential_project_names(children)
     end.join('<br/>').html_safe
   end
+  
+  def indicator_for(project)
+    image_tag("#{project.status_indicator}.png", :border => 0)
+  end
 end

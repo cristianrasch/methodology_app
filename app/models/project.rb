@@ -202,9 +202,12 @@ class Project < ActiveRecord::Base
   end
   
   def attributes=(attrs)
-    if attrs.has_key?(:status)
+    keys = [:status, :compl_perc]
+    if keys.any? { |key| attrs.has_key?(key) }
       updated_by_dev = attrs[:updated_by].to_i == (attrs.has_key?(:dev_id) ? attrs[:dev_id].to_i : dev.id)
-      attrs.delete(:status) if !updated_by_dev || (attrs[:status].to_i == Status::FINISHED && new?)
+      if !updated_by_dev || (attrs[:status].to_i == Status::FINISHED && new?)
+        keys.each { |key| attrs.delete(key) }
+      end
     end
     
     # unless (attrs.has_key?(:status) ? attrs[:status].to_i : status) == Status::NEW
@@ -283,6 +286,16 @@ class Project < ActiveRecord::Base
   def envisaged_end_date_from(date)
     date ||= estimated_start_date
     in_days(self, :estimated_duration).business_days.after(date).to_date
+  end
+  
+  def status_indicator
+    if in_dev?
+      days_from_start_to_finish = started_on.business_days_until(envisaged_end_date)
+      days_since_started = started_on.business_days_until(Date.today)
+      expected_compl_perc = ((days_since_started*100)/days_from_start_to_finish).round
+      expected_min_compl_perc = expected_compl_perc - (expected_compl_perc*10)/100
+      compl_perc < expected_min_compl_perc ? :red : (compl_perc >= expected_min_compl_perc && compl_perc < expected_compl_perc ? :yellow : :green)
+    end
   end
   
   private

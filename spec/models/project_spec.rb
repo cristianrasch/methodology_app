@@ -340,4 +340,28 @@ describe Project do
     project.envisaged_end_date_from(nil).should == a_week_from_now
     project.envisaged_end_date_from(a_week_from_now).should == 2.weeks.from_now.to_date
   end
+  
+  context "status indicator" do
+    before {
+      @project = Factory(:project, :estimated_start_date => 1.week.ago.to_date, 
+                        :estimated_end_date => 1.week.from_now.to_date, 
+                        :status => Project::Status::IN_DEV, :started_on => 1.week.ago.to_date)
+      @project.reload
+    }
+  
+    it "should be green when everything is running smoothly" do
+      @project.update_attributes(:compl_perc => 55, :updated_by => @project.dev.id)
+      @project.status_indicator.should == :green
+    end
+    
+    it "should be yellow when things are not going so well" do
+      @project.update_attributes(:compl_perc => 45, :updated_by => @project.dev.id)
+      @project.status_indicator.should == :yellow
+    end
+    
+    it "should be red when things are awful" do
+      @project.update_attributes(:compl_perc => 30, :updated_by => @project.dev.id)
+      @project.status_indicator.should == :red
+    end
+  end
 end

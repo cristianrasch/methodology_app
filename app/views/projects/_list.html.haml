@@ -4,6 +4,7 @@
   %table.pretty{:border => 0, :cellpadding => 2, :cellspacing => 2, :width => '100%'}
     %thead
       %tr
+        %th 
         %th N°
         %th Fecha
         %th Projecto
@@ -18,6 +19,7 @@
     %tbody
     - list.each do |project|
       %tr
+        %td= indicator_for(project)
         %td= link_to("##{project.req_nbr}", project)
         %td= l(project.created_at, :format => :tiny)
         %td= project
