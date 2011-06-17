@@ -308,7 +308,7 @@ class Project < ActiveRecord::Base
     if in_dev?
       days_from_start_to_finish = started_on.business_days_until(envisaged_end_date)
       if days_from_start_to_finish.zero?
-        :green
+        :red
       else
         days_since_started = started_on.business_days_until(Date.today)
         expected_compl_perc = ((days_since_started*100)/days_from_start_to_finish).round

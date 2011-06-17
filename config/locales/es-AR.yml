@@ -57,7 +57,7 @@ es-AR:
     day_names: [Domingo, Lunes, Martes, Miércoles, Jueves, Viernes, Sábado]
     month_names: [~, Enero, Febrero, Marzo, Abril, Mayo, Junio, Julio, Agosto, Septiembre, Octubre, Noviembre, Diciembre]
     formats:
-      tiny: "%d/%m"
+      tiny: "%d/%m/%y"
       short: "%d de %b"
       default: "%d/%m/%Y"
       long: "%A, %d de %B de %Y"
@@ -266,3 +266,23 @@ es-AR:
     
   breadcrumbs:
     reports: Reportes
+    projects_status: Seguimiento
+    new_report: Nuevo
+    new_project_name: Nuevo
+    edit_project_name: Edición
+    new_user: Nuevo
+    edit_user: Edición
+    new_org_unit: Nueva
+    edit_org_unit: Edición
+    on_course_projects: Requirimientos en curso
+    new_project: Nuevo
+    edit_project: Edición
+    new_event: Nuevo
+    edit_event: Edición
+    new_task: Nueva
+    edit_task: Edición
+    new_document: Nuevo
+    edit_document: Edición
+    new_event_comment: Nuevo
+    new_task_comment: Nuevo
+    edit_comment: Edición

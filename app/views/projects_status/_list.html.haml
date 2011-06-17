@@ -4,9 +4,9 @@
   %table.pretty{:border => 0, :cellpadding => 2, :cellspacing => 2, :width => '100%'}
     %thead
       %tr
-        %th= sortable('id', 'N°')
+        %th
         %th= sortable('created_at', 'Fecha')
-        %th Projecto
+        %th= sortable('req_nbr', 'Proyecto')
         %th Tipo
         %th Analista
         %th
@@ -17,15 +17,25 @@
               %tr
                 %td= sortable('estimated_start_date', 'Inicio')
                 %td= sortable('estimated_end_date', 'Fin')
-                %td Duración
+                %td Dur
         %th Etapa
         %th Estado
         %th % Avance
         %th= sortable('envisaged_end_date', 'Fin previsto')
+        %th
+          %table{:border => 0, :cellpadding => 2, :cellspacing => 2, :width => '100%'}
+            %thead
+              %tr
+                %th{:colspan => 3}= 'Ejecución'
+              %tr
+                %td Inicio
+                %td Fin
+                %td Dur
+        %th
     %tbody
     - list.each do |project|
       %tr
-        %td= link_to("##{project.req_nbr}", project, :class => 'underline_none')
+        %td= link_to(image_tag('right.png', :border => 0), project)
         %td= l(project.created_at, :format => :tiny)
         %td= project.description.present? ? link_to_function(project, "$('##{dom_id(project)}').toggle()") : project
         %td= project.klass_str.first.upcase
@@ -41,9 +51,19 @@
         %td= project.events.first ? project.events.first.status_str(:short) : nil
         %td #{project.compl_perc} %
         %td= l(project.envisaged_end_date, :format => :tiny)
+        %td
+          %table{:border => 0, :cellpadding => 2, :cellspacing => 2, :width => '100%'}
+            %thead
+              %tr
+                %td
+                  = l(project.started_on, :format => :tiny) if project.started_on
+                %td
+                  = l(project.ended_on, :format => :tiny) if project.finished?
+                %td
+                  = time_ago_in_words(Date.today-project.actual_duration) if project.finished?
         %td{:style => "background-color: #{indicator_class_for(project)};"}
       - if project.description.present?
         = content_tag_for(:tr, project) do
           %td{:colspan => 2}
           %td= project.description
-        %td{:colspan => 7}
+        %td{:colspan => 8}
