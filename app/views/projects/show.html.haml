@@ -1,6 +1,4 @@
-= content_for :title do 
-  = @project
-  [#{@project.status_str} - &#37;#{@project.compl_perc}]
+.breadcrumbs.navy [#{@project.status_str} - &#37;#{@project.compl_perc}]
 = content_for :sidebar, render('sidebar')
 
 %table.bottom_spaced{:border => 0, :cellspacing => 0, :cellpadding => 0, :width => "100%"}

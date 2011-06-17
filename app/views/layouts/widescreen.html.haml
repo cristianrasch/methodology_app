@@ -16,8 +16,9 @@
           #content
             .post
               .breadcrumbs= crumbs
-              %h2.title
-                %a{:href => "#"}= yield(:title)
+              - if content_for?(:title)
+                %h2.title
+                  %a{:href => "#"}= yield(:title)
               - unless flash.empty?
                 %p.meta= flash[:notice] || flash[:alert]
               .entry

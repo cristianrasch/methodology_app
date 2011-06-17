@@ -481,3 +481,7 @@ td.centered {
 .breadcrumbs a:hover {
   text-decoration: underline;
 }
+
+div.navy {
+  color: navy;
+}

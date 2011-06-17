@@ -12,6 +12,7 @@ Breadcrumb.configure do
   crumb :project, '##{@project.req_nbr}', :project_path, :project
   crumb :new_project, nil, :new_project_path
   crumb :edit_project, nil, :edit_project_path, :project
+  crumb :library, nil, :library_project_path, :project
   
   crumb :events, '#{Event.model_name.human.pluralize.humanize}', :project_events_path, :project
   crumb :event, '#{@event.to_s(:short)}', :event_path, :event
@@ -93,7 +94,8 @@ Breadcrumb.configure do
     trail :projects, :index, [:on_course_projects]
     trail :projects, :new, [:projects, :new_project]
     trail :projects, :show, [:projects, :project]
-    trail :projects, [:edit, :library], [:projects, :project, :edit_project]
+    trail :projects, :edit, [:projects, :project, :edit_project]
+    trail :projects, :library, [:projects, :project, :library]
   end
   
   context "events" do
