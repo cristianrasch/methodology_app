@@ -5,6 +5,8 @@ Breadcrumb.configure do
   
   crumb :projects_status, nil, :projects_status_index_path
   
+  crumb :methodology, nil, :methodology_index_path
+  
   crumb :projects, '#{Project.model_name.human.pluralize.humanize}', :projects_path
   crumb :on_course_projects, nil, :projects_path
   crumb :project, '##{@project.req_nbr}', :project_path, :project
@@ -58,6 +60,8 @@ Breadcrumb.configure do
   # trail :home, :index, [:root]
   
   trail :projects_status, :index, [:projects, :projects_status]
+
+  trail :methodology, :index, [:methodology]
 
   context "reports" do
     trail :reports, :index, [:projects, :reports]

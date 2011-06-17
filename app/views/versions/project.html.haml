@@ -14,4 +14,4 @@
         %td= l((i.zero? ? @project : @project.versions[i].reify).updated_at, :format => :short)
         %td= l(@project.versions[i-1].reify.envisaged_end_date)
         %td= l((i.zero? ? @project : @project.versions[i].reify).envisaged_end_date)
-        %td= delay_responsible(i.zero? ? @project : @project.versions[i].reify)
+        %td= whodunnit(@project.versions[i-1])

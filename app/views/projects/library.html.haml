@@ -1,7 +1,3 @@
-= content_for :title do 
-  Biblioteca.
-  = @project
-  
 = content_for :sidebar, render('projects/sidebar')
 
 - if @project.library_empty?

@@ -11,4 +11,9 @@ require 'spec_helper'
 #   end
 # end
 describe VersionsHelper do
+  it "should report whodunnit" do
+    project = Factory(:project)
+    project.versions.last.update_attribute(:whodunnit, project.dev.id.to_s)
+    helper.whodunnit(project.versions.last).should == project.dev.name
+  end
 end
