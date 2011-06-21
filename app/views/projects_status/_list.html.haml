@@ -60,7 +60,7 @@
                 %td
                   = l(project.ended_on, :format => :tiny) if project.finished?
                 %td
-                  = time_ago_in_words(Date.today-project.actual_duration) if project.finished?
+                  = pluralize(project.actual_duration, 'día') if project.finished?
         %td{:style => "background-color: #{indicator_class_for(project)};"}
       - if project.description.present?
         = content_tag_for(:tr, project) do
