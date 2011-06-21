@@ -11,6 +11,8 @@
           - if boss_logged_in?
             %li
               = link_to 'Reportes', reports_path
+            %li
+              = link_to 'Biblioteca', libraries_index_path
         - elsif controller.action_name != 'library'
           %li
             = link_to Project.model_name.human.pluralize.humanize, projects_path

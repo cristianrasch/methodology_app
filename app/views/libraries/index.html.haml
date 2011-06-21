@@ -1,0 +1,14 @@
+= content_for :sidebar, render('sidebar')
+
+- @projects.each do |project|
+  = div_for(project) do
+    = project
+    %ul
+      - project.events.each do |event|
+        - unless event.documents.empty?
+          %li
+            = div_for(event) do
+              = event
+              %ul
+                - event.documents.each do |document|
+                  %li= link_to(document.name, document)

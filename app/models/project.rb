@@ -198,6 +198,12 @@ class Project < ActiveRecord::Base
         Notifications.compl_perc_has_not_been_updated_since_last_week(dev, projects).deliver
       }
     end
+    
+    def library
+      Project.includes([:project_name, {:events => :documents}]).
+                        order(:req_nbr.desc, :documents => [:event_id.desc, :created_at.desc]).all.
+                        select {|project| ! project.documents.empty?}
+    end
   end
   
   def user_tokens=(ids)

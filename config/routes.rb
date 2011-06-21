@@ -1,4 +1,6 @@
 MethodologyApp::Application.routes.draw do
+  get "libraries/index"
+
   devise_for :users
   namespace :admin do
     post 'users/import'
