@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'informix'
 
 describe User do
   context "model validations" do
@@ -88,6 +89,21 @@ describe User do
       }.should change(ActionMailer::Base.deliveries, :length).by(devs.length)
       ActionMailer::Base.deliveries[-1].to.should include(devs.last.email)
       ActionMailer::Base.deliveries[-2].to.should include(devs.first.email)
+    end
+  end
+  
+  context "session_id authentication" do
+    it "should return nil when an invalid session_id param is supplied" do
+      User.authenticate_by_session_id(nil).should be_nil
+    end
+    
+    it "should return a User object when a valid session_id param is supplied" do
+      session_id, username = '123', 'crr'
+      Informix.connect(Conf.ifx['db'], Conf.ifx['user'], Conf.ifx['passwd']) do |db|
+        stmt = db.prepare('insert into session(sessionid,sistema,fecha,hora,usuario,terminal) values(?,?,today,?,?,?)')
+        stmt[session_id,'',1234,username,'WEB']
+      end
+      User.authenticate_by_session_id(session_id).should == User.find_by_username(username)
     end
   end
 end

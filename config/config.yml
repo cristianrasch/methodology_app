@@ -17,3 +17,6 @@ common:
     db: ifx db
     user: ifx user
     passwd: ifx passwd
+  app:
+    code: methodology_app
+    role: Exec

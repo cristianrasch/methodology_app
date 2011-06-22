@@ -79,6 +79,28 @@ class User < ActiveRecord::Base
       }
     end
     
+    def authenticate_by_session_id(session_id)
+      if session_id.present?
+        auth_query = <<SQL
+  select first 1 trim(usuario) username 
+    from session s 
+    where s.sessionid = ? and 
+          fecha = today and 
+          exists(select 1 
+                  from rol r 
+                  where r.codusuario = s.usuario and 
+                        r.codigosistema = ? and 
+                        r.funcion = ?) 
+    order by nrosession desc
+SQL
+        hash = Informix.connect(Conf.ifx['db'], Conf.ifx['user'], Conf.ifx['passwd']) do |db|
+          db.prepare(auth_query) {|stmt| stmt.execute(session_id, Conf.app['code'], Conf.app['role']) }
+        end
+        
+        User.find_by_username(hash["username"]) unless hash.empty?
+      end
+    end
+    
     private
     
     def fetch_prod_users
