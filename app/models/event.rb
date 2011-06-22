@@ -4,16 +4,17 @@ class Event < ActiveRecord::Base
     DEFINITION = 1
     FUNC_DESIGN = 2
     DEMO = 3
-    TESTING = 4
-    PRESENTATION = 5
-    ACCEP_TESTING = 6
+    DEV = 4
+    TESTING = 5
+    PRESENTATION = 6
+    ACCEP_TESTING = 7
     IMPLEMENTATION = 8
     
     SELECT = [['Definición',DEFINITION], ['Diseño funcional', FUNC_DESIGN], ['Demostración', DEMO], 
-              ['Testing', TESTING], ['Presentación', PRESENTATION], ['Prueba de usuario', ACCEP_TESTING], 
-              ['Implementación', IMPLEMENTATION]]
+              ['Codificación', DEV], ['Testing', TESTING], ['Presentación', PRESENTATION], 
+              ['Prueba de usuario', ACCEP_TESTING], ['Implementación', IMPLEMENTATION]]
               
-    MINI_SELECT = [['Def',DEFINITION], ['Diseño', FUNC_DESIGN], ['Demo', DEMO], 
+    MINI_SELECT = [['Def',DEFINITION], ['Diseño', FUNC_DESIGN], ['Demo', DEMO], ['Cod', DEV],
                   ['Test', TESTING], ['Pres', PRESENTATION], ['Prueba', ACCEP_TESTING], 
                   ['Impl', IMPLEMENTATION]]
   end
