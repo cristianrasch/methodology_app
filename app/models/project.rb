@@ -112,7 +112,7 @@ class Project < ActiveRecord::Base
   after_save :notify_project_saved
   
   cattr_reader :per_page
-  @@per_page = 10
+  @@per_page = 20
   attr_reader :user_tokens, :notify_envisaged_end_date_changed
   attr_writer :notify_envisaged_end_date_changed
   attr_accessor :indicator
