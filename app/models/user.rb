@@ -18,8 +18,8 @@ class User < ActiveRecord::Base
   
   validates :email, :presence => { :on => :update }, 
                     :format => { :with => /\A([\w\.%\+\-]+)@([\w\-]+\.)+([\w]{2,})\z/i, 
-                                 :allow_blank => true, :on => :update },
-                    :uniqueness => { :allow_blank => true, :on => :update }
+                                 :allow_nil => true, :on => :update },
+                    :uniqueness => { :allow_nil => true, :on => :update }
   
   validates :password, :length => {:within => 6..20 }, 
             :if => Proc.new { |user| user.new_record? || user.encrypted_password_changed? }
@@ -134,6 +134,10 @@ SQL
     else
       super
     end
+  end
+  
+  def email=(email_address)
+    write_attribute(:email,  email_address.present? ? email_address : nil)
   end
   
   private
