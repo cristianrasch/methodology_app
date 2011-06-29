@@ -20,6 +20,16 @@ describe User do
       user.should_not be_valid
       user.should have(1).error_on(:email)
     end
+    
+    it "should have a nil email address when an empty one is provided" do
+      user = User.new
+      user.email = ' '
+      user.email.should be_nil
+      email = Faker::Internet.email
+      user.email = email
+      user.email.should_not be_nil
+      user.email.should eq(email)
+    end
   end
   
   it "should format user's name properly" do
