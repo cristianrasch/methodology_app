@@ -1,7 +1,7 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
   
-  helper_method :boss_logged_in?
+  helper_method :dev_logged_in?
   
   protected
 
@@ -12,12 +12,14 @@ class ApplicationController < ActionController::Base
     end
   end
   
-  def ensure_boss_logged_in
-    if current_user.boss?
-      true
-    else
-      render(:text => 'Acceso denegado.', :status => :unauthorized)
-      false
+  %w[boss dev].each do |method|
+    define_method("ensure_#{method}_logged_in") do
+      if current_user.send("#{method}?")
+        true
+      else
+        render(:text => 'Acceso denegado.', :status => :unauthorized)
+        false
+      end
     end
   end
   
@@ -25,7 +27,7 @@ class ApplicationController < ActionController::Base
     new_user_session_path
   end
   
-  def boss_logged_in?
-    current_user.boss?
+  def dev_logged_in?
+    current_user.dev?
   end
 end

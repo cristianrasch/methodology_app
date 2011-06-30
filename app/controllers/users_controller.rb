@@ -1,12 +1,12 @@
 class UsersController < ApplicationController
   before_filter :authenticate_user!
-  before_filter :ensure_boss_logged_in, :except => :index
+  before_filter :ensure_dev_logged_in, :except => :index
   
   def index
     if request.xml_http_request?
       @users = User.where("name like ?", "%#{params[:q]}%")
     else
-      return unless ensure_boss_logged_in
+      return unless ensure_dev_logged_in
       @users = User.ordered
     end
     

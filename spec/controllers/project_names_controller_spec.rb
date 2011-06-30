@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe ProjectNamesController do
-  before { sign_in(find_boss) }
+  before { sign_in(find_dev) }
 
   it "should deny access to non bosses" do
     sign_in(Factory(:user))

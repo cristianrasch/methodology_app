@@ -8,7 +8,7 @@
             = link_to 'Nuevo', new_project_path
           %li
             = link_to 'Seguimiento', projects_status_index_path
-          - if boss_logged_in?
+          - if dev_logged_in?
             %li
               = link_to 'Reportes', reports_path
             %li

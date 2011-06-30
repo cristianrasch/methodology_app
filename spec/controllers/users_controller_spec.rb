@@ -3,7 +3,7 @@ require 'spec_helper'
 describe UsersController do
   render_views
   
-  before { sign_in(find_boss) }
+  before { sign_in(find_dev) }
   
   it "should return a list of users matching the given name" do
     sign_in(Factory(:user, :name => 'Mr. Bean'))
