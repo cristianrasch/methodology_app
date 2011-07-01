@@ -1,7 +1,7 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
   
-  helper_method :dev_logged_in?
+  helper_method :boss_or_dev_logged_in?
   
   protected
 
@@ -17,9 +17,16 @@ class ApplicationController < ActionController::Base
       if current_user.send("#{method}?")
         true
       else
-        render(:text => 'Acceso denegado.', :status => :unauthorized)
-        false
+        access_denied
       end
+    end
+  end
+  
+  def ensure_boss_or_dev_logged_in
+    if boss_or_dev_logged_in?
+      true
+    else
+      access_denied
     end
   end
   
@@ -27,7 +34,14 @@ class ApplicationController < ActionController::Base
     new_user_session_path
   end
   
-  def dev_logged_in?
-    current_user.dev?
+  def boss_or_dev_logged_in?
+    current_user.boss? or current_user.dev?
+  end
+  
+  private
+  
+  def access_denied
+    render(:text => 'Acceso denegado.', :status => :unauthorized)
+    false
   end
 end

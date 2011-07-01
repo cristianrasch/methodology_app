@@ -3,7 +3,7 @@
     - if user_signed_in?
       %li.current_page_item.first
         = link_to Project.model_name.human.humanize.pluralize, projects_path
-      - if dev_logged_in?
+      - if boss_or_dev_logged_in?
         %li
           = link_to 'Nomenclatura', project_names_path
         %li
