@@ -18,8 +18,8 @@ class User < ActiveRecord::Base
   
   validates :email, :presence => { :on => :update }, 
                     :format => { :with => /\A([\w\.%\+\-]+)@([\w\-]+\.)+([\w]{2,})\z/i, 
-                                 :allow_nil => true, :on => :update },
-                    :uniqueness => { :allow_nil => true, :on => :update }
+                                 :allow_nil => true },
+                    :uniqueness => { :allow_nil => true }
   
   validates :password, :length => {:within => 6..20 }, 
             :if => Proc.new { |user| user.new_record? || user.encrypted_password_changed? }

@@ -4,12 +4,13 @@ require 'informix'
 describe User do
   context "model validations" do
     it "should validate new instances" do
-      user = User.new
+      user = User.new(:email => Factory(:user).email)
       user.should_not be_valid
       
       user.should have(1).error_on(:username)
       user.should have(1).error_on(:name)
       user.should have(1).error_on(:password)
+      user.should have(1).error_on(:email)
     end
     
     it "should validate mass-imported instances" do
