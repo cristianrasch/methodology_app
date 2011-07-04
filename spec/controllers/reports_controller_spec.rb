@@ -6,7 +6,7 @@ describe ReportsController do
   before { sign_in(find_boss) }
 
   it "should deny access to non bosses" do
-    sign_in(find_dev)
+    sign_in(Factory(:user))
     get :index
     
     response.status.should == 401

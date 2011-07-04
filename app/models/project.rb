@@ -244,7 +244,7 @@ class Project < ActiveRecord::Base
     @notify_envisaged_end_date_changed = attrs[:notify_envisaged_end_date_changed].to_i == 1 && envisaged_end_date_changed? && persisted?
     
     if new? && estimated_duration
-      self.estimated_end_date = in_days(self, :estimated_duration).business_days.after(estimated_start_date).to_date
+      self.estimated_end_date = in_days(self, :estimated_duration).business_days.after(estimated_start_date-1).to_date
     end
   end
   
