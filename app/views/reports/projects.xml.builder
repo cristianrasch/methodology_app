@@ -31,13 +31,15 @@ xml.chart(:dateFormat => "dd/mm/yyyy", :hoverCapBorderColor => "2222ff", :hoverC
       prev_envisaged_end_date = nil
       envisaged_end_date = pending_projects.first.envisaged_end_date_from(on_course_projects.empty? ? (pending_projects.first.estimated_start_date < at_beginning_of_month ? at_beginning_of_month : nil) : on_course_projects.last.envisaged_end_date)
       
-      pending_projects.each do |project|
+      pending_projects.each_with_index do |project, j|
+        # needs to be calculated based on our next project, but not on the first iteration
+        envisaged_end_date = project.envisaged_end_date_from(envisaged_end_date) unless j.zero?
+        
         start_date = prev_envisaged_end_date.nil? ?  (on_course_projects.empty? ? at_beginning_of_month : on_course_projects.last.envisaged_end_date) : prev_envisaged_end_date
       
         xml.task(:name => replace_accented_chars(project.requirement), :processId => project.id, :start => l(start_date), :end => l(envisaged_end_date), :id => project.req_nbr, :color => "4567aa", :height => "10", :topPadding => i-i*0.8, :animation => "0", :link => url_for(project))
         
         prev_envisaged_end_date = envisaged_end_date
-        envisaged_end_date = project.envisaged_end_date_from(envisaged_end_date)
         i += 1
       end
     end
