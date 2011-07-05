@@ -11,12 +11,12 @@ class Notifications < ActionMailer::Base
   def has_not_signed_in_since_last_week(dev)
     @dev = dev
 
-    mail(:to => dev.email, :subject => "#{dev.username.upcase}: no se ha logueado en la última semana!")
+    mail(:to => dev.email, :subject => "[#{Conf.app['code']}] - #{dev.username.upcase}: no se ha logueado en la última semana!")
   end
   
   def compl_perc_has_not_been_updated_since_last_week(dev, projects)
     @dev, @projects = dev, projects
     
-    mail(:to => dev.email, :subject => "#{dev.username.upcase}: no ha actualizado el estado de sus #{Project.model_name.human.pluralize}!")
+    mail(:to => dev.email, :subject => "[#{Conf.app['code']}] - #{dev.username.upcase}: no ha actualizado el estado de sus #{Project.model_name.human.pluralize}!")
   end
 end

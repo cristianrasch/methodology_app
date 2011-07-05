@@ -11,6 +11,6 @@ class TaskNotifier < ActionMailer::Base
   def task_saved(task)
     @task = task
     recipients = [task.author.email, task.owner.email, task.project.dev.email]
-    mail(:to => recipients, :subject => "#{task.created_at == task.updated_at ? 'Nueva' : 'Edición de'} #{Task.model_name.human}")
+    mail(:to => recipients, :subject => "[#{Conf.app['code']}] - #{task.created_at == task.updated_at ? 'Nueva' : 'Edición de'} #{Task.model_name.human}")
   end
 end

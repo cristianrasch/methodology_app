@@ -15,12 +15,12 @@ describe CommentNotifier do
     end
     
     it "should display a subject for new comments" do
-      mail.subject.should eq("Nuevo #{Comment.model_name.human}")
+      mail.subject.should include("Nuevo #{Comment.model_name.human}")
     end
     
     it "should display another one for existing comments" do
       @comment.touch
-      mail.subject.should eq("Edición de #{Comment.model_name.human}")
+      mail.subject.should include("Edición de #{Comment.model_name.human}")
     end
 
     it "renders the body" do

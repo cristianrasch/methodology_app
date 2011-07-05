@@ -12,6 +12,6 @@ class CommentNotifier < ActionMailer::Base
     @comment = comment
     recipients = [comment.commentable.project.dev.email]
     # recipients = comment.users.map(&:email) << comment.commentable.project.dev.email
-    mail(:to => recipients.uniq, :subject => "#{comment.created_at == comment.updated_at ? 'Nuevo' : 'Edición de'} #{Comment.model_name.human}")
+    mail(:to => recipients.uniq, :subject => "[#{Conf.app['code']}] - #{comment.created_at == comment.updated_at ? 'Nuevo' : 'Edición de'} #{Comment.model_name.human}")
   end
 end
